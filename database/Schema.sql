@@ -85,7 +85,7 @@ BEGIN
 		CASE
 		  WHEN NOT EXISTS(
 		  SELECT 1 FROM Titolo where id_titolo=new.id_serie AND
-			tipologia="SerieTv")
+			tipologia='SerieTv')
 			THEN
 			 RAISE(ABORT, 'Errore:Elemento inserito non è una serieTv')
 END;
