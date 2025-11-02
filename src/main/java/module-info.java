@@ -1,4 +1,4 @@
-module it.unical.serialmente.serialmente {
+module it.unical.serialmente.UI {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -6,6 +6,6 @@ module it.unical.serialmente.serialmente {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
 
-    opens it.unical.serialmente.serialmente to javafx.fxml;
-    exports it.unical.serialmente.serialmente;
+    opens it.unical.serialmente.UI to javafx.fxml;
+    exports it.unical.serialmente.UI;
 }
