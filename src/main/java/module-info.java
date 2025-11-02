@@ -5,6 +5,8 @@ module it.unical.serialmente.UI {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
+    requires jdk.jsobject;
+    requires org.json;
 
     opens it.unical.serialmente.UI to javafx.fxml;
     exports it.unical.serialmente.UI;
