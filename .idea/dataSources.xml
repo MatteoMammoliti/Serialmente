@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="SerialmenteDb" uuid="dd46f109-409d-4ca5-8e72-ab24eb8481bd">
-      <driver-ref>sqlite.xerial</driver-ref>
+    <data-source source="LOCAL" name="neondb@ep-long-darkness-ag5midlz-pooler.c-2.eu-central-1.aws.neon.tech" uuid="ec0f4ec5-a5d9-4556-9c1e-3207080b46ea">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database/SerialmenteDb.db</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ep-long-darkness-ag5midlz-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&amp;channel_binding=require:5432/neondb</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
