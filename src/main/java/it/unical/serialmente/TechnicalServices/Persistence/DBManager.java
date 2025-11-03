@@ -1,9 +1,11 @@
 package it.unical.serialmente.TechnicalServices.Persistence;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.CredenzialiUtenteDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.UtenteDaoPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.UtenteDAOPostgres;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -46,9 +48,12 @@ public class DBManager {
     }
 
     public UtenteDAO getUtenteDAO(){
-        return new UtenteDaoPostgres(getConnection());
+        return new UtenteDAOPostgres(getConnection());
     }
     public CredenzialiUtenteDAO credenzialiUtenteDAO(){
         return new CredenzialiUtenteDAOPostgres(getConnection());
+    }
+    public TitoloDAO getTitoloDAO(){
+        return new TitoloDAOPostgres(getConnection());
     }
 }

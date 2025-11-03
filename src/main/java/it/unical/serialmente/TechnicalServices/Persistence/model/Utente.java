@@ -2,7 +2,7 @@ package it.unical.serialmente.TechnicalServices.Persistence.model;
 
 import java.util.List;
 
-public class Utente {
+public class  Utente {
     private Integer idUtente;
     private String nomeUtente;
     private CredenzialiUtente credenzialiUtente;

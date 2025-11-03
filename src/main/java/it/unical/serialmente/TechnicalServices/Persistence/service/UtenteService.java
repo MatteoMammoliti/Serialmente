@@ -3,6 +3,7 @@ package it.unical.serialmente.TechnicalServices.Persistence.service;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.model.CredenzialiUtente;
+import it.unical.serialmente.TechnicalServices.Persistence.model.SessioneCorrente;
 import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
 
 public class UtenteService {
@@ -55,6 +56,8 @@ public class UtenteService {
             utente.setIdUtente(credenzialiUtente.cercaIdUtente(email));
             CredenzialiUtente credenziali= credenzialiUtente.getCredenzialiUtente(utente);
             utente.setCredenzialiUtente(credenziali);
+            SessioneCorrente.setUtenteCorrente(utente);
+
             System.out.println("Login effettuata");
             return utente;
         }

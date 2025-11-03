@@ -5,10 +5,10 @@ import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
 
 import java.sql.*;
 
-public class UtenteDaoPostgres implements UtenteDAO {
+public class UtenteDAOPostgres implements UtenteDAO {
     Connection connection;
 
-    public UtenteDaoPostgres(Connection connection) {
+    public UtenteDAOPostgres(Connection connection) {
         this.connection = connection;
     }
 
