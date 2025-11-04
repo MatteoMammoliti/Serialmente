@@ -6,10 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import it.unical.serialmente.TechnicalServices.Persistence.model.Genere;
+import it.unical.serialmente.TechnicalServices.Persistence.model.Piattaforma;
 import org.json.*;
 
 public class TMDbAPI {
@@ -26,10 +25,9 @@ public class TMDbAPI {
      * @param piattaforme
      * @return
      */
-    public String getTitoliConsigliati(List<Integer> generi, List<Integer> piattaforme, String tipologia) throws Exception {
+    public String getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologia) throws Exception {
         return cercaTitoliPerCriteri(tipologia, generi, null, piattaforme);
     }
-
 
     /**
      * Funzione che permette di ottenere il titolo di tipologia {tipologia} ordinati per {tipologiaSort}:
@@ -68,58 +66,17 @@ public class TMDbAPI {
      * @return String
      * @throws Exception
      */
-    public String cercaTitolo(String nomeTitolo, String tipologia, List<String> generi, Integer annoPubblicazione) throws Exception {
+    public String cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione) throws Exception {
         if(nomeTitolo != null) return cercaTitoloPerNome(nomeTitolo, tipologia);
-        return cercaTitoliPerCriteri(tipologia, getIdGeneri(generi, tipologia), annoPubblicazione, null);
+        return cercaTitoliPerCriteri(tipologia, generi, annoPubblicazione, null);
     }
 
-    /**
-     * Funzione che restituisce le piattaforme streaming dei titoli di tipologia {tipologia}
-     * @param tipologia
-     * @return listaPiattaforme
-     * @throws Exception
-     */
-    public List<String> getPiattaformeDisponibili(String tipologia) throws Exception {
-        String richiesta = "/watch/providers/" +  tipologia;
+    public Integer getDurataMinutiFilm(Integer idFilm) throws Exception {
+        String richiesta = "/movie/" + idFilm;
         String risposta = inviaRichiesta(richiesta);
 
         JSONObject json = new JSONObject(risposta);
-        JSONArray jsonArray = json.getJSONArray("results");
-        List<String> lista = new ArrayList<>();
-
-        for(int i = 0; i < jsonArray.length(); i++){
-            lista.add(jsonArray.getJSONObject(i).getString("provider_name"));
-        }
-        return lista;
-    }
-
-    /**
-     * Funzione di utility per convertire la lista di generi da stringhe ad id numerici
-     *
-     * @param generi
-     * @param tipologia
-     * @return List<Integer> idGeneri
-     * @throws Exception
-     */
-    private List<Integer> getIdGeneri(List<String> generi, String tipologia) throws Exception {
-        List<Integer> idGeneri = new ArrayList<>();
-        Map<String, Integer> mappaIdGeneri = new HashMap<>();
-
-        String richiesta = "/genre/" + tipologia + "/list";
-        String risposta = inviaRichiesta(richiesta);
-
-        JSONObject json =  new JSONObject(risposta);
-        JSONArray jsonArray = json.getJSONArray("genres");
-
-        for(int i = 0; i < jsonArray.length(); i++){
-            JSONObject genre = jsonArray.getJSONObject(i);
-            mappaIdGeneri.put(genre.getString("name"), genre.getInt("id"));
-        }
-
-        for(int i = 0; i < generi.size(); i++){
-            idGeneri.add(mappaIdGeneri.get(generi.get(i)));
-        }
-        return idGeneri;
+        return json.getInt("runtime");
     }
 
     /**
@@ -131,14 +88,14 @@ public class TMDbAPI {
      * @throws Exception
      */
     private String cercaTitoloPerNome(String nomeTitolo, String tipologia) throws Exception {
-        String richiesta = "/search/";
+        StringBuilder richiesta = new StringBuilder("/search/");
 
-        if(tipologia != null) richiesta = richiesta + tipologia;
-        else richiesta = richiesta + "multi";
+        if(tipologia != null) richiesta.append(tipologia);
+        else richiesta.append("multi");
 
         String nomeTitoloCodificato = URLEncoder.encode(nomeTitolo, StandardCharsets.UTF_8);
-        richiesta = richiesta + "?query=" + nomeTitoloCodificato;
-        return inviaRichiesta(richiesta);
+        richiesta.append("?query=").append(nomeTitoloCodificato);
+        return inviaRichiesta(richiesta.toString());
     }
 
     /**
@@ -149,51 +106,51 @@ public class TMDbAPI {
      * @return String
      * @throws Exception
      */
-    private String cercaTitoliPerCriteri(String tipologia, List<Integer> generi, Integer annoPubblicazione, List<Integer> piattaforme) throws Exception {
-        String richiesta;
+    private String cercaTitoliPerCriteri(String tipologia, List<Genere> generi, Integer annoPubblicazione, List<Piattaforma> piattaforme) throws Exception {
+        StringBuilder richiesta;
 
-        if(tipologia != null) richiesta = "/discover/" + tipologia;
-        else richiesta = "/discover/multi";
+        if(tipologia != null) richiesta = new StringBuilder("/discover/" + tipologia);
+        else richiesta = new StringBuilder("/discover/multi");
 
-        if(generi != null || annoPubblicazione != null || piattaforme != null) richiesta = richiesta + "?";
+        if(generi != null || annoPubblicazione != null || piattaforme != null) richiesta.append("?");
 
         boolean generiAggiunti = false;
         if(generi != null) {
             generiAggiunti = true;
-            richiesta = richiesta + "with_genres=";
+            richiesta.append("with_genres=");
 
             for(int i = 0; i < generi.size(); i++) {
-                richiesta += generi.get(i);
+                richiesta.append(generi.get(i).getIdGenere());
 
                 if (i < generi.size() - 1) {
-                    richiesta += ",";
+                    richiesta.append(",");
                 }
             }
         }
 
         boolean piattaformeAggiunte = false;
-        if(generiAggiunti) { richiesta = richiesta + "&"; }
+        if(generiAggiunti) { richiesta.append("&"); }
 
         if(piattaforme != null) {
             piattaformeAggiunte = true;
-            richiesta = richiesta + "with_watch_providers=";
+            richiesta.append("with_watch_providers=");
 
             for(int i = 0; i < piattaforme.size(); i++) {
-                richiesta += piattaforme.get(i);
+                richiesta.append(piattaforme.get(i).getIdPiattaforma());
 
                 if (i < piattaforme.size() - 1) {
-                    richiesta += ",";
+                    richiesta.append(",");
                 }
             }
         }
 
-        if(piattaformeAggiunte) { richiesta = richiesta + "&"; }
+        if(piattaformeAggiunte) { richiesta.append("&"); }
 
         if(annoPubblicazione != null) {
-            richiesta = richiesta + "year=" +  annoPubblicazione;
+            richiesta.append("year=").append(annoPubblicazione);
         }
 
-        return inviaRichiesta(richiesta);
+        return inviaRichiesta(richiesta.toString());
     }
 
     /**
