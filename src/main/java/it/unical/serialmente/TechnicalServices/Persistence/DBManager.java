@@ -1,9 +1,11 @@
 package it.unical.serialmente.TechnicalServices.Persistence;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.CredenzialiUtenteDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.UtenteDAOPostgres;
 
@@ -55,5 +57,8 @@ public class DBManager {
     }
     public TitoloDAO getTitoloDAO(){
         return new TitoloDAOPostgres(getConnection());
+    }
+    public SelezioneTitoloDAO SelezioneTitoloDAO(){
+        return new SelezioneTitoloDAOPostgres(getConnection());
     }
 }
