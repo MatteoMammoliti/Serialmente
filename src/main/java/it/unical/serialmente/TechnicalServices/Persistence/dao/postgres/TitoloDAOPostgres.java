@@ -204,4 +204,23 @@ public class TitoloDAOPostgres implements TitoloDAO {
         System.out.println("nessun titolo trovato "+nomeTitolo);
         return null;
     }
+
+    @Override
+    public List<Genere> restituisciGeneriTitolo(Integer idTitolo) {
+        List<Genere> generi = new ArrayList<>();
+        String query="SELECT * FROM appartiene a JOIN genere g on a.id_genere=g.id_genere WHERE id_titolo=?";
+        try(PreparedStatement st = con.prepareStatement(query)){
+            st.setInt(1,idTitolo);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Genere genere=new Genere(rs.getString("nome_genere"),rs.getInt("id_genere"));
+                generi.add(genere);
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return generi;
+    }
 }

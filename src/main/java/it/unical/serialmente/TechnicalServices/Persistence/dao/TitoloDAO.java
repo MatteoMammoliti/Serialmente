@@ -12,6 +12,7 @@ public interface TitoloDAO {
     boolean aggiungiTitolo(Titolo titolo) throws SQLException;
     boolean rimuoviTitolo(Titolo titolo);
     List<Titolo> restituisciTitoloPerNome(String nomeTitolo);
+    List<Genere> restituisciGeneriTitolo(Integer idTitolo);
 
 
 }
