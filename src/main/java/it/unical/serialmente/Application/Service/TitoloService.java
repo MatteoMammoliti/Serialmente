@@ -10,8 +10,71 @@ import java.util.List;
 
 public class TitoloService {
 
-    //private final TitoloDAOPostgres dao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
     private final TMDbAPI tmdb = new TMDbAPI();
+
+    /**
+     * Funzione che restituisce un oggetto SerieTV per un id dato
+     * @param idSerieTV
+     * @return SerieTV
+     * @throws Exception
+     */
+    public SerieTV getSerieTV(Integer idSerieTV) throws Exception {
+        String risposta = tmdb.getSerieTV(idSerieTV);
+        JSONObject json = new JSONObject(risposta);
+        SerieTV s = estraiSerieTVDaJSON(json);
+        return s;
+    }
+
+    /**
+     * Funzione che restituisce una lista di oggetti stagione per una data serie
+     * @param idSerieTV
+     * @return List<Stagione> stagioni
+     * @throws Exception
+     */
+    public List<Stagione> getStagioni(Integer idSerieTV) throws Exception {
+        String risposta = tmdb.getSerieTV(idSerieTV);
+        JSONObject json = new JSONObject(risposta);
+
+        List<Stagione> stagioni = new ArrayList<>();
+        JSONArray stagioniArray = json.getJSONArray("seasons");
+
+        for(int i = 0; i < stagioniArray.length(); i++){
+            JSONObject obj = stagioniArray.getJSONObject(i);
+
+            Stagione s = new Stagione(
+                    obj.getString("name"),
+                    obj.getInt("id"),
+                    getEpisodi(idSerieTV, obj.getInt("season_number"))
+            );
+            stagioni.add(s);
+        }
+        return stagioni;
+    }
+
+    /**
+     * Funzione che restituisce una lista di oggetti episodi per una data serie tv e per una data stagione
+     * @param idSerieTV
+     * @param numeroStagione
+     * @return List<Episodio> episodi
+     * @throws Exception
+     */
+    public List<Episodio> getEpisodi(Integer idSerieTV, Integer numeroStagione) throws Exception {
+        String risposta =  tmdb.getEpisodiDaStagione(idSerieTV, numeroStagione);
+        JSONObject json = new JSONObject(risposta);
+
+        List<Episodio> episodi = new ArrayList<>();
+        JSONArray episodiArray = json.getJSONArray("episodes");
+
+        for(int i = 0; i < episodiArray.length(); i++){
+            JSONObject obj = episodiArray.getJSONObject(i);
+            Episodio ep = new Episodio(
+                    obj.getInt("id"),
+                    obj.getInt("runtime")
+            );
+            episodi.add(ep);
+        }
+        return episodi;
+    }
 
     /**
      * Funzione che restituisce un massimo di 10 titoli (5 serie tv e 5 film) tra quelli consigliati

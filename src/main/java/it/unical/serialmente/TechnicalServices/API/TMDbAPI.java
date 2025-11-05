@@ -19,6 +19,72 @@ public class TMDbAPI {
     private final String RICHIESTA_DATI = "GET";
 
     /**
+     * Funzione che restituisce se esiste un prossimo episodio per una data serie e una data stagione
+     * @param idSerieTV
+     * @param idStagioneAttuale
+     * @param idEpisodioAttuale
+     * @return
+     */
+    public boolean esisteProssimoEpisodio(Integer idSerieTV, Integer idStagioneAttuale, Integer idEpisodioAttuale) throws Exception {
+        Integer numStagione = getNumeroStagione(idSerieTV, idStagioneAttuale);
+        String risposta = getEpisodiDaStagione(numStagione, idSerieTV);
+
+        JSONObject objRisposta = new JSONObject(risposta);
+        JSONArray arrayRisposta = objRisposta.getJSONArray("episodes");
+
+        return getId(idEpisodioAttuale, arrayRisposta) != null;
+    }
+
+    /**
+     * Funzione che restituisce l'id del prossimo episodio di una data serie per una data stagione
+     * @param idSerieTV
+     * @param idStagioneAttuale
+     * @param idEpisodioAttuale
+     * @return
+     * @throws Exception
+     */
+    public Integer getIdProssimoEpisodio(Integer idSerieTV, Integer idStagioneAttuale, Integer idEpisodioAttuale) throws Exception {
+        Integer numStagione = getNumeroStagione(idSerieTV, idStagioneAttuale);
+        if(numStagione == 0) return null;
+
+        String risposta = getEpisodiDaStagione(numStagione, idSerieTV);
+        JSONObject objRisposta = new JSONObject(risposta);
+        JSONArray arrayRisposta = objRisposta.getJSONArray("episodes");
+
+        return getId(idEpisodioAttuale, arrayRisposta);
+    }
+
+    /**
+     * Funzione che dato l'idSerie e l'idStagione attuale restituisce l'id della prossima stagione
+     * @param idSerieTV
+     * @param idStagioneAttuale
+     * @return
+     * @throws Exception
+     */
+    public Integer getIdProssimaStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
+        String risposta = getSerieTV(idSerieTV);
+        JSONObject json = new JSONObject(risposta);
+        JSONArray arrayStagioni =  json.getJSONArray("seasons");
+
+        return getId(idStagioneAttuale, arrayStagioni);
+    }
+
+    /**
+     * Funzione che dato l'idSerie e l'idStagione attuale restituisce se è presente una prossima stagione o la serie è conclusa
+     * @param idSerieTV
+     * @param idStagioneAttuale
+     * @return bollean
+     * @throws Exception
+     */
+    public boolean esisteProssimaStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
+        String risposta = getSerieTV(idSerieTV);
+        JSONObject json = new JSONObject(risposta);
+        JSONArray arrayStagioni =  json.getJSONArray("seasons");
+
+        return getId(idStagioneAttuale, arrayStagioni) != null;
+    }
+
+    /**
      * Funzione usata per ottenere film e serietv da consigliare lall'utente nella homepage
      *
      * @param generi
@@ -57,6 +123,18 @@ public class TMDbAPI {
     }
 
     /**
+     * Funzione che restituisce gli episodi di una data stagione
+     * @param numeroStagione
+     * @param idSerieTV
+     * @return String del json
+     * @throws Exception
+     */
+    public String getEpisodiDaStagione(Integer numeroStagione, Integer idSerieTV) throws Exception {
+        String richiesta = "/tv/"+ idSerieTV + "/season/" + numeroStagione;
+        return inviaRichiesta(richiesta);
+    }
+
+    /**
      * Funzione che consente di ricercare un titolo specifico
      *
      * @param nomeTitolo
@@ -77,6 +155,39 @@ public class TMDbAPI {
 
         JSONObject json = new JSONObject(risposta);
         return json.getInt("runtime");
+    }
+
+    private Integer getNumeroStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
+        String serieTV = getSerieTV(idSerieTV);
+        JSONObject obj = new JSONObject(serieTV);
+        JSONArray array = obj.getJSONArray("seasons");
+
+        Integer numStagione = null;
+        for(int i = 0; i < array.length(); i++) {
+            JSONObject stagione =  array.getJSONObject(i);
+            if(stagione.getInt("id") == idStagioneAttuale) {
+                numStagione = stagione.getInt("season_number");
+                break;
+            }
+        }
+
+        return numStagione;
+    }
+
+    /**
+     * Funzione che restituisce l'id del prossimo episodio/stagione associato ad id {id}
+     * @param id
+     * @param arrayRisposta
+     * @return
+     */
+    private Integer getId(Integer id, JSONArray arrayRisposta) {
+        for(int i = 0; i < arrayRisposta.length() - 1; i++) {
+            JSONObject obj =  arrayRisposta.getJSONObject(i);
+            if(obj.getInt("id") == id) {
+                return arrayRisposta.getJSONObject(i + 1).getInt("id");
+            }
+        }
+        return null;
     }
 
     /**
