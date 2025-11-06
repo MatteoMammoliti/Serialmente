@@ -22,17 +22,6 @@ import java.util.List;
 public class SerialmenteMainApp extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException {
-        DBManager db=DBManager.getInstance();
-        SelezioneTitoloDAO selezione=db.SelezioneTitoloDAO();
-        Utente u=new Utente();
-        u.setIdUtente(3);
-        SessioneCorrente.setUtenteCorrente(u);
-
-        HashSet<Genere> generi=new HashSet();
-        generi=selezione.restituisciGeneriVisionati();
-        for(Genere g : generi){
-            System.out.println(g.getNomeGenere());
-        }
 
 
 

@@ -3,17 +3,21 @@ package it.unical.serialmente.TechnicalServices.Persistence.model;
 public class Episodio {
     private Integer idEpisodio;
     private Integer durataEpisodio;
+    private String descrizioneEpisodio;
 
-    public Episodio(Integer idEpisodio, Integer durataEpisodio) {
+    public Episodio(Integer idEpisodio, Integer durataEpisodio,String descrizione) {
         this.idEpisodio = idEpisodio;
         this.durataEpisodio = durataEpisodio;
+        this.descrizioneEpisodio = descrizione;
     }
 
     //Setter
+    public void setDescrizioneEpisodio(String descrizioneEpisodio) {this.descrizioneEpisodio = descrizioneEpisodio;}
     public void setIdEpisodio(Integer idEpisodio) {this.idEpisodio = idEpisodio;}
     public void setDurataEpisodio(Integer durataEpisodio ) {this.durataEpisodio = durataEpisodio;}
 
     //Getter
     public Integer getDurataEpisodio() {return this.durataEpisodio;}
     public Integer getIdEpisodio() {return this.idEpisodio;}
+    public String getDescrizioneEpisodio() {return this.descrizioneEpisodio;}
 }

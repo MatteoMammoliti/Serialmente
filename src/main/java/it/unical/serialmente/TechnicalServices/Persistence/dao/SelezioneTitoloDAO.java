@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface SelezioneTitoloDAO {
-    List<Titolo> restituisciTitoliInLista(String nomeLista);
-    boolean aggiungiTitoloInLista(Integer idTitolo,String nomeLista);
-    boolean eliminaTitoloInLista(Integer idTitolo,String nomeLista);
-    HashSet<Genere> restituisciGeneriVisionati();
+    List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista);
+    boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
+    boolean eliminaTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
+    HashSet<Genere> restituisciGeneriVisionati(Integer idUtente);
 }

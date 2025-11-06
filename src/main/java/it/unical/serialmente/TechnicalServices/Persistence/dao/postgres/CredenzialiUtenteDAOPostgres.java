@@ -68,10 +68,7 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
         String query="DELETE FROM credenzialiutente WHERE id_utente=?";
         try(PreparedStatement st=connection.prepareStatement(query)){
             st.setInt(1,idUtente);
-            int riga=st.executeUpdate();
-            if(riga>0){
-                return true;
-            }
+            return  st.executeUpdate()>0;
 
         }catch (Exception e){
             e.printStackTrace();

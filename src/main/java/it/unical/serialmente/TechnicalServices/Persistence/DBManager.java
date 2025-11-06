@@ -1,13 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence;
 
-import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.CredenzialiUtenteDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.UtenteDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.*;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -52,7 +46,7 @@ public class DBManager {
     public UtenteDAO getUtenteDAO(){
         return new UtenteDAOPostgres(getConnection());
     }
-    public CredenzialiUtenteDAO credenzialiUtenteDAO(){
+    public CredenzialiUtenteDAO getCredenzialiUtenteDAO(){
         return new CredenzialiUtenteDAOPostgres(getConnection());
     }
     public TitoloDAO getTitoloDAO(){
@@ -60,5 +54,8 @@ public class DBManager {
     }
     public SelezioneTitoloDAO SelezioneTitoloDAO(){
         return new SelezioneTitoloDAOPostgres(getConnection());
+    }
+    public ProgressoSerieDAO getProgressoSerieDAO(){
+        return new ProgressoSerieDAOPostgres(getConnection());
     }
 }

@@ -21,7 +21,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         this.connection = connection;
     }
     @Override
-    public List<Titolo> restituisciTitoliInLista(String nomeLista) {
+    public List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista) {
         List<Titolo> lista = new ArrayList<>();
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
             System.out.println("Nome lista non valido");
@@ -36,7 +36,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             query="SELECT * FROM selezionetitolo WHERE id_utente=? AND tipo_lista=? AND e_preferito=false";
         }
         try(PreparedStatement st =connection.prepareStatement(query)){
-            st.setInt(1, SessioneCorrente.getUtenteCorrente().getIdUtente());
+            st.setInt(1, idUtente);
             st.setString(2,nomeLista);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
@@ -58,7 +58,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
      * @return valore booleano per confermare l'eventuale successo del metodo.
      */
     @Override
-    public boolean aggiungiTitoloInLista(Integer idTitolo, String nomeLista) {
+    public boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo, String nomeLista) {
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
             System.out.println("Nome lista non valido");
             return false;
@@ -74,7 +74,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             query ="INSERT INTO selezionetitolo (id_utente,id_titolo,tipo_lista) VALUES (?,?,?)";
         }
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1,SessioneCorrente.getUtenteCorrente().getIdUtente());
+            st.setInt(1,idUtente);
             st.setInt(2,idTitolo);
             if(nomeLista.equals("Watchlist")){
                 st.setString(3,nomeLista);
@@ -102,7 +102,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
      * @return valore booleano per confermare l'eventuale successo del metodo.
      */
     @Override
-    public boolean eliminaTitoloInLista(Integer idTitolo, String nomeLista) {
+    public boolean eliminaTitoloInLista(Integer idUtente,Integer idTitolo, String nomeLista) {
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
             System.out.println("Nome lista non valido");
             return false;
@@ -111,7 +111,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             String query="UPDATE selezionetitolo SET e_preferito=false WHERE id_titolo=? AND id_utente=?";
             try(PreparedStatement st = connection.prepareStatement(query)){
                 st.setInt(1,idTitolo);
-                st.setInt(2,SessioneCorrente.getUtenteCorrente().getIdUtente());
+                st.setInt(2,idUtente);
                 int riga= st.executeUpdate();
                 if(riga>0){
                     System.out.println("Titolo" +idTitolo+" tolto da "+nomeLista);
@@ -124,7 +124,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             String query= "DELETE FROM selezionetitolo WHERE id_titolo=? AND id_utente=?";
             try(PreparedStatement st=connection.prepareStatement(query)){
                 st.setInt(1,idTitolo);
-                st.setInt(2,SessioneCorrente.getUtenteCorrente().getIdUtente());
+                st.setInt(2,idUtente);
                 int riga= st.executeUpdate();
                 if(riga>0){
                     System.out.println("Titolo" +idTitolo+" tolto "+nomeLista);
@@ -143,12 +143,12 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
      * @return
      */
     @Override
-    public HashSet<Genere> restituisciGeneriVisionati() {
+    public HashSet<Genere> restituisciGeneriVisionati(Integer idUtente) {
         TitoloDAO titoloDao=DBManager.getInstance().getTitoloDAO();
         HashSet<Genere> generi=new HashSet<>();
         String query="SELECT * FROM selezionetitolo WHERE id_utente=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1,SessioneCorrente.getUtenteCorrente().getIdUtente());
+            st.setInt(1,idUtente);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 List<Genere> generiTitolo = new ArrayList<>();
