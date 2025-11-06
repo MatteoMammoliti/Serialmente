@@ -1,7 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao;
 
-import it.unical.serialmente.TechnicalServices.Persistence.model.CredenzialiUtente;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
+import it.unical.serialmente.Domain.model.CredenzialiUtente;
+import it.unical.serialmente.Domain.model.Utente;
 
 public interface CredenzialiUtenteDAO {
 

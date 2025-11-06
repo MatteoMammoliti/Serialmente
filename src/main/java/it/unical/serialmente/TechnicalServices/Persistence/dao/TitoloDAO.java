@@ -1,7 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao;
 
-import it.unical.serialmente.TechnicalServices.Persistence.model.Genere;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Titolo;
+import it.unical.serialmente.Domain.model.Genere;
+import it.unical.serialmente.Domain.model.Titolo;
 
 import java.sql.SQLException;
 import java.util.List;

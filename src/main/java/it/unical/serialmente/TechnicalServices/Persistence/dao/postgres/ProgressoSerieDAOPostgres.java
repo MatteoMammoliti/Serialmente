@@ -1,12 +1,11 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.*;
+import it.unical.serialmente.Domain.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
 
 public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
     Connection conn;

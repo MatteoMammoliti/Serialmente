@@ -3,9 +3,8 @@ package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Genere;
-import it.unical.serialmente.TechnicalServices.Persistence.model.SessioneCorrente;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Titolo;
+import it.unical.serialmente.Domain.model.Genere;
+import it.unical.serialmente.Domain.model.Titolo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

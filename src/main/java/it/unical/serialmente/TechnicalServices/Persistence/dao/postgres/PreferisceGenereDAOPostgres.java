@@ -1,7 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.PreferisceGenereDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Genere;
+import it.unical.serialmente.Domain.model.Genere;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

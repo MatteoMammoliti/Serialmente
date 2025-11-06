@@ -1,7 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
+import it.unical.serialmente.Domain.model.Utente;
 
 import java.sql.*;
 

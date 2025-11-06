@@ -1,8 +1,6 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao;
 
-import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
-
-import java.sql.SQLException;
+import it.unical.serialmente.Domain.model.Utente;
 
 public interface UtenteDAO {
 

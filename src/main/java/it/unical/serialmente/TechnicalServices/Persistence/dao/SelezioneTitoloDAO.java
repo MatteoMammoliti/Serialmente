@@ -1,8 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao;
 
-import it.unical.serialmente.TechnicalServices.Persistence.model.Genere;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Piattaforma;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Titolo;
+import it.unical.serialmente.Domain.model.Genere;
+import it.unical.serialmente.Domain.model.Titolo;
 
 import java.util.HashSet;
 import java.util.List;

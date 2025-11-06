@@ -1,4 +1,4 @@
-package it.unical.serialmente.TechnicalServices.Persistence.model;
+package it.unical.serialmente.Domain.model;
 
 import java.util.List;
 

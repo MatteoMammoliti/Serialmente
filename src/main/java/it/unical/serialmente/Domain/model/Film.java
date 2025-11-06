@@ -1,4 +1,4 @@
-package it.unical.serialmente.TechnicalServices.Persistence.model;
+package it.unical.serialmente.Domain.model;
 
 public class Film extends Titolo{
     private Integer durataMinuti;

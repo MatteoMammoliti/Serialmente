@@ -1,8 +1,8 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.CredenzialiUtente;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
+import it.unical.serialmente.Domain.model.CredenzialiUtente;
+import it.unical.serialmente.Domain.model.Utente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

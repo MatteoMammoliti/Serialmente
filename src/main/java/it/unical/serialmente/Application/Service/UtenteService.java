@@ -1,10 +1,10 @@
-package it.unical.serialmente.TechnicalServices.Persistence.service;
+package it.unical.serialmente.Application.Service;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.CredenzialiUtente;
-import it.unical.serialmente.TechnicalServices.Persistence.model.SessioneCorrente;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Utente;
+import it.unical.serialmente.Domain.model.CredenzialiUtente;
+import it.unical.serialmente.Domain.model.SessioneCorrente;
+import it.unical.serialmente.Domain.model.Utente;
 
 public class UtenteService {
     private UtenteDAO utenteDao;

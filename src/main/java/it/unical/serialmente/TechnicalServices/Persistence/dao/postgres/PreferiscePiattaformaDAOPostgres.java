@@ -1,7 +1,7 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.PreferiscePiattaformaDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Piattaforma;
+import it.unical.serialmente.Domain.model.Piattaforma;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,7 +1,7 @@
 package it.unical.serialmente.Application.Service;
 
 import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
-import it.unical.serialmente.TechnicalServices.Persistence.model.*;
+import it.unical.serialmente.Domain.model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.time.LocalDate;

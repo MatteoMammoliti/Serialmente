@@ -7,8 +7,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Genere;
-import it.unical.serialmente.TechnicalServices.Persistence.model.Piattaforma;
+import it.unical.serialmente.Domain.model.Genere;
+import it.unical.serialmente.Domain.model.Piattaforma;
 import org.json.*;
 
 public class TMDbAPI {

@@ -1,6 +1,6 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao;
 
-import it.unical.serialmente.TechnicalServices.Persistence.model.Piattaforma;
+import it.unical.serialmente.Domain.model.Piattaforma;
 
 import java.util.List;
 
