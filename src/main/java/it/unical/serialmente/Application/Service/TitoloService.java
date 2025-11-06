@@ -2,6 +2,9 @@ package it.unical.serialmente.Application.Service;
 
 import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
 import it.unical.serialmente.Domain.model.*;
+import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferisceGenereDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferiscePiattaformaDAOPostgres;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.time.LocalDate;
@@ -11,6 +14,9 @@ import java.util.List;
 public class TitoloService {
 
     private final TMDbAPI tmdb = new TMDbAPI();
+    private final PreferisceGenereDAOPostgres preferisceGenereDao = new PreferisceGenereDAOPostgres(DBManager.getInstance().getConnection());
+    private final PreferiscePiattaformaDAOPostgres preferiscePiattaformaDao = new  PreferiscePiattaformaDAOPostgres(DBManager.getInstance().getConnection());
+
 
     /**
      * Funzione che restituisce un oggetto SerieTV per un id dato
@@ -69,7 +75,8 @@ public class TitoloService {
             JSONObject obj = episodiArray.getJSONObject(i);
             Episodio ep = new Episodio(
                     obj.getInt("id"),
-                    obj.getInt("runtime")
+                    obj.getInt("runtime"),
+                    obj.getString("overview")
             );
             episodi.add(ep);
         }
