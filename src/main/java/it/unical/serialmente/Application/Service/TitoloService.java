@@ -5,6 +5,7 @@ import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferisceGenereDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferiscePiattaformaDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.time.LocalDate;
@@ -16,20 +17,7 @@ public class TitoloService {
     private final TMDbAPI tmdb = new TMDbAPI();
     private final PreferisceGenereDAOPostgres preferisceGenereDao = new PreferisceGenereDAOPostgres(DBManager.getInstance().getConnection());
     private final PreferiscePiattaformaDAOPostgres preferiscePiattaformaDao = new  PreferiscePiattaformaDAOPostgres(DBManager.getInstance().getConnection());
-
-
-    /**
-     * Funzione che restituisce un oggetto SerieTV per un id dato
-     * @param idSerieTV
-     * @return SerieTV
-     * @throws Exception
-     */
-    public SerieTV getSerieTV(Integer idSerieTV) throws Exception {
-        String risposta = tmdb.getSerieTV(idSerieTV);
-        JSONObject json = new JSONObject(risposta);
-        SerieTV s = estraiSerieTVDaJSON(json);
-        return s;
-    }
+    private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
 
     /**
      * Funzione che restituisce una lista di oggetti stagione per una data serie
@@ -52,6 +40,7 @@ public class TitoloService {
                     obj.getInt("id"),
                     getEpisodi(idSerieTV, obj.getInt("season_number"))
             );
+            s.setNumeroStagioneProgressivo(obj.getInt("season_number"));
             stagioni.add(s);
         }
         return stagioni;
@@ -172,6 +161,50 @@ public class TitoloService {
             }
             titoli.add(t);
             titoliAggiunti++;
+        }
+    }
+
+    public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
+
+        for(int i = 0; i < titoli.size(); i++) {
+
+            if(titoli.get(i).getTipologia().equals("SerieTv")) {
+
+                List<Stagione> stagioni = getStagioni(titoli.get(i).getIdTitolo());
+                SerieTV s = (SerieTV) titoli.get(i);
+
+                for(int j = 0;  j < stagioni.size(); j++) {
+                    List<Episodio> episodi = getEpisodi(titoli.get(i).getIdTitolo(), stagioni.get(j).getNumeroStagioneProgressivo());
+                    stagioni.get(j).setEpisodi(episodi);
+                }
+                s.setStagioni(stagioni);
+            }
+        }
+    }
+
+    public void rendiEpisodiVistiSerieTV(List<Titolo> titoli) throws Exception {
+        for(int i = 0; i < titoli.size(); i++) {
+            if(titoli.get(i).getTipologia().equals("SerieTv")) {
+                SerieTV s = (SerieTV) titoli.get(i);
+
+                ContenitoreDatiProgressoSerie c = progressoSerieDao.getDatiCorrenti(
+                        SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                        s
+                );
+
+                for(int k = 0; k < s.getStagioni().size(); k++) {
+                    Stagione stagione = s.getStagioni().get(k);
+
+                    for(int j = 0;  j < stagione.getEpisodi().size(); j++) {
+                        if(stagione.getEpisodi().get(j).getIdEpisodio() != c.idEpisodio) {
+                            stagione.getEpisodi().get(j).setVisualizzato(true);
+                        }
+                        else return;
+                    }
+
+                    stagione.setCompletata(true);
+                }
+            }
         }
     }
 
