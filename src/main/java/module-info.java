@@ -8,7 +8,9 @@ module it.unical.serialmente.UI {
     requires jdk.jsobject;
     requires org.json;
     requires java.sql;
+    requires spring.security.crypto;
 
     opens it.unical.serialmente.UI to javafx.fxml;
+    opens it.unical.serialmente.UI.Controller to javafx.fxml;
     exports it.unical.serialmente.UI;
 }

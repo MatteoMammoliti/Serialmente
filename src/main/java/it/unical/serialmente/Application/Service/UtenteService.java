@@ -1,47 +1,52 @@
 package it.unical.serialmente.Application.Service;
 
+import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
 import it.unical.serialmente.Domain.model.CredenzialiUtente;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Utente;
 
+import java.sql.SQLException;
+
 public class UtenteService {
-    private UtenteDAO utenteDao;
-    private CredenzialiUtenteDAO credenzialiUtente;
-
-    public UtenteService(UtenteDAO utenteDao, CredenzialiUtenteDAO utente) {
-        this.utenteDao=utenteDao;
-        this.credenzialiUtente=utente;
-
-    }
+    private UtenteDAO utenteDao = DBManager.getInstance().getUtenteDAO();
+    private CredenzialiUtenteDAO credenzialiUtente = DBManager.getInstance().getCredenzialiUtenteDAO();
 
     /**
      * Registra l'utente all'interno dell'applicazione, prendendo tutte le informazioni necessarie all'interno
      * dell'oggetto Utente.
-     * @param utente
+     * @param "nome,email,password,domanda sicurezza e risposta domnda sicurezza"
      * @return valore booleano per confermare o meno l'operazione.
      */
-    public boolean registraUtente(Utente utente){
-        CredenzialiUtente credenziali=utente.getCredenzialiUtente();
-        if(credenzialiUtente.cercaEmail(credenziali.getEmail())){
-            System.out.println("Email già presente");
-            return false;
-        }
-        if(utenteDao.inserisciUtente(utente)){
-            if(credenzialiUtente.insertCredenzialiUtente(credenziali,utente.getIdUtente())){
-                System.out.println("Registrazione effettuata");
+    public boolean registraUtente(String nome,String email,String password,String domandaSicurezza,String rispostaDomandaSicurezza) throws SQLException {
+        try{
+            DBManager.getInstance().getConnection().setAutoCommit(false);
+            boolean emailtrovata;
+            boolean inserimentoRiuscito;
+            emailtrovata= credenzialiUtente.cercaEmail(email);
+            if(emailtrovata){
+                System.out.println("Email già presente");
+                DBManager.getInstance().getConnection().rollback();
             }
-            else {
-                System.out.println("Registrazione non effettuata");
-                utenteDao.cancellaUtente(utente.getIdUtente());
-                return false;
+            int inserisciUtente= utenteDao.inserisciUtente(nome);
+            if(inserisciUtente==0){
+                DBManager.getInstance().getConnection().rollback();
             }
+            inserimentoRiuscito=credenzialiUtente.insertCredenzialiUtente(email,password,domandaSicurezza,rispostaDomandaSicurezza,inserisciUtente);
+            if(!inserimentoRiuscito){
+                DBManager.getInstance().getConnection().rollback();
+            }
+            DBManager.getInstance().getConnection().commit();
+            return true;
+
+
+        }catch (Exception e){
+            DBManager.getInstance().getConnection().rollback();
+            throw new RuntimeException(e.getMessage());
+        }finally {
+            DBManager.getInstance().getConnection().setAutoCommit(true);
         }
-        else {
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -54,8 +59,6 @@ public class UtenteService {
         if(credenzialiUtente.validaCredenzialiUtente(email,password)){
             Utente utente=new Utente();
             utente.setIdUtente(credenzialiUtente.cercaIdUtente(email));
-            CredenzialiUtente credenziali= credenzialiUtente.getCredenzialiUtente(utente);
-            utente.setCredenzialiUtente(credenziali);
             SessioneCorrente.setUtenteCorrente(utente);
 
             System.out.println("Login effettuata");
