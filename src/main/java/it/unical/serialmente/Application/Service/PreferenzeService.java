@@ -4,6 +4,8 @@ import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PiattaformaDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferisceGenereDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferiscePiattaformaDAOPostgres;
 
@@ -16,6 +18,14 @@ public class PreferenzeService {
     );
 
     private final PreferisceGenereDAOPostgres preferisceGenereDao = new PreferisceGenereDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
+
+    private final GenereDAOPostgres genereDao = new GenereDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
+
+    private final PiattaformaDAOPostgres  piattaformaDao = new PiattaformaDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
@@ -84,10 +94,10 @@ public class PreferenzeService {
     }
 
     public List<Genere> getGeneriDisponibili() {
-        return null;
+        return genereDao.restituisciGeneriPresentiDB();
     }
 
     public List<Piattaforma> getPiattaformeDisponibili() {
-        return null;
+        return piattaformaDao.getListaPiattaforma();
     }
 }
