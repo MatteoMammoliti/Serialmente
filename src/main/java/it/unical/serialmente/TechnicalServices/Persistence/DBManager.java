@@ -58,4 +58,5 @@ public class DBManager {
     public ProgressoSerieDAO getProgressoSerieDAO(){
         return new ProgressoSerieDAOPostgres(getConnection());
     }
+    public GenereDAO getGenereDAO(){return new  GenereDAOPostgres(getConnection());}
 }
