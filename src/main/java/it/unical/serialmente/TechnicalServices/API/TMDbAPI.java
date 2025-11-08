@@ -7,6 +7,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
+import it.unical.serialmente.Domain.model.ContenitoreDatiProgressoSerie;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import org.json.*;
@@ -17,23 +19,6 @@ public class TMDbAPI {
     private final String BASE_URL = "https://api.themoviedb.org/3";
     private final String DEFAULT_LANGUAGE = "it-IT";
     private final String RICHIESTA_DATI = "GET";
-
-    /**
-     * Funzione che restituisce se esiste un prossimo episodio per una data serie e una data stagione
-     * @param idSerieTV
-     * @param idStagioneAttuale
-     * @param idEpisodioAttuale
-     * @return
-     */
-    public boolean esisteProssimoEpisodio(Integer idSerieTV, Integer idStagioneAttuale, Integer idEpisodioAttuale) throws Exception {
-        Integer numStagione = getNumeroStagione(idSerieTV, idStagioneAttuale);
-        String risposta = getEpisodiDaStagione(numStagione, idSerieTV);
-
-        JSONObject objRisposta = new JSONObject(risposta);
-        JSONArray arrayRisposta = objRisposta.getJSONArray("episodes");
-
-        return getId(idEpisodioAttuale, arrayRisposta) != null;
-    }
 
     /**
      * Funzione che restituisce l'id del prossimo episodio di una data serie per una data stagione
@@ -67,21 +52,6 @@ public class TMDbAPI {
         JSONArray arrayStagioni =  json.getJSONArray("seasons");
 
         return getId(idStagioneAttuale, arrayStagioni);
-    }
-
-    /**
-     * Funzione che dato l'idSerie e l'idStagione attuale restituisce se è presente una prossima stagione o la serie è conclusa
-     * @param idSerieTV
-     * @param idStagioneAttuale
-     * @return bollean
-     * @throws Exception
-     */
-    public boolean esisteProssimaStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
-        String risposta = getSerieTV(idSerieTV);
-        JSONObject json = new JSONObject(risposta);
-        JSONArray arrayStagioni =  json.getJSONArray("seasons");
-
-        return getId(idStagioneAttuale, arrayStagioni) != null;
     }
 
     /**
@@ -172,6 +142,38 @@ public class TMDbAPI {
         }
 
         return numStagione;
+    }
+
+    public ContenitoreDatiProgressoSerie getDatiProgressoSerie(Integer idSerieTV, Integer indexStagione, Integer indexEpisodio) throws Exception {
+        String richiesta = "/tv/" + idSerieTV;
+        String risposta = inviaRichiesta(richiesta);
+        JSONObject json = new JSONObject(risposta);
+        JSONArray array = json.getJSONArray("seasons");
+
+        JSONObject stagione =  array.getJSONObject(indexStagione);
+        Integer idPrimaStagione = stagione.getInt("id");
+        String airDate = stagione.optString("air_date", null);
+        Integer annoPubblicazione = Integer.parseInt(airDate.substring(0,4));
+        Integer numeroProgressivoStagione = stagione.getInt("season_number");
+
+        richiesta = "/tv/" + idSerieTV + "/season/" + numeroProgressivoStagione;
+        risposta = inviaRichiesta(richiesta);
+        json = new JSONObject(risposta);
+        array = json.getJSONArray("episodes");
+        Integer idPrimoEpisodio = array.getJSONObject(indexEpisodio).getInt("id");
+        String descrizioneEpisodio =  array.getJSONObject(indexEpisodio ).getString("overview");
+        Integer durataPrimoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("runtime");
+        Integer numeroProgressivoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("episode_number");
+        ContenitoreDatiProgressoSerie c = new ContenitoreDatiProgressoSerie(
+                idPrimaStagione,
+                idPrimoEpisodio,
+                annoPubblicazione,
+                descrizioneEpisodio,
+                durataPrimoEpisodio,
+                numeroProgressivoStagione,
+                numeroProgressivoEpisodio
+        );
+        return c;
     }
 
     /**

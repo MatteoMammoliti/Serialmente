@@ -9,6 +9,7 @@ import it.unical.serialmente.Domain.model.Titolo;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -162,5 +163,21 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return generi;
 
+    }
+
+    public boolean controlloTitoloInListe(Integer idTitolo) {
+        String query = "SELECT 1 FROM selezionetitolo WHERE id_titolo = ?";
+
+        try(PreparedStatement st = connection.prepareStatement(query)) {
+            st.setInt(1, idTitolo);
+            ResultSet rs = st.executeQuery();
+
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }

@@ -11,4 +11,5 @@ public interface SelezioneTitoloDAO {
     boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
     boolean eliminaTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
     HashSet<Genere> restituisciGeneriVisionati(Integer idUtente);
+    boolean controlloTitoloInListe(Integer idTitolo);
 }
