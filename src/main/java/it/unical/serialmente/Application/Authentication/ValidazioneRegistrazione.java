@@ -18,8 +18,4 @@ public class ValidazioneRegistrazione {
         }
         return password.length() >= 8;
     }
-
-    public boolean controlloSeEmailEsistente(String email){
-        return false;
-    }
 }
