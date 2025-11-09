@@ -6,15 +6,15 @@ import it.unical.serialmente.Domain.model.Utente;
 
 import java.sql.SQLException;
 
-
 public class ModelRegistrazione {
     UtenteService utenteService=new UtenteService();
 
-    public boolean registraUtente(String nome,String email,String password,
-                                  String domandaSicurezza,String rispostaDomandaSicurezza) throws SQLException {
+    public boolean registraUtente(String nome,
+                                  String email,
+                                  String password,
+                                  String domandaSicurezza,
+                                  String rispostaDomandaSicurezza) throws SQLException {
+
         return utenteService.registraUtente(nome,email,password,domandaSicurezza,rispostaDomandaSicurezza);
-
     }
-
-
 }
