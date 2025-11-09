@@ -74,9 +74,29 @@ public class ViewFactory {
         stage.show();
     }
 
-    public void mostraHomePageConMenu(){}
+    public void mostraHomePageConMenu(){
+        FXMLLoader finestraHome = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/homePage.fxml"));
+        Scene scene = null;
 
-    public BorderPane getHomePageSenzaMenu() { return null; }
+        try {
+            scene = new Scene(finestraHome.load());
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertHelper.nuovoAlert(
+                    "Errore!",
+                    Alert.AlertType.ERROR,
+                    "Errore durante l'apertura della pagina",
+                    "Qualcosa è andato storto durante l'apertura della Home"
+            );
+        }
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Serialmente - HomePage");
+        stage.show();
+    }
+
+    public BorderPane getHomePageSenzaMenu() {return null;}
 
     public BorderPane getWatchlist() { return null; }
 
