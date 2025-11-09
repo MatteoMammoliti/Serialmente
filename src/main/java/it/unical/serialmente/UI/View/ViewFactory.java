@@ -51,6 +51,39 @@ public class ViewFactory {
         stage.show();
     }
 
+    public void mostraFinestraLogin() {
+
+        FXMLLoader finestraLogin = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/login.fxml"));
+        Scene scene = null;
+
+        try {
+            scene = new Scene(finestraLogin.load());
+        } catch (Exception e) {
+            AlertHelper.nuovoAlert(
+                    "Errore!",
+                    Alert.AlertType.ERROR,
+                    "Errore durante l'apertura della pagina",
+                    "Qualcosa è andato storto durante l'apertura della pagina di login"
+            );
+        }
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Serialmente - Login");
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    public void mostraHomePageConMenu(){}
+
+    public BorderPane getHomePageSenzaMenu() { return null; }
+
+    public BorderPane getWatchlist() { return null; }
+
+    public BorderPane getPaginaRicerca() { return null; }
+
+    public BorderPane getPaginaProfiloUtente() { return null; }
+
     /**
      * Funzione per chiudere la pagina che si sta lasciando durante una transizione
      * @param stage

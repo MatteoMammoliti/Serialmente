@@ -3,11 +3,15 @@ package it.unical.serialmente.UI.Controller;
 import it.unical.serialmente.Application.Authentication.ValidazioneRegistrazione;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelRegistrazione;
+import it.unical.serialmente.UI.Model.ModelView;
+import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -22,6 +26,7 @@ public class RegistrazioneController implements Initializable {
     @FXML private Label labelPasswordNonValida;
     @FXML private ChoiceBox sceltaDomandaSicurezza;
     @FXML private Label labelErroreDomandaSicurezza;
+    @FXML private Label labelErroreRispostaSicurezza;
     @FXML private TextField textEmail;
     @FXML private Label labelErroreEmail;
     @FXML private TextField repeatPasswordVisibile;
@@ -33,6 +38,7 @@ public class RegistrazioneController implements Initializable {
     private final BooleanProperty mostraPassword = new SimpleBooleanProperty(false);
     private final ModelRegistrazione modelRegistrazione = new ModelRegistrazione();
     private final ValidazioneRegistrazione validazioneRegistrazione = new ValidazioneRegistrazione();
+    private final ViewFactory viewFactory = ModelView.getInstance().getViewFactory();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -44,6 +50,8 @@ public class RegistrazioneController implements Initializable {
         );
 
         eyeButton.setOnAction(_ -> clickEyeButton());
+
+        loginButton.setOnAction(_ -> passaAlLogin());
 
         signUpButton.setOnAction(_ -> {
             try {
@@ -69,9 +77,9 @@ public class RegistrazioneController implements Initializable {
         repeatPasswordField.visibleProperty().bind(mostraPassword.not());
     }
 
-
     public void clickEyeButton(){
         mostraPassword.set(!mostraPassword.get());
+        eyeButton.setText(mostraPassword.get() ? "🔍" : "🔒");
     }
 
     public void clickRegistraUtente() throws SQLException {
@@ -119,10 +127,21 @@ public class RegistrazioneController implements Initializable {
             return;
         } else labelErroreDomandaSicurezza.setVisible(false);
 
+        if(textRispostaDomandaSicurezza.getText()==null){
+            labelErroreRispostaSicurezza.setVisible(true);
+            return;
+        } else  labelErroreRispostaSicurezza.setVisible(false);
+
         if(modelRegistrazione.registraUtente(nome,email,password,domandaSicurezza,rispostaDomandaSicurezza)){
             System.out.println("Registrazione effettuata");
         }else  {
             System.out.println("Registrazione non effettuata");
         }
+    }
+
+    public void passaAlLogin() {
+        Stage stage = (Stage) this.loginButton.getScene().getWindow();
+        viewFactory.closeStage(stage);
+        viewFactory.mostraFinestraLogin();
     }
 }

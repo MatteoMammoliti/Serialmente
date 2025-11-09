@@ -1,5 +1,6 @@
 package it.unical.serialmente.UI.Model;
 
+import it.unical.serialmente.UI.Controller.LoginController;
 import it.unical.serialmente.UI.Controller.RegistrazioneController;
 import it.unical.serialmente.UI.View.ViewFactory;
 
@@ -9,6 +10,7 @@ public class ModelView {
      * Istanze singleton dei controller
      */
     private RegistrazioneController registrazioneController;
+    private LoginController loginController;
 
     private static ModelView model;
 
@@ -34,10 +36,15 @@ public class ModelView {
     public RegistrazioneController getRegistrazioneController() {
         return registrazioneController;
     }
+    public LoginController getLoginController() { return loginController; }
 
     // SETTER
     public void setRegistrazioneController(RegistrazioneController registrazioneController) {
         this.registrazioneController = registrazioneController;
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.loginController = loginController;
     }
 
     public static synchronized void invalidate() {

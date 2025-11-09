@@ -7,7 +7,7 @@ import it.unical.serialmente.Domain.model.Utente;
 import java.sql.SQLException;
 
 public class ModelRegistrazione {
-    UtenteService utenteService=new UtenteService();
+    private final UtenteService utenteService=new UtenteService();
 
     public boolean registraUtente(String nome,
                                   String email,

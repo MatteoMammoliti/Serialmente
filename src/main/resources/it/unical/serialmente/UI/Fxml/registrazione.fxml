@@ -186,6 +186,11 @@
                                                 <Insets top="5.0" />
                                             </VBox.margin>
                                         </TextField>
+                              <Label fx:id="labelErroreRispostaSicurezza" prefHeight="18.0" prefWidth="269.0" text="Compila il campo di domanda di sicurezza" textFill="#f20707" visible="false">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                              </Label>
                                     </children>
                                     <padding>
                                         <Insets left="10.0" />
