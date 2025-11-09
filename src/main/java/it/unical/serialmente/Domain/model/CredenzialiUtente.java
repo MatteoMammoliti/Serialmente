@@ -6,6 +6,14 @@ public class CredenzialiUtente {
     private String domandaSicurezza;
     private String rispostaDomandaSicurezza;
 
+    public CredenzialiUtente() {}
+    public CredenzialiUtente(String password,String email,String domandaSicurezza,String rispostaDomandaSicurezza) {
+        this.password=password;
+        this.email=email;
+        this.domandaSicurezza=domandaSicurezza;
+        this.rispostaDomandaSicurezza=rispostaDomandaSicurezza;
+    }
+
     //Setter
 
     public void setPassword(String password) {

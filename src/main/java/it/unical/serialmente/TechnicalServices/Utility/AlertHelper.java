@@ -20,10 +20,10 @@ public class AlertHelper {
 
         String percorsoIcona = switch (tipologia) {
             case NONE -> null;
-            case INFORMATION -> "Images/IconeAlert/information.png";
-            case WARNING -> "Images/IconeAlert/warning.png";
-            case CONFIRMATION -> "Images/IconeAlert/confirmation.png";
-            case ERROR -> "Images/IconeAlert/error.png";
+            case INFORMATION -> "/it/unical/serialmente/UI/IconeAlert/information.png";
+            case WARNING -> "/it/unical/serialmente/UI/Images/IconeAlert/warning.png";
+            case CONFIRMATION -> "/it/unical/serialmente/UI/Images/IconeAlert/confirmation.png";
+            case ERROR -> "/it/unical/serialmente/UI/Images/IconeAlert/error.png";
         };
 
         ImageView icona = new ImageView(new Image(AlertHelper.class.getResourceAsStream(percorsoIcona)));

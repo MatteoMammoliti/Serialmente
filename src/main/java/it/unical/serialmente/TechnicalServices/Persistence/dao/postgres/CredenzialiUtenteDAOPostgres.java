@@ -7,6 +7,7 @@ import it.unical.serialmente.Domain.model.Utente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
     private Connection connection;
@@ -18,19 +19,21 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
     /**
      * Crea una nuova instanza in credenzialiutente.Verranno memorizzati i dati di accesso/recupero password
      * per l'utente in questione.
-     * @param credenziali
+     * @param "Email,password,domanda sicurezza e risposta sicurezza"
      * @param idUtente
      * @return valore booleano per confermare o meno se l'operazione è avvenuta con successo.
      */
     @Override
-    public boolean insertCredenzialiUtente(CredenzialiUtente credenziali,Integer idUtente) {
+    public boolean insertCredenzialiUtente(String email,String password,String domandaSicurezza,String rispostaDomandaSicurezza,Integer idUtente) {
         String query ="INSERT INTO credenzialiutente (id_utente,email,password,domanda_sicurezza,risposta_domanda_sicurezza) Values(?,?,?,?,?)";
+        String pwcriptata=BCrypt.hashpw(password,BCrypt.gensalt(12));
+        String rispostaCriptata=BCrypt.hashpw(rispostaDomandaSicurezza,BCrypt.gensalt(12));
         try(PreparedStatement st=connection.prepareStatement(query)){
             st.setInt(1,idUtente);
-            st.setString(2,credenziali.getEmail());
-            st.setString(3,credenziali.getPassword());
-            st.setString(4,credenziali.getDomandaSicurezza());
-            st.setString(5,credenziali.getRispostaDomandaSicurezza());
+            st.setString(2,email);
+            st.setString(3,pwcriptata);
+            st.setString(4,domandaSicurezza);
+            st.setString(5,rispostaCriptata);
 
             int riga=st.executeUpdate();
             if(riga>0){
@@ -40,27 +43,6 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
             e.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public CredenzialiUtente getCredenzialiUtente(Utente utente) {
-        String query="SELECT * FROM credenzialiutente WHERE id_utente=?";
-        try(PreparedStatement st=connection.prepareStatement(query)){
-            st.setInt(1,utente.getIdUtente());
-            ResultSet rs=st.executeQuery();
-            if(rs.next()){
-                CredenzialiUtente credenziali=new CredenzialiUtente();
-                credenziali.setEmail(rs.getString("email"));
-                credenziali.setPassword(rs.getString("password"));
-                credenziali.setDomandaSicurezza(rs.getString("domanda_sicurezza"));
-                credenziali.setRispostaDomandaSicurezza(rs.getString("risposta_domanda_sicurezza"));
-                return credenziali;
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -100,13 +82,17 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
      */
     @Override
     public boolean validaCredenzialiUtente(String email,String password) {
-        String query="SELECT * FROM credenzialiutente WHERE email=? AND password=?";
+        String query="SELECT * FROM credenzialiutente WHERE email=?";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setString(1, email);
-            st.setString(2, password);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-
+                String passcript = rs.getString("password");
+                if(!BCrypt.checkpw(password, passcript)) {
+                    System.out.println("Password incorrecte");
+                    return false;
+                }
+                System.out.println("login effettuata");
                 return true;
             }
 
