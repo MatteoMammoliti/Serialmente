@@ -111,8 +111,8 @@ public class TitoloService {
             JSONObject object = array.getJSONObject(i);
             Titolo t = null;
 
-            if(object.has("original_name")) { t = estraiSerieTVDaJSON(object); }
-            if(object.has("original_title")) { t = estraiFilmDaJSON(object); }
+            if(object.has("name")) { t = estraiSerieTVDaJSON(object); }
+            if(object.has("title")) { t = estraiFilmDaJSON(object); }
 
             titoli.add(t);
         }
@@ -133,6 +133,19 @@ public class TitoloService {
         return titoli;
     }
 
+    public List<Titolo> getTitoliNovita(String tipologia) throws Exception {
+
+        if(!tipologia.equals("movie") && !tipologia.equals("tv")) {
+            throw new Exception("Tipologia non valido");
+        }
+
+        String risposta = tmdb.getTitoliPiùVisti(tipologia, "primary_release_date.desc");
+        System.out.println(risposta);
+        List<Titolo> titoli = new ArrayList<>();
+        estraiPiuVistiConsigliati(risposta, titoli, tipologia);
+        return titoli;
+    }
+
     /**
      * Funzione che estrae dalle risposte dell'API gli oggetti film o serie tv tra quelli più visti
      * @param risposta
@@ -147,7 +160,7 @@ public class TitoloService {
         Integer titoliAggiunti = 0;
         for(int i = 0; i < array.length(); i++){
 
-            if(titoliAggiunti == 5){ return; }
+            if(titoliAggiunti == 200){ return; }
             JSONObject object = array.getJSONObject(i);
             Titolo t = null;
 
@@ -217,9 +230,9 @@ public class TitoloService {
     private Film estraiFilmDaJSON(JSONObject object) throws Exception {
         int annoPubblicazioneFilm = estraiAnnoDaData(object.getString("release_date"));
         Film t = new Film(object.getInt("id"),
-                object.getString("original_title"),
+                object.getString("title"),
                 object.getString("overview"),
-                object.getString("poster_path"),
+                object.optString("poster_path"),
                 object.getDouble("vote_average"),
                 tmdb.getDurataMinutiFilm(object.getInt("id")),
                 annoPubblicazioneFilm
@@ -235,9 +248,9 @@ public class TitoloService {
     private SerieTV estraiSerieTVDaJSON(JSONObject object) {
         int annoPubblicazioneSerieTV = estraiAnnoDaData(object.getString("first_air_date"));
         SerieTV t = new SerieTV(object.getInt("id"),
-                object.getString("original_name"),
+                object.getString("name"),
                 object.getString("overview"),
-                object.getString("backdrop_path"),
+                object.getString("poster_path"),
                 object.getDouble("vote_average"),
                 annoPubblicazioneSerieTV
         );

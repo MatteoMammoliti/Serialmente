@@ -4,23 +4,27 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.Objects;
 
 public class BannerTitolo extends VBox {
+    private static final Image PLACEHOLDER =
+            new Image(Objects.requireNonNull(
+                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/GeneriImg/action.png")).toExternalForm()
+            );
+    private CacheImmagini cache=CacheImmagini.getInstance();
     private final ImageView immagineTitolo= new ImageView();
     private final Label nomeTitolo = new Label();
     private final Label votoTitolo = new Label();
-    public Integer bannerAltezza=250;
-    public Integer bannerLarghezza=130;
+    public Integer bannerAltezza=170;
+    public Integer bannerLarghezza=110;
 
     public BannerTitolo() {
         this.setPrefSize(bannerLarghezza,bannerAltezza);
-        this.setAlignment(Pos.CENTER);
-        immagineTitolo.setPreserveRatio(true);
-        this.immagineTitolo.fitWidthProperty().bind(this.widthProperty().multiply(0.8));
+        this.setAlignment(Pos.TOP_CENTER);
+        this.immagineTitolo.setFitWidth(bannerLarghezza);
+        this.immagineTitolo.setFitHeight(bannerAltezza);
         VBox.setVgrow(this.immagineTitolo, Priority.ALWAYS);
         this.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-border-radius: 5;");
         this.getChildren().addAll(this.immagineTitolo,this.nomeTitolo,this.votoTitolo);
@@ -29,8 +33,9 @@ public class BannerTitolo extends VBox {
     public void update(String nomeTitolo,Integer votoTitolo,String urlImg) {
         this.nomeTitolo.setText(nomeTitolo != null ? nomeTitolo : "");
         this.votoTitolo.setText(votoTitolo.toString() !=null ? votoTitolo.toString() : "");
+        this.immagineTitolo.setImage(PLACEHOLDER);
         if(urlImg!=null && !urlImg.equals("")){
-            Image img = new Image(BannerTitolo.class.getResourceAsStream(urlImg));
+            Image img = cache.getImg(urlImg);
             this.immagineTitolo.setImage(img);
         }
 

@@ -6,7 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 import it.unical.serialmente.Domain.model.ContenitoreDatiProgressoSerie;
 import it.unical.serialmente.Domain.model.Genere;
@@ -76,7 +78,17 @@ public class TMDbAPI {
      * @throws Exception
      */
     public String getTitoliPiùVisti(String tipologia, String tipologiaSort) throws Exception {
-        String richiesta = "/discover/" + tipologia + "?sort_by=" +  tipologiaSort;
+        String richiesta = "";
+        switch (tipologiaSort) {
+            case "popularity.desc":
+                richiesta = "/discover/" + tipologia + "?sort_by=" +  tipologiaSort;
+                break;
+            case "primary_release_date.desc":
+                LocalDate ora = LocalDate.now();
+                LocalDate primoGiorno = ora.withDayOfMonth(1);
+                LocalDate ultimoGiorno = ora.withDayOfMonth(ora.lengthOfMonth());
+                richiesta = "/discover/" + tipologia + "&sort_by=" +  tipologiaSort + "&primary_release_date.gte=" + primoGiorno +  "&primary_release_date.lte=" + ultimoGiorno + "&with_origin_country=US,GB,IT";
+        }
         return inviaRichiesta(richiesta);
     }
 
