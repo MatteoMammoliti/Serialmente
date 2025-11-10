@@ -21,11 +21,11 @@ public class ModelHomepage {
         generi.add(genere);
         piattaforma.add(pia);
 
-        return titoloService.getTitoliConsigliati(generi,piattaforma);
+        return titoloService.getTitoliConsigliati(generi,piattaforma, "movie");
     }
 
     public List<Titolo> getTitoliPopolari() throws Exception {
-        return titoloService.getTitoliPiuVisti();
+        return titoloService.getTitoliPiuVisti("movie");
     }
 
     public List<Titolo> getTitoliNovita() throws Exception {

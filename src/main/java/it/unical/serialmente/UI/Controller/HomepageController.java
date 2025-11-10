@@ -77,8 +77,8 @@ public class HomepageController implements Initializable {
             }
         });
         ObservableList<TitoloData> dati = FXCollections.observableArrayList();
-        for (int i = 0; i < titoli.size(); i++) {
-            dati.add(new TitoloData(titoli.get(i).getNomeTitolo(), titoli.get(i).getVotoMedio(), titoli.get(i).getImmagine()));
+        for (Titolo titolo : titoli) {
+            dati.add(new TitoloData(titolo.getNomeTitolo(), titolo.getVotoMedio(), titolo.getImmagine()));
         }
         lista.setItems(dati);
 

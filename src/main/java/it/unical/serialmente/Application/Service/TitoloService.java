@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TitoloService {
 
@@ -36,7 +37,7 @@ public class TitoloService {
             JSONObject obj = stagioniArray.getJSONObject(i);
 
             Stagione s = new Stagione(
-                    obj.getString("name"),
+                    obj.optString("name"),
                     obj.getInt("id"),
                     getEpisodi(idSerieTV, obj.getInt("season_number"))
             );
@@ -65,7 +66,7 @@ public class TitoloService {
             Episodio ep = new Episodio(
                     obj.getInt("id"),
                     obj.getInt("runtime"),
-                    obj.getString("overview")
+                    obj.optString("overview")
             );
             episodi.add(ep);
         }
@@ -73,19 +74,18 @@ public class TitoloService {
     }
 
     /**
-     * Funzione che restituisce un massimo di 10 titoli (5 serie tv e 5 film) tra quelli consigliati
+     * Funzione che restituisce un massimo di tot di titoli tra quelli consigliati
      * @param generi
      * @param piattaforme
+     * @param tipologiaTitolo
      * @return
      * @throws Exception
      */
-     public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme) throws Exception {
-         String rispostaFilmConsigliati = tmdb.getTitoliConsigliati(generi, piattaforme, "movie");
-         String rispostaSerieTVConsigliate = tmdb.getTitoliConsigliati(generi, piattaforme, "tv");
+     public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo) throws Exception {
+         String risposta = tmdb.getTitoliConsigliati(generi, piattaforme, tipologiaTitolo);
 
          List<Titolo> titoli = new ArrayList<>();
-         estraiPiuVistiConsigliati(rispostaFilmConsigliati, titoli, "movie");
-         estraiPiuVistiConsigliati(rispostaSerieTVConsigliate, titoli, "tv");
+         estraiPiuVistiConsigliati(risposta, titoli, tipologiaTitolo);
          return titoli;
      }
 
@@ -121,25 +121,29 @@ public class TitoloService {
 
     /**
      * Funzione che restituisce un massimo di 10 titoli (5 serie tv e 5 film) tra quelli più visti
+     * @param tipologiaTitolo
      * @return List<Titolo> di titoli più visti
      */
-    public List<Titolo> getTitoliPiuVisti() throws Exception {
-        String rispostaFilmPiùVisti = tmdb.getTitoliPiùVisti("movie", "popularity.desc");
-        String rispostaSerieTVPiùViste = tmdb.getTitoliPiùVisti("tv", "popularity.desc");
+    public List<Titolo> getTitoliPiuVisti(String tipologiaTitolo) throws Exception {
+        String risposta = tmdb.getTitoliConSort(tipologiaTitolo, "popularity.desc");
 
         List<Titolo> titoli = new ArrayList<>();
-        estraiPiuVistiConsigliati(rispostaFilmPiùVisti, titoli, "movie");
-        estraiPiuVistiConsigliati(rispostaSerieTVPiùViste, titoli, "tv");
+        estraiPiuVistiConsigliati(risposta, titoli, tipologiaTitolo);
         return titoli;
     }
 
     public List<Titolo> getTitoliNovita(String tipologia) throws Exception {
 
         if(!tipologia.equals("movie") && !tipologia.equals("tv")) {
-            throw new Exception("Tipologia non valido");
+            throw new IllegalArgumentException("Tipologia non valida: " + tipologia);
         }
 
-        String risposta = tmdb.getTitoliPiùVisti(tipologia, "primary_release_date.desc");
+        String risposta = switch (tipologia) {
+            case "movie" -> tmdb.getTitoliConSort(tipologia, "primary_release_date.desc");
+            case "tv" -> tmdb.getTitoliConSort(tipologia, "first_air_date.desc");
+            default -> "";
+        };
+
         System.out.println(risposta);
         List<Titolo> titoli = new ArrayList<>();
         estraiPiuVistiConsigliati(risposta, titoli, tipologia);
@@ -162,16 +166,12 @@ public class TitoloService {
 
             if(titoliAggiunti == 200){ return; }
             JSONObject object = array.getJSONObject(i);
-            Titolo t = null;
+            Titolo t = switch (tipologia) {
+                case "movie" -> estraiFilmDaJSON(object);
+                case "tv" -> estraiSerieTVDaJSON(object);
+                default -> null;
+            };
 
-            switch (tipologia) {
-                case "movie":
-                    t = estraiFilmDaJSON(object);
-                    break;
-                case "tv":
-                    t = estraiSerieTVDaJSON(object);
-                    break;
-            }
             titoli.add(t);
             titoliAggiunti++;
         }
@@ -179,16 +179,16 @@ public class TitoloService {
 
     public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
 
-        for(int i = 0; i < titoli.size(); i++) {
+        for (Titolo titolo : titoli) {
 
-            if(titoli.get(i).getTipologia().equals("SerieTv")) {
+            if (titolo.getTipologia().equals("SerieTv")) {
 
-                List<Stagione> stagioni = getStagioni(titoli.get(i).getIdTitolo());
-                SerieTV s = (SerieTV) titoli.get(i);
+                List<Stagione> stagioni = getStagioni(titolo.getIdTitolo());
+                SerieTV s = (SerieTV) titolo;
 
-                for(int j = 0;  j < stagioni.size(); j++) {
-                    List<Episodio> episodi = getEpisodi(titoli.get(i).getIdTitolo(), stagioni.get(j).getNumeroStagioneProgressivo());
-                    stagioni.get(j).setEpisodi(episodi);
+                for (Stagione stagione : stagioni) {
+                    List<Episodio> episodi = getEpisodi(titolo.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
+                    stagione.setEpisodi(episodi);
                 }
                 s.setStagioni(stagioni);
             }
@@ -196,23 +196,22 @@ public class TitoloService {
     }
 
     public void rendiEpisodiVistiSerieTV(List<Titolo> titoli) throws Exception {
-        for(int i = 0; i < titoli.size(); i++) {
-            if(titoli.get(i).getTipologia().equals("SerieTv")) {
-                SerieTV s = (SerieTV) titoli.get(i);
+        for (Titolo titolo : titoli) {
+            if (titolo.getTipologia().equals("SerieTv")) {
+                SerieTV s = (SerieTV) titolo;
 
                 ContenitoreDatiProgressoSerie c = progressoSerieDao.getDatiCorrenti(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         s
                 );
 
-                for(int k = 0; k < s.getStagioni().size(); k++) {
+                for (int k = 0; k < s.getStagioni().size(); k++) {
                     Stagione stagione = s.getStagioni().get(k);
 
-                    for(int j = 0;  j < stagione.getEpisodi().size(); j++) {
-                        if(stagione.getEpisodi().get(j).getIdEpisodio() != c.idEpisodio) {
+                    for (int j = 0; j < stagione.getEpisodi().size(); j++) {
+                        if (!Objects.equals(stagione.getEpisodi().get(j).getIdEpisodio(), c.idEpisodio)) {
                             stagione.getEpisodi().get(j).setVisualizzato(true);
-                        }
-                        else return;
+                        } else return;
                     }
 
                     stagione.setCompletata(true);
@@ -228,16 +227,15 @@ public class TitoloService {
      * @throws Exception
      */
     private Film estraiFilmDaJSON(JSONObject object) throws Exception {
-        int annoPubblicazioneFilm = estraiAnnoDaData(object.getString("release_date"));
-        Film t = new Film(object.getInt("id"),
-                object.getString("title"),
-                object.getString("overview"),
+        int annoPubblicazioneFilm = estraiAnnoDaData(object.optString("release_date"));
+        return new Film(object.getInt("id"),
+                object.optString("title"),
+                object.optString("overview"),
                 object.optString("poster_path"),
                 object.getDouble("vote_average"),
                 tmdb.getDurataMinutiFilm(object.getInt("id")),
                 annoPubblicazioneFilm
         );
-        return t;
     }
 
     /**
@@ -246,15 +244,14 @@ public class TitoloService {
      * @return oggetto SerieTV
      */
     private SerieTV estraiSerieTVDaJSON(JSONObject object) {
-        int annoPubblicazioneSerieTV = estraiAnnoDaData(object.getString("first_air_date"));
-        SerieTV t = new SerieTV(object.getInt("id"),
-                object.getString("name"),
-                object.getString("overview"),
-                object.getString("poster_path"),
+        int annoPubblicazioneSerieTV = estraiAnnoDaData(object.optString("first_air_date"));
+        return new SerieTV(object.getInt("id"),
+                object.optString("name"),
+                object.optString("overview"),
+                object.optString("poster_path"),
                 object.getDouble("vote_average"),
                 annoPubblicazioneSerieTV
         );
-        return t;
     }
 
     private int estraiAnnoDaData(String dataStr) {

@@ -77,18 +77,32 @@ public class TMDbAPI {
      * @return Titolo
      * @throws Exception
      */
-    public String getTitoliPiùVisti(String tipologia, String tipologiaSort) throws Exception {
+    public String getTitoliConSort(String tipologia, String tipologiaSort) throws Exception {
         String richiesta = "";
+
         switch (tipologiaSort) {
             case "popularity.desc":
-                richiesta = "/discover/" + tipologia + "?sort_by=" +  tipologiaSort;
+                richiesta = "/discover/" + tipologia + "?sort_by=" + tipologiaSort;
                 break;
+
             case "primary_release_date.desc":
+                richiesta = "/" + tipologia + "/now_playing" + "?region=IT";
+                break;
+
+            case "first_air_date.desc":
                 LocalDate ora = LocalDate.now();
-                LocalDate primoGiorno = ora.withDayOfMonth(1);
-                LocalDate ultimoGiorno = ora.withDayOfMonth(ora.lengthOfMonth());
-                richiesta = "/discover/" + tipologia + "&sort_by=" +  tipologiaSort + "&primary_release_date.gte=" + primoGiorno +  "&primary_release_date.lte=" + ultimoGiorno + "&with_origin_country=US,GB,IT";
+                LocalDate dataInizio = ora.minusMonths(3);
+                LocalDate dataFine = ora.plusDays(7);
+
+                richiesta = "/discover/" + tipologia
+                        + "?sort_by=" + tipologiaSort
+                        + "&first_air_date.gte=" + dataInizio
+                        + "&first_air_date.lte=" + dataFine
+                        + "&with_original_language=en";
+                break;
         }
+
+        System.out.println(richiesta);
         return inviaRichiesta(richiesta);
     }
 
@@ -173,7 +187,7 @@ public class TMDbAPI {
         json = new JSONObject(risposta);
         array = json.getJSONArray("episodes");
         Integer idPrimoEpisodio = array.getJSONObject(indexEpisodio).getInt("id");
-        String descrizioneEpisodio =  array.getJSONObject(indexEpisodio ).getString("overview");
+        String descrizioneEpisodio =  array.getJSONObject(indexEpisodio ).optString("overview");
         Integer durataPrimoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("runtime");
         Integer numeroProgressivoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("episode_number");
         ContenitoreDatiProgressoSerie c = new ContenitoreDatiProgressoSerie(
