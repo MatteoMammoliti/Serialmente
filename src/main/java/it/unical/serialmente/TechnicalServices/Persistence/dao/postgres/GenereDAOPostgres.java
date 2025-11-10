@@ -42,10 +42,11 @@ public class GenereDAOPostgres implements GenereDAO {
     }
 
     @Override
-    public List<Genere> restituisciGeneriPresentiDB() {
+    public List<Genere> restituisciGeneriPresentiNelDB(String tipologia) {
         List<Genere> generi = new ArrayList<>();
-        String query="SELECT * FROM genere";
+        String query="SELECT * FROM genere WHERE tipologia = ?";
         try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setString(1, tipologia);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Genere genere = new Genere(rs.getString("nome_genere"),rs.getInt("id_genere"));

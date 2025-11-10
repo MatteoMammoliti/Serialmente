@@ -17,10 +17,17 @@ import org.json.*;
 
 public class TMDbAPI {
 
-    private final String API_KEY = "af7cc46a092adabb4bbffcef3ee8304b";
-    private final String BASE_URL = "https://api.themoviedb.org/3";
-    private final String DEFAULT_LANGUAGE = "it-IT";
-    private final String RICHIESTA_DATI = "GET";
+    /**
+     * Funzione che restituisce titolo della tipologia {tipologia} appartenente al genere {g}
+     * @param g
+     * @param tipologia
+     * @return
+     * @throws Exception
+     */
+    public String getTitoliPerGenere(Genere g, String tipologia) throws Exception {
+        String richiesta = "/discover/" + tipologia + "?with_genres=" + g.getIdGenere();
+        return inviaRichiesta(richiesta);
+    }
 
     /**
      * Funzione che restituisce l'id del prossimo episodio di una data serie per una data stagione
@@ -102,7 +109,6 @@ public class TMDbAPI {
                 break;
         }
 
-        System.out.println(richiesta);
         return inviaRichiesta(richiesta);
     }
 
@@ -153,23 +159,6 @@ public class TMDbAPI {
         return json.getInt("runtime");
     }
 
-    private Integer getNumeroStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
-        String serieTV = getSerieTV(idSerieTV);
-        JSONObject obj = new JSONObject(serieTV);
-        JSONArray array = obj.getJSONArray("seasons");
-
-        Integer numStagione = null;
-        for(int i = 0; i < array.length(); i++) {
-            JSONObject stagione =  array.getJSONObject(i);
-            if(stagione.getInt("id") == idStagioneAttuale) {
-                numStagione = stagione.getInt("season_number");
-                break;
-            }
-        }
-
-        return numStagione;
-    }
-
     public ContenitoreDatiProgressoSerie getDatiProgressoSerie(Integer idSerieTV, Integer indexStagione, Integer indexEpisodio) throws Exception {
         String richiesta = "/tv/" + idSerieTV;
         String risposta = inviaRichiesta(richiesta);
@@ -200,6 +189,23 @@ public class TMDbAPI {
                 numeroProgressivoEpisodio
         );
         return c;
+    }
+
+    private Integer getNumeroStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
+        String serieTV = getSerieTV(idSerieTV);
+        JSONObject obj = new JSONObject(serieTV);
+        JSONArray array = obj.getJSONArray("seasons");
+
+        Integer numStagione = null;
+        for(int i = 0; i < array.length(); i++) {
+            JSONObject stagione =  array.getJSONObject(i);
+            if(stagione.getInt("id") == idStagioneAttuale) {
+                numStagione = stagione.getInt("season_number");
+                break;
+            }
+        }
+
+        return numStagione;
     }
 
     /**
@@ -303,6 +309,7 @@ public class TMDbAPI {
         URL url = new URL(costruisciURL(richiesta));
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        String RICHIESTA_DATI = "GET";
         connection.setRequestMethod(RICHIESTA_DATI);
         connection.setRequestProperty("Accept", "application/json");
 
@@ -328,7 +335,10 @@ public class TMDbAPI {
     }
 
     private String costruisciURL(String richiesta) {
+        String BASE_URL = "https://api.themoviedb.org/3";
         String urlString = BASE_URL + richiesta;
+        String API_KEY = "af7cc46a092adabb4bbffcef3ee8304b";
+        String DEFAULT_LANGUAGE = "it-IT";
         String daAggiungere = "api_key=" + API_KEY + "&language=" + DEFAULT_LANGUAGE;
 
         if(richiesta.contains("?")) { urlString = urlString + "&" + daAggiungere; }

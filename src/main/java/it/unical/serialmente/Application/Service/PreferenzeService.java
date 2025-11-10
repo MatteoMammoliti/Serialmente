@@ -93,9 +93,19 @@ public class PreferenzeService {
         );
     }
 
-    public List<Genere> getGeneriDisponibili() {
-        return genereDao.restituisciGeneriPresentiDB();
-    }
+    public List<Genere> getGeneriPerSerieTV() {
+        List<Genere> g1 = genereDao.restituisciGeneriPresentiNelDB("tv");
+        List<Genere> g2 =  genereDao.restituisciGeneriPresentiNelDB("both");
+        g1.addAll(g2);
+        return g1;
+    };
+
+    public List<Genere> getGeneriPerFilm() {
+        List<Genere> g1 = genereDao.restituisciGeneriPresentiNelDB("movie");
+        List<Genere> g2 =  genereDao.restituisciGeneriPresentiNelDB("both");
+        g1.addAll(g2);
+        return g1;
+    };
 
     public List<Piattaforma> getPiattaformeDisponibili() {
         return piattaformaDao.getListaPiattaforma();

@@ -7,6 +7,5 @@ import java.util.List;
 public interface GenereDAO {
     boolean aggiungiGenere(Integer idGenere,String nomeGenere);
     boolean eliminaGenere(Integer idGenere);
-    List<Genere> restituisciGeneriPresentiDB();
-
+    List<Genere> restituisciGeneriPresentiNelDB(String tipologia);
 }

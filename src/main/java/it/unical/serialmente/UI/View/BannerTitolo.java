@@ -13,7 +13,8 @@ public class BannerTitolo extends VBox {
             new Image(Objects.requireNonNull(
                     BannerTitolo.class.getResource("/it/unical/serialmente/UI/GeneriImg/action.png")).toExternalForm()
             );
-    private CacheImmagini cache=CacheImmagini.getInstance();
+
+    private final CacheImmagini cache = CacheImmagini.getInstance();
     private final ImageView immagineTitolo= new ImageView();
     private final Label nomeTitolo = new Label();
     private final Label votoTitolo = new Label();
@@ -32,16 +33,11 @@ public class BannerTitolo extends VBox {
 
     public void update(String nomeTitolo,Integer votoTitolo,String urlImg) {
         this.nomeTitolo.setText(nomeTitolo != null ? nomeTitolo : "");
-        this.votoTitolo.setText(votoTitolo.toString() !=null ? votoTitolo.toString() : "");
+        this.votoTitolo.setText(votoTitolo.toString());
         this.immagineTitolo.setImage(PLACEHOLDER);
-        if(urlImg!=null && !urlImg.equals("")){
+        if(urlImg!=null && !urlImg.isEmpty()){
             Image img = cache.getImg(urlImg);
             this.immagineTitolo.setImage(img);
         }
-
-
-
     }
-
-
 }

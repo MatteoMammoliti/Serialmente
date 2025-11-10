@@ -20,6 +20,29 @@ public class TitoloService {
     private final PreferiscePiattaformaDAOPostgres preferiscePiattaformaDao = new  PreferiscePiattaformaDAOPostgres(DBManager.getInstance().getConnection());
     private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
 
+
+    public List<Titolo> getTitoliPerGenere(Genere g, String tipologia) throws Exception {
+        String risposta = tmdb.getTitoliPerGenere(g, tipologia);
+        JSONObject obj = new JSONObject(risposta);
+        JSONArray jsonArray = obj.getJSONArray("results");
+
+        List<Titolo> titoliPerGenere = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            switch (tipologia) {
+                case "movie":
+                    titoliPerGenere.add(estraiFilmDaJSON(jsonObject));
+                    break;
+
+                case "tv":
+                    titoliPerGenere.add(estraiSerieTVDaJSON(jsonObject));
+                    break;
+            }
+        }
+        return titoliPerGenere;
+    }
+
     /**
      * Funzione che restituisce una lista di oggetti stagione per una data serie
      * @param idSerieTV
@@ -132,6 +155,12 @@ public class TitoloService {
         return titoli;
     }
 
+    /**
+     * Funzione che restituisce un elenco di titoli tra quelli usciti di recente
+     * @param tipologia
+     * @return
+     * @throws Exception
+     */
     public List<Titolo> getTitoliNovita(String tipologia) throws Exception {
 
         if(!tipologia.equals("movie") && !tipologia.equals("tv")) {
@@ -144,37 +173,9 @@ public class TitoloService {
             default -> "";
         };
 
-        System.out.println(risposta);
         List<Titolo> titoli = new ArrayList<>();
         estraiPiuVistiConsigliati(risposta, titoli, tipologia);
         return titoli;
-    }
-
-    /**
-     * Funzione che estrae dalle risposte dell'API gli oggetti film o serie tv tra quelli più visti
-     * @param risposta
-     * @param titoli
-     * @param tipologia
-     * @throws Exception
-     */
-    private void estraiPiuVistiConsigliati(String risposta, List<Titolo> titoli, String tipologia) throws Exception {
-        JSONObject obj = new JSONObject(risposta);
-        JSONArray array = obj.getJSONArray("results");
-
-        Integer titoliAggiunti = 0;
-        for(int i = 0; i < array.length(); i++){
-
-            if(titoliAggiunti == 200){ return; }
-            JSONObject object = array.getJSONObject(i);
-            Titolo t = switch (tipologia) {
-                case "movie" -> estraiFilmDaJSON(object);
-                case "tv" -> estraiSerieTVDaJSON(object);
-                default -> null;
-            };
-
-            titoli.add(t);
-            titoliAggiunti++;
-        }
     }
 
     public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
@@ -217,6 +218,33 @@ public class TitoloService {
                     stagione.setCompletata(true);
                 }
             }
+        }
+    }
+
+    /**
+     * Funzione che estrae dalle risposte dell'API gli oggetti film o serie tv tra quelli più visti
+     * @param risposta
+     * @param titoli
+     * @param tipologia
+     * @throws Exception
+     */
+    private void estraiPiuVistiConsigliati(String risposta, List<Titolo> titoli, String tipologia) throws Exception {
+        JSONObject obj = new JSONObject(risposta);
+        JSONArray array = obj.getJSONArray("results");
+
+        Integer titoliAggiunti = 0;
+        for(int i = 0; i < array.length(); i++){
+
+            if(titoliAggiunti == 200){ return; }
+            JSONObject object = array.getJSONObject(i);
+            Titolo t = switch (tipologia) {
+                case "movie" -> estraiFilmDaJSON(object);
+                case "tv" -> estraiSerieTVDaJSON(object);
+                default -> null;
+            };
+
+            titoli.add(t);
+            titoliAggiunti++;
         }
     }
 

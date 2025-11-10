@@ -1,7 +1,9 @@
 package it.unical.serialmente.UI.Controller;
 
+import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelHomepage;
+import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +25,7 @@ public class HomepageController implements Initializable {
     private final ModelHomepage modelHomepage = new ModelHomepage();
     public ListView<TitoloData> listConsigliati;
     public ListView <TitoloData>listPopolari;
-    public ListView<TitoloData> listGeneri;
+    public ListView<String> listGeneri;
     @FXML
     public ScrollPane scrollPrincipale;
 
@@ -37,8 +39,8 @@ public class HomepageController implements Initializable {
         listPopolari.setPrefHeight(250);
         listGeneri.setPrefHeight(250);
         try {
+            caricaSezioneGeneri(this.listGeneri);
             caricaSezione(this.listNovita,"Novita");
-            caricaSezione(this.listGeneri,"Generi");
             caricaSezione(this.listConsigliati,"Consigliati");
             caricaSezione(this.listPopolari,"Popolari");
         } catch (Exception e) {
@@ -50,19 +52,14 @@ public class HomepageController implements Initializable {
 
     public void caricaSezione(ListView<TitoloData> lista,String tipologia) throws Exception {
         List<Titolo> titoli = new ArrayList<>();
-        switch (tipologia) {
-            case "Novita":
-                titoli = modelHomepage.getTitoliNovita();
-                break;
-            case "Popolari":
-                titoli = modelHomepage.getTitoliPopolari();
-                break;
-            case "Consigliati":
-                titoli = modelHomepage.getTitoliConsigliati();
-                break;
-            case "Generi":
-                //Generi
-            }
+
+        titoli = switch (tipologia) {
+            case "Novita" -> modelHomepage.getTitoliNovita();
+            case "Popolari" -> modelHomepage.getTitoliPopolari();
+            case "Consigliati" -> modelHomepage.getTitoliConsigliati();
+            default -> titoli;
+        };
+
         lista.setCellFactory(lv ->new ListCell<>(){
             private final BannerTitolo bannerTitolo = new BannerTitolo();
             @Override
@@ -76,11 +73,38 @@ public class HomepageController implements Initializable {
                 }
             }
         });
+
         ObservableList<TitoloData> dati = FXCollections.observableArrayList();
         for (Titolo titolo : titoli) {
             dati.add(new TitoloData(titolo.getNomeTitolo(), titolo.getVotoMedio(), titolo.getImmagine()));
         }
         lista.setItems(dati);
-
-        }
     }
+
+    public void caricaSezioneGeneri(ListView<String> lista) throws Exception {
+        List<Genere> generi = modelHomepage.getGeneri();
+
+        lista.setCellFactory(lv -> new ListCell<>() {
+            private final BannerGeneri bannerGenere = new BannerGeneri();
+
+            @Override
+            protected void updateItem(String nome, boolean empty) {
+                super.updateItem(nome, empty);
+                if (empty || nome == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    bannerGenere.update(nome);
+                    setGraphic(bannerGenere);
+                    setText(null);
+                }
+            }
+        });
+
+        ObservableList<String> dati = FXCollections.observableArrayList();
+        for (Genere genere : generi) {
+            dati.add(genere.getNomeGenere());
+        }
+        lista.setItems(dati);
+    }
+}
