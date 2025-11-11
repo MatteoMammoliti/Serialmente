@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.SezioneUtenteController">
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.SezioneUtenteController">
    <center>
-      <ScrollPane fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane fitToHeight="true" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <content>
             <VBox>
                <children>

@@ -3,6 +3,7 @@ package it.unical.serialmente.UI.Controller;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelSezioneUtente;
 import it.unical.serialmente.UI.View.BannerTitolo;
+import it.unical.serialmente.UI.View.PosterSezioneUtente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SezioneUtenteController implements Initializable {
-    public record TitoloDato(String nome,double voto,String imgUrl){};
+    public record TitoloDato(String imgUrl){};
     public VBox contenitoreSalutiUtente;
     public Label labelSalutiUtente;
     public VBox contenitoreStatistiche;
@@ -59,14 +60,14 @@ public class SezioneUtenteController implements Initializable {
     public void caricaSezione(ListView<TitoloDato> lista, String tipoLista,String tipoTitolo) throws SQLException {
         List<Titolo> titoli = modelSezioneUtente.getTitoliInLista(tipoLista,tipoTitolo);
         lista.setCellFactory(lv ->new ListCell<>(){
-            private final BannerTitolo bannerTitolo = new BannerTitolo();
+            private final PosterSezioneUtente bannerTitolo = new PosterSezioneUtente();
             @Override
             protected void updateItem(TitoloDato data, boolean empty) {
                 super.updateItem(data, empty);
                 if(empty || data == null){
                     setGraphic(null);
                 }else {
-                    bannerTitolo.update(data.nome, (int) data.voto,data.imgUrl);
+                    bannerTitolo.update(data.imgUrl);
                     setGraphic(bannerTitolo);
                 }
             }
@@ -74,7 +75,7 @@ public class SezioneUtenteController implements Initializable {
 
         ObservableList<TitoloDato> dati = FXCollections.observableArrayList();
         for (Titolo titolo : titoli) {
-            dati.add(new TitoloDato(titolo.getNomeTitolo(), titolo.getVotoMedio(), titolo.getImmagine()));
+            dati.add(new TitoloDato(titolo.getImmagine()));
         }
         lista.setItems(dati);
     }
