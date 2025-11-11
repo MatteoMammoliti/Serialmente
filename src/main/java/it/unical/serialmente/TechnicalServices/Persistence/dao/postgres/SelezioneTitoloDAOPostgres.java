@@ -180,4 +180,43 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return false;
     }
+
+    @Override
+    public Integer getNumeroFilmVisionati(Integer idUtente) {
+        String query = "SELECT COUNT (*) FROM selezionetitolo s JOIN titolo t on " +
+                "s.id_titolo=t.id_titolo WHERE s.id_utente=? and s.tipo_lista=? AND t.tipologia=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1, idUtente);
+            st.setString(2,"Visionati");
+            st.setString(3,"Film");
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public Integer getMinutiVisioneFilm(Integer idUtente) {
+        String query= "SELECT SUM(t.durata_minuti) AS totale_minuti FROM selezionetitolo s JOIN titolo t" +
+                " on s.id_titolo=t.id_titolo WHERE s.id_utente=? AND t.tipologia=? AND s.tipo_lista=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1, idUtente);
+            st.setString(2,"Film");
+            st.setString(3,"Visionati");
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

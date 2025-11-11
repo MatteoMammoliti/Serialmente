@@ -12,4 +12,6 @@ public interface SelezioneTitoloDAO {
     boolean eliminaTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
     HashSet<Genere> restituisciGeneriVisionati(Integer idUtente);
     boolean controlloTitoloInListe(Integer idTitolo);
+    Integer getNumeroFilmVisionati(Integer idUtente);
+    Integer getMinutiVisioneFilm(Integer idUtente);
 }
