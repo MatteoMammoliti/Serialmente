@@ -1,10 +1,10 @@
 package it.unical.serialmente.UI.Model;
 
-import it.unical.serialmente.UI.Controller.LoginController;
-import it.unical.serialmente.UI.Controller.RegistrazioneController;
+import it.unical.serialmente.UI.Controller.Autenticazione.LoginController;
+import it.unical.serialmente.UI.Controller.Autenticazione.RegistrazioneController;
 import it.unical.serialmente.UI.View.ViewFactory;
 
-public class ModelView {
+public class ModelContainerMenuPagine {
 
     /**
      * Istanze singleton dei controller
@@ -12,18 +12,18 @@ public class ModelView {
     private RegistrazioneController registrazioneController;
     private LoginController loginController;
 
-    private static ModelView model;
+    private static ModelContainerMenuPagine model;
 
     private final ViewFactory viewFactory;
 
 
-    private ModelView() {
+    private ModelContainerMenuPagine() {
         this.viewFactory = new ViewFactory();
     }
 
-    public static synchronized ModelView getInstance() {
+    public static synchronized ModelContainerMenuPagine getInstance() {
         if (model == null) {
-            model = new ModelView();
+            model = new ModelContainerMenuPagine();
         }
         return model;
     }

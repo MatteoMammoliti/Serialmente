@@ -268,7 +268,7 @@ public class TMDbAPI {
                 richiesta.append(generi.get(i).getIdGenere());
 
                 if (i < generi.size() - 1) {
-                    richiesta.append(",");
+                    richiesta.append("|");
                 }
             }
         }
@@ -284,17 +284,14 @@ public class TMDbAPI {
                 richiesta.append(piattaforme.get(i).getIdPiattaforma());
 
                 if (i < piattaforme.size() - 1) {
-                    richiesta.append(",");
+                    richiesta.append("|");
                 }
             }
         }
 
-        if(piattaformeAggiunte) { richiesta.append("&"); }
-
-        if(annoPubblicazione != null) {
-            richiesta.append("year=").append(annoPubblicazione);
+        if(piattaformeAggiunte && annoPubblicazione != null) {
+            richiesta.append("&year=").append(annoPubblicazione);
         }
-
         return inviaRichiesta(richiesta.toString());
     }
 

@@ -13,16 +13,10 @@ public class ModelSezioneSerieTv {
     private final TitoloService titoliService = new TitoloService();
     private final PreferenzeService preferenzeService = new PreferenzeService();
 
-
     public List<Titolo> getTitoliConsigliati() throws Exception {
-        List<Genere> generi = new ArrayList<>();
-        List<Piattaforma> piattaforma = new ArrayList<>();
-        Genere genere = new Genere("Kids",10762);
-        Piattaforma pia = new Piattaforma("Netflix",8);
-        generi.add(genere);
-        piattaforma.add(pia);
-
-        return titoliService.getTitoliConsigliati(generi,piattaforma, "tv");
+        return titoliService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
+                preferenzeService.visualizzaPreferenzePiattaformeUtente(),
+                "tv");
     }
 
     public List<Titolo> getTitoliPopolari() throws Exception {

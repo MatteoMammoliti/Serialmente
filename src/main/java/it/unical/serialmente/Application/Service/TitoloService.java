@@ -3,8 +3,6 @@ package it.unical.serialmente.Application.Service;
 import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
 import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferisceGenereDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferiscePiattaformaDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,8 +14,6 @@ import java.util.Objects;
 public class TitoloService {
 
     private final TMDbAPI tmdb = new TMDbAPI();
-    private final PreferisceGenereDAOPostgres preferisceGenereDao = new PreferisceGenereDAOPostgres(DBManager.getInstance().getConnection());
-    private final PreferiscePiattaformaDAOPostgres preferiscePiattaformaDao = new  PreferiscePiattaformaDAOPostgres(DBManager.getInstance().getConnection());
     private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
 
 
@@ -97,7 +93,7 @@ public class TitoloService {
     }
 
     /**
-     * Funzione che restituisce un massimo di tot di titoli tra quelli consigliati
+     * Funzione che restituisce un massimo di tot titoli tra quelli consigliati
      * @param generi
      * @param piattaforme
      * @param tipologiaTitolo
@@ -107,7 +103,7 @@ public class TitoloService {
      public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo) throws Exception {
          String risposta = tmdb.getTitoliConsigliati(generi, piattaforme, tipologiaTitolo);
          List<Titolo> titoli = new ArrayList<>();
-         estraiPiuVistiConsigliati(risposta, titoli, tipologiaTitolo);
+         estraiTitoliDaCriteri(risposta, titoli, tipologiaTitolo);
 
          return titoli;
      }
@@ -151,7 +147,7 @@ public class TitoloService {
         String risposta = tmdb.getTitoliConSort(tipologiaTitolo, "popularity.desc");
 
         List<Titolo> titoli = new ArrayList<>();
-        estraiPiuVistiConsigliati(risposta, titoli, tipologiaTitolo);
+        estraiTitoliDaCriteri(risposta, titoli, tipologiaTitolo);
         return titoli;
     }
 
@@ -174,7 +170,7 @@ public class TitoloService {
         };
 
         List<Titolo> titoli = new ArrayList<>();
-        estraiPiuVistiConsigliati(risposta, titoli, tipologia);
+        estraiTitoliDaCriteri(risposta, titoli, tipologia);
         return titoli;
     }
 
@@ -228,7 +224,7 @@ public class TitoloService {
      * @param tipologia
      * @throws Exception
      */
-    private void estraiPiuVistiConsigliati(String risposta, List<Titolo> titoli, String tipologia) throws Exception {
+    private void estraiTitoliDaCriteri(String risposta, List<Titolo> titoli, String tipologia) throws Exception {
         JSONObject obj = new JSONObject(risposta);
         JSONArray array = obj.getJSONArray("results");
 

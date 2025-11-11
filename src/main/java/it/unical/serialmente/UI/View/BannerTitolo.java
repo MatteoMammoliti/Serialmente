@@ -11,7 +11,7 @@ import java.util.Objects;
 public class BannerTitolo extends VBox {
     private static final Image PLACEHOLDER =
             new Image(Objects.requireNonNull(
-                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/GeneriImg/action.png")).toExternalForm()
+                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
             );
 
     private final CacheImmagini cache = CacheImmagini.getInstance();

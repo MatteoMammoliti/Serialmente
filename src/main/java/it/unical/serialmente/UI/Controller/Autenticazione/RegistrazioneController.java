@@ -1,9 +1,9 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.Autenticazione;
 
 import it.unical.serialmente.Application.Authentication.ValidazioneRegistrazione;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
-import it.unical.serialmente.UI.Model.ModelRegistrazione;
-import it.unical.serialmente.UI.Model.ModelView;
+import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelRegistrazione;
+import it.unical.serialmente.UI.Model.ModelContainerMenuPagine;
 import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -38,7 +38,7 @@ public class RegistrazioneController implements Initializable {
     private final BooleanProperty mostraPassword = new SimpleBooleanProperty(false);
     private final ModelRegistrazione modelRegistrazione = new ModelRegistrazione();
     private final ValidazioneRegistrazione validazioneRegistrazione = new ValidazioneRegistrazione();
-    private final ViewFactory viewFactory = ModelView.getInstance().getViewFactory();
+    private final ViewFactory viewFactory = ModelContainerMenuPagine.getInstance().getViewFactory();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -133,9 +133,16 @@ public class RegistrazioneController implements Initializable {
         } else  labelErroreRispostaSicurezza.setVisible(false);
 
         if(modelRegistrazione.registraUtente(nome,email,password,domandaSicurezza,rispostaDomandaSicurezza)){
-            System.out.println("Registrazione effettuata");
+            Stage stage = (Stage) this.loginButton.getScene().getWindow();
+            viewFactory.closeStage(stage);
+            viewFactory.mostraFinestraLogin();
         }else  {
-            System.out.println("Registrazione non effettuata");
+            AlertHelper.nuovoAlert("Qualcosa è andato storto!",
+                    Alert.AlertType.WARNING,
+                    "Qualcosa è andato storto!",
+                    "Qualcosa è andato storto durante la registrazione."
+            );
+            return;
         }
     }
 

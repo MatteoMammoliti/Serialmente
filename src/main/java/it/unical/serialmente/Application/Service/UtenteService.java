@@ -3,7 +3,6 @@ package it.unical.serialmente.Application.Service;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
-import it.unical.serialmente.Domain.model.CredenzialiUtente;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Utente;
 
@@ -68,5 +67,11 @@ public class UtenteService {
         return null;
     }
 
+    public boolean isPrimoAcceso(Utente u) {
+        return utenteDao.isPrimoAccesso(u.getIdUtente());
+    }
 
+    public void impostaPrimoAccesso(Utente u) {
+        utenteDao.impostaPrimoAccesso(u.getIdUtente());
+    }
 }

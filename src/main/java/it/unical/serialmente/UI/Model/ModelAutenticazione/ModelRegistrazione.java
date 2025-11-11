@@ -1,8 +1,6 @@
-package it.unical.serialmente.UI.Model;
+package it.unical.serialmente.UI.Model.ModelAutenticazione;
 
 import it.unical.serialmente.Application.Service.UtenteService;
-import it.unical.serialmente.Domain.model.CredenzialiUtente;
-import it.unical.serialmente.Domain.model.Utente;
 
 import java.sql.SQLException;
 

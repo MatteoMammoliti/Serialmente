@@ -3,6 +3,7 @@ import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
@@ -32,7 +33,7 @@ public class ViewFactory {
 
     public void mostraFinestraRegistrazione() {
 
-        FXMLLoader finestraRegistrazione = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/registrazione.fxml"));
+        FXMLLoader finestraRegistrazione = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/registrazione.fxml"));
         Scene scene = null;
 
         try {
@@ -55,7 +56,7 @@ public class ViewFactory {
 
     public void mostraFinestraLogin() {
 
-        FXMLLoader finestraLogin = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/login.fxml"));
+        FXMLLoader finestraLogin = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/login.fxml"));
         Scene scene = null;
 
         try {
@@ -69,16 +70,34 @@ public class ViewFactory {
             );
         }
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Serialmente - Login");
-        stage.setResizable(false);
-        stage.show();
+        Stage stageReale = new Stage();
+        stageReale.setScene(scene);
+        stageReale.setTitle("Serialmente - Login");
+        stageReale.setResizable(false);
+        stageReale.show();
+    }
+
+    public void mostraPaginaPreferenze(Stage stage) {
+        FXMLLoader finestraPreferenze = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/sceltaPreferenze.fxml"));
+        Parent root = null;
+
+        try {
+            root = finestraPreferenze.load();
+        } catch (Exception e) {
+            AlertHelper.nuovoAlert(
+                    "Errore!",
+                    Alert.AlertType.ERROR,
+                    "Errore durante l'apertura della pagina",
+                    "Qualcosa è andato storto durante l'apertura della pagina di scelta delle preferenze"
+            );
+        }
+
+        stage.getScene().setRoot(root);
     }
 
     public void mostraPaginaFilmConMenu(){
 
-        FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/MainView.fxml"));
+        FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/mainView.fxml"));
         Scene scene = null;
 
         try {

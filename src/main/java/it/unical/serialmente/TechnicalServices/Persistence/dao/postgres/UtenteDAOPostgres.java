@@ -63,12 +63,38 @@ public class UtenteDAOPostgres implements UtenteDAO {
             st.setString(1,nuovoNome);
             st.setInt(2,idUtente);
             int righe=st.executeUpdate();
-            if(righe>0){
-                return true;
-            }
+            return righe>0;
         }catch (SQLException e){
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimoAccesso(Integer idUtente) {
+        String query = "SELECT primo_accesso FROM Utente WHERE id_utente=?";
+
+        try(PreparedStatement st = connection.prepareStatement(query)) {
+            st.setInt(1, idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next() ) return rs.getBoolean(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean impostaPrimoAccesso(Integer idUtente) {
+        String query = "UPDATE utente SET primo_accesso=? WHERE id_utente=?";
+
+        try(PreparedStatement st = connection.prepareStatement(query)) {
+            st.setBoolean(1, false);
+            st.setInt(2, idUtente);
+            int check = st.executeUpdate();
+            return check > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

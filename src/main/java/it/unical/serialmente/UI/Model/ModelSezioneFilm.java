@@ -4,25 +4,20 @@ import it.unical.serialmente.Application.Service.PreferenzeService;
 import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
-import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Titolo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelHomepage {
+public class ModelSezioneFilm {
     private TitoloService titoloService = new TitoloService();
     private PreferenzeService preferenzeService = new PreferenzeService();
 
     public List<Titolo> getTitoliConsigliati() throws Exception {
-        List<Genere> generi = new ArrayList<>();
-        List<Piattaforma> piattaforma = new ArrayList<>();
-        Genere genere = new Genere("Azione",28);
-        Piattaforma pia = new Piattaforma("Netflix",8);
-        generi.add(genere);
-        piattaforma.add(pia);
 
-        return titoloService.getTitoliConsigliati(generi,piattaforma, "movie");
+        return titoloService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
+                preferenzeService.visualizzaPreferenzePiattaformeUtente(),
+                "movie");
     }
 
     public List<Titolo> getTitoliPopolari() throws Exception {

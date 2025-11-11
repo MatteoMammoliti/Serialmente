@@ -1,10 +1,10 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.Autenticazione;
 
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Utente;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
-import it.unical.serialmente.UI.Model.ModelLogin;
-import it.unical.serialmente.UI.Model.ModelView;
+import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelLogin;
+import it.unical.serialmente.UI.Model.ModelContainerMenuPagine;
 import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +24,7 @@ public class LoginController implements Initializable {
     @FXML private TextField showPassword;
     @FXML private Button eyeButton;
 
-    private final ViewFactory viewFactory = ModelView.getInstance().getViewFactory();
+    private final ViewFactory viewFactory = ModelContainerMenuPagine.getInstance().getViewFactory();
     private final ModelLogin modelLogin = new ModelLogin();
 
     @Override
@@ -76,10 +76,13 @@ public class LoginController implements Initializable {
         if(utenteAutenticato != null) {
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            viewFactory.closeStage(stage);
-            viewFactory.mostraPaginaFilmConMenu();
             SessioneCorrente.setUtenteCorrente(utenteAutenticato);
 
+            if(modelLogin.isPrimoAccesso(utenteAutenticato)) viewFactory.mostraPaginaPreferenze(stage);
+            else {
+                viewFactory.mostraPaginaFilmConMenu();
+                viewFactory.closeStage(stage);
+            }
         }
         else labelLoginError.setVisible(true);
     }

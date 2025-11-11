@@ -2,7 +2,7 @@ package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
-import it.unical.serialmente.UI.Model.ModelHomepage;
+import it.unical.serialmente.UI.Model.ModelSezioneFilm;
 import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
 import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class PaginaFilmController implements Initializable {
-    private final ModelHomepage modelHomepage = new ModelHomepage();
+    private final ModelSezioneFilm modelSezioneFilm = new ModelSezioneFilm();
     public ListView<TitoloData> listConsigliati;
     public ListView <TitoloData>listPopolari;
     public ListView<String> listGeneri;
@@ -52,9 +52,9 @@ public class PaginaFilmController implements Initializable {
         List<Titolo> titoli = new ArrayList<>();
 
         titoli = switch (tipologia) {
-            case "Novita" -> modelHomepage.getTitoliNovita();
-            case "Popolari" -> modelHomepage.getTitoliPopolari();
-            case "Consigliati" -> modelHomepage.getTitoliConsigliati();
+            case "Novita" -> modelSezioneFilm.getTitoliNovita();
+            case "Popolari" -> modelSezioneFilm.getTitoliPopolari();
+            case "Consigliati" -> modelSezioneFilm.getTitoliConsigliati();
             default -> titoli;
         };
 
@@ -80,7 +80,7 @@ public class PaginaFilmController implements Initializable {
     }
 
     public void caricaSezioneGeneri(ListView<String> lista) throws Exception {
-        List<Genere> generi = modelHomepage.getGeneri();
+        List<Genere> generi = modelSezioneFilm.getGeneri();
 
         lista.setCellFactory(lv -> new ListCell<>() {
             private final BannerGeneri bannerGenere = new BannerGeneri();

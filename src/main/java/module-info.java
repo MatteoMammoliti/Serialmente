@@ -13,4 +13,5 @@ module it.unical.serialmente.UI {
     opens it.unical.serialmente.UI to javafx.fxml;
     opens it.unical.serialmente.UI.Controller to javafx.fxml;
     exports it.unical.serialmente.UI;
+    opens it.unical.serialmente.UI.Controller.Autenticazione to javafx.fxml;
 }
