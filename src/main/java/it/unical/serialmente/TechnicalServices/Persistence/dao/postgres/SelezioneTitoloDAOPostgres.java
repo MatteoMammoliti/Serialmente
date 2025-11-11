@@ -21,7 +21,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         this.connection = connection;
     }
     @Override
-    public List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista) {
+    public List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista,String tipoTitolo) {
         List<Titolo> lista = new ArrayList<>();
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
             System.out.println("Nome lista non valido");
@@ -30,14 +30,17 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         TitoloDAO titoloDao= DBManager.getInstance().getTitoloDAO();
         String query;
         if(nomeLista.equals("Preferiti")){
-            query="SELECT * FROM selezionetitolo WHERE id_utente=? AND tipo_lista=? AND e_preferito=true";
+            query="SELECT * FROM selezionetitolo s JOIN titolo t ON " +
+                    " s.id_titolo=t.id_titolo WHERE s.id_utente=? AND s.tipo_lista=? AND s.e_preferito=true AND t.tipologia=? ";
             nomeLista="Visionati";
         }else{
-            query="SELECT * FROM selezionetitolo WHERE id_utente=? AND tipo_lista=? AND e_preferito=false";
+            query="SELECT * FROM selezionetitolo s JOIN titolo t ON " +
+                    " s.id_titolo=t.id_titolo WHERE id_utente=? AND tipo_lista=? AND e_preferito=false AND t.tipologia=? ";
         }
         try(PreparedStatement st =connection.prepareStatement(query)){
             st.setInt(1, idUtente);
             st.setString(2,nomeLista);
+            st.setString(3,tipoTitolo);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Titolo titolo = titoloDao.restituisciTitoloPerId(rs.getInt("id_titolo"));
