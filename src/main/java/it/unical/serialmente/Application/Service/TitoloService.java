@@ -106,9 +106,9 @@ public class TitoloService {
      */
      public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo) throws Exception {
          String risposta = tmdb.getTitoliConsigliati(generi, piattaforme, tipologiaTitolo);
-
          List<Titolo> titoli = new ArrayList<>();
          estraiPiuVistiConsigliati(risposta, titoli, tipologiaTitolo);
+
          return titoli;
      }
 

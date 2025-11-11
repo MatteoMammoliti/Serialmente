@@ -28,13 +28,14 @@ public class PaginaFilmController implements Initializable {
 
     public record TitoloData(String nome, double voto, String imageUrl) {}
     public ListView<TitoloData> listNovita;
+    private final Integer dimensioneBannerini=250;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        listNovita.setPrefHeight(250);
-        listConsigliati.setPrefHeight(250);
-        listPopolari.setPrefHeight(250);
-        listGeneri.setPrefHeight(250);
+        listNovita.setPrefHeight(dimensioneBannerini);
+        listConsigliati.setPrefHeight(dimensioneBannerini);
+        listPopolari.setPrefHeight(dimensioneBannerini);
+        listGeneri.setPrefHeight(dimensioneBannerini);
         try {
             caricaSezioneGeneri(this.listGeneri);
             caricaSezione(this.listNovita,"Novita");
