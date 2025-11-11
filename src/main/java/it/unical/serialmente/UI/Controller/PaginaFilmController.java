@@ -9,19 +9,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HomepageController implements Initializable {
+public class PaginaFilmController implements Initializable {
     private final ModelHomepage modelHomepage = new ModelHomepage();
     public ListView<TitoloData> listConsigliati;
     public ListView <TitoloData>listPopolari;

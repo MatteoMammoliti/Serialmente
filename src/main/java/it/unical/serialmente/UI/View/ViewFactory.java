@@ -13,7 +13,8 @@ import java.io.IOException;
 public class ViewFactory {
 
     private final StringProperty finestraAttuale;
-    private BorderPane homePage;
+    private BorderPane paginaFilm;
+    private BorderPane paginaSerieTV;
     private BorderPane watchlist;
     private BorderPane paginaProfiloUtente;
 
@@ -75,9 +76,9 @@ public class ViewFactory {
         stage.show();
     }
 
-    public void mostraHomePageConMenu(){
+    public void mostraPaginaFilmConMenu(){
 
-        FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/HomePage.fxml"));
+        FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/MainView.fxml"));
         Scene scene = null;
 
         try {
@@ -94,35 +95,60 @@ public class ViewFactory {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.setTitle("Serialmente - HomePage");
-        stage.setResizable(false);
+
+        stage.setWidth(1280);
+        stage.setHeight(720);
+        stage.centerOnScreen();
+
         stage.show();
     }
 
-    public BorderPane getHomePageSenzaMenu() {
+    public BorderPane getPaginaFilm() {
 
-        if (homePage == null) {
+        if (paginaFilm == null) {
             try {
-                homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/HomePage.fxml")).load();
+                paginaFilm = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaFilm.fxml")).load();
             } catch (IOException e) {
                 AlertHelper.nuovoAlert(
                         "Errore!",
                         Alert.AlertType.ERROR,
                         "Errore durante l'apertura della pagina",
-                        "Qualcosa è andato storto durante l'apertura della HomePage"
+                        "Qualcosa è andato storto durante l'apertura della HomePage Film"
                 );
             }
         }
-        else if(homePage.getParent() != null){
-            ((javafx.scene.layout.Pane) homePage.getParent()).getChildren().remove(homePage);
+        else if(paginaFilm.getParent() != null){
+            ((javafx.scene.layout.Pane) paginaFilm.getParent()).getChildren().remove(paginaFilm);
         }
-        return homePage;
+        return paginaFilm;
     }
+
+    public BorderPane getPaginaSerieTV() {
+
+        if (paginaSerieTV == null) {
+            try {
+                paginaSerieTV = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaSerieTV.fxml")).load();
+            } catch (IOException e) {
+                AlertHelper.nuovoAlert(
+                        "Errore!",
+                        Alert.AlertType.ERROR,
+                        "Errore durante l'apertura della pagina",
+                        "Qualcosa è andato storto durante l'apertura della HomePage Serie TV"
+                );
+            }
+        }
+        else if(paginaSerieTV.getParent() != null){
+            ((javafx.scene.layout.Pane) paginaSerieTV.getParent()).getChildren().remove(paginaSerieTV);
+        }
+        return paginaSerieTV;
+    }
+
 
     public BorderPane getWatchlist() {
 
         if (watchlist == null) {
             try {
-                watchlist = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Watchlist.fxml")).load();
+                watchlist = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Watchlist.fxml")).load();
             } catch (IOException e) {
                 AlertHelper.nuovoAlert(
                         "Errore!",
@@ -133,7 +159,7 @@ public class ViewFactory {
             }
         }
         else if(watchlist.getParent() != null){
-            ((javafx.scene.layout.Pane) homePage.getParent()).getChildren().remove(watchlist);
+            ((javafx.scene.layout.Pane) watchlist.getParent()).getChildren().remove(watchlist);
         }
         return watchlist;
     }
@@ -143,7 +169,7 @@ public class ViewFactory {
 
         if (paginaProfiloUtente == null) {
             try {
-                watchlist = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/profiloUtente.fxml")).load();
+                paginaProfiloUtente = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/profiloUtente.fxml")).load();
             } catch (IOException e) {
                 AlertHelper.nuovoAlert(
                         "Errore!",
@@ -168,8 +194,4 @@ public class ViewFactory {
             stage.close();
         }
     }
-
-    public void invalidateHomePage() { this.homePage = null; }
-    public void invalidateWatchlist() { this.watchlist = null; }
-    public void invalidatePaginaProfiloUtente() {  this.paginaProfiloUtente = null; }
 }

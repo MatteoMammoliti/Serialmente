@@ -9,6 +9,6 @@ public class SerialmenteMainApp extends Application {
     @Override
     public void start(Stage stage) {
         ViewFactory viewFactory = ModelView.getInstance().getViewFactory();
-        viewFactory.mostraHomePageConMenu();
+        viewFactory.mostraPaginaFilmConMenu();
     }
 }

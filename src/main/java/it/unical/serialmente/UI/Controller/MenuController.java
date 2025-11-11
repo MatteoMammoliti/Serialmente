@@ -9,7 +9,8 @@ import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
 
-    @FXML private Button homePage;
+    @FXML private Button film;
+    @FXML private Button serieTV;
     @FXML private Button watchlist;
     @FXML private Button areaUtente;
     @FXML private Button logout;
@@ -20,8 +21,12 @@ public class MenuController implements Initializable {
     }
 
     private void aggiungiListenersPulsanti() {
-        this.homePage.setOnAction(_ ->
-                ModelView.getInstance().getViewFactory().getFinestraAttuale().set("HomePage")
+        this.film.setOnAction(_ ->
+                ModelView.getInstance().getViewFactory().getFinestraAttuale().set("Film")
+        );
+
+        this.serieTV.setOnAction(_ ->
+                ModelView.getInstance().getViewFactory().getFinestraAttuale().set("SerieTV")
         );
 
         this.watchlist.setOnAction(_ ->

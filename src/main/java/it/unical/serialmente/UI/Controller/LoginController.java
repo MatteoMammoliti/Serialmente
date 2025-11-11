@@ -6,8 +6,6 @@ import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelLogin;
 import it.unical.serialmente.UI.Model.ModelView;
 import it.unical.serialmente.UI.View.ViewFactory;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -79,7 +77,7 @@ public class LoginController implements Initializable {
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
             viewFactory.closeStage(stage);
-            viewFactory.mostraHomePageConMenu();
+            viewFactory.mostraPaginaFilmConMenu();
             SessioneCorrente.setUtenteCorrente(utenteAutenticato);
 
         }
