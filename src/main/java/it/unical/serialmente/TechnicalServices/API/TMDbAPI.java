@@ -8,9 +8,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 
-import it.unical.serialmente.Domain.model.ContenitoreDatiProgressoSerie;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import org.json.*;
@@ -18,7 +16,7 @@ import org.json.*;
 public class TMDbAPI {
 
     /**
-     * Funzione che restituisce titolo della tipologia {tipologia} appartenente al genere {g}
+     * Funzione che restituisce un titolo della tipologia {tipologia} appartenente al genere {g}
      * @param g
      * @param tipologia
      * @return
@@ -37,14 +35,10 @@ public class TMDbAPI {
      * @return
      * @throws Exception
      */
-    public Integer getIdProssimoEpisodio(Integer idSerieTV, Integer idStagioneAttuale, Integer idEpisodioAttuale) throws Exception {
-        Integer numStagione = getNumeroStagione(idSerieTV, idStagioneAttuale);
-        if(numStagione == 0) return null;
-
-        String risposta = getEpisodiDaStagione(numStagione, idSerieTV);
+    public Integer getIdProssimoEpisodio(Integer idSerieTV, Integer numProgressivoStagione, Integer idEpisodioAttuale) throws Exception {
+        String risposta = getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
         JSONObject objRisposta = new JSONObject(risposta);
         JSONArray arrayRisposta = objRisposta.getJSONArray("episodes");
-
         return getId(idEpisodioAttuale, arrayRisposta);
     }
 
@@ -159,55 +153,6 @@ public class TMDbAPI {
         return json.getInt("runtime");
     }
 
-    public ContenitoreDatiProgressoSerie getDatiProgressoSerie(Integer idSerieTV, Integer indexStagione, Integer indexEpisodio) throws Exception {
-        String richiesta = "/tv/" + idSerieTV;
-        String risposta = inviaRichiesta(richiesta);
-        JSONObject json = new JSONObject(risposta);
-        JSONArray array = json.getJSONArray("seasons");
-
-        JSONObject stagione =  array.getJSONObject(indexStagione);
-        Integer idPrimaStagione = stagione.getInt("id");
-        String airDate = stagione.optString("air_date", null);
-        Integer annoPubblicazione = Integer.parseInt(airDate.substring(0,4));
-        Integer numeroProgressivoStagione = stagione.getInt("season_number");
-
-        richiesta = "/tv/" + idSerieTV + "/season/" + numeroProgressivoStagione;
-        risposta = inviaRichiesta(richiesta);
-        json = new JSONObject(risposta);
-        array = json.getJSONArray("episodes");
-        Integer idPrimoEpisodio = array.getJSONObject(indexEpisodio).getInt("id");
-        String descrizioneEpisodio =  array.getJSONObject(indexEpisodio ).optString("overview");
-        Integer durataPrimoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("runtime");
-        Integer numeroProgressivoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("episode_number");
-        ContenitoreDatiProgressoSerie c = new ContenitoreDatiProgressoSerie(
-                idPrimaStagione,
-                idPrimoEpisodio,
-                annoPubblicazione,
-                descrizioneEpisodio,
-                durataPrimoEpisodio,
-                numeroProgressivoStagione,
-                numeroProgressivoEpisodio
-        );
-        return c;
-    }
-
-    private Integer getNumeroStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {
-        String serieTV = getSerieTV(idSerieTV);
-        JSONObject obj = new JSONObject(serieTV);
-        JSONArray array = obj.getJSONArray("seasons");
-
-        Integer numStagione = null;
-        for(int i = 0; i < array.length(); i++) {
-            JSONObject stagione =  array.getJSONObject(i);
-            if(stagione.getInt("id") == idStagioneAttuale) {
-                numStagione = stagione.getInt("season_number");
-                break;
-            }
-        }
-
-        return numStagione;
-    }
-
     /**
      * Funzione che restituisce l'id del prossimo episodio/stagione associato ad id {id}
      * @param id
@@ -289,9 +234,8 @@ public class TMDbAPI {
             }
         }
 
-        if(piattaformeAggiunte && annoPubblicazione != null) {
-            richiesta.append("&year=").append(annoPubblicazione);
-        }
+        if(piattaformeAggiunte && annoPubblicazione != null) { richiesta.append("&year=").append(annoPubblicazione); }
+
         return inviaRichiesta(richiesta.toString());
     }
 
@@ -302,7 +246,7 @@ public class TMDbAPI {
      * @return JSON
      * @throws Exception
      */
-    private String inviaRichiesta(String richiesta) throws Exception {
+    public String inviaRichiesta(String richiesta) throws Exception {
         URL url = new URL(costruisciURL(richiesta));
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

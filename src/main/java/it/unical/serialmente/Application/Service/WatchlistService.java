@@ -1,5 +1,6 @@
 package it.unical.serialmente.Application.Service;
 
+import it.unical.serialmente.Application.Mapper.Mapper;
 import it.unical.serialmente.Domain.model.ContenitoreDatiProgressoSerie;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Titolo;
@@ -15,6 +16,7 @@ import java.util.List;
 public class WatchlistService {
 
     private final TMDbAPI tmDbAPI = new  TMDbAPI();
+    private final Mapper mapper = new Mapper();
     private final TitoloDAOPostgres titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
     private final SelezioneTitoloDAOPostgres selezioneTitoloDao = new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
     private final ProgressoSerieDAOPostgres  progressoDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
@@ -44,7 +46,7 @@ public class WatchlistService {
             }
 
             if(titolo.getTipologia().equals("SerieTv")) {
-                ContenitoreDatiProgressoSerie c = tmDbAPI.getDatiProgressoSerie(titolo.getIdTitolo(), 0, 0);
+                ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(titolo.getIdTitolo(), 0, 0);
                 inserimentoConSuccesso = progressoDao.creaIstanzaProgressoSerie(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         titolo.getIdTitolo(),
@@ -121,7 +123,7 @@ public class WatchlistService {
             return;
         }
 
-        ContenitoreDatiProgressoSerie c = tmDbAPI.getDatiProgressoSerie(
+        ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(
                 titolo.getIdTitolo(),
                 progressoDao.getNumeroProgressivoStagione(SessioneCorrente.getUtenteCorrente().getIdUtente(), titolo.getIdTitolo()),
                 0
@@ -138,7 +140,7 @@ public class WatchlistService {
 
     public void rendiEpisodioVisionato(Titolo titolo) throws Exception {
         Integer idProssimoEpisodio = tmDbAPI.getIdProssimoEpisodio(titolo.getIdTitolo(),
-                progressoDao.getIdStagioneCorrente(
+                progressoDao.getNumeroProgressivoStagione(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         titolo.getIdTitolo()
                 ),
@@ -153,7 +155,7 @@ public class WatchlistService {
             return;
         }
 
-        ContenitoreDatiProgressoSerie c = tmDbAPI.getDatiProgressoSerie(
+        ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(
                 titolo.getIdTitolo(),
                 progressoDao.getNumeroProgressivoStagione(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
