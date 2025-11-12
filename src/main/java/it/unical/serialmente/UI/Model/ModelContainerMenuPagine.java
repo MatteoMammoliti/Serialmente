@@ -1,16 +1,12 @@
 package it.unical.serialmente.UI.Model;
 
 import it.unical.serialmente.UI.Controller.Autenticazione.LoginController;
-import it.unical.serialmente.UI.Controller.Autenticazione.RegistrazioneController;
+import it.unical.serialmente.UI.Controller.ContainerMenuPagineController;
 import it.unical.serialmente.UI.View.ViewFactory;
 
 public class ModelContainerMenuPagine {
 
-    /**
-     * Istanze singleton dei controller
-     */
-    private RegistrazioneController registrazioneController;
-    private LoginController loginController;
+    private ContainerMenuPagineController  menuPagineController;
 
     private static ModelContainerMenuPagine model;
 
@@ -33,21 +29,10 @@ public class ModelContainerMenuPagine {
     public ViewFactory getViewFactory() {
         return viewFactory;
     }
-    public RegistrazioneController getRegistrazioneController() {
-        return registrazioneController;
-    }
-    public LoginController getLoginController() { return loginController; }
+    public ContainerMenuPagineController getMenuPagineController() { return this.menuPagineController; }
 
     // SETTER
-    public void setRegistrazioneController(RegistrazioneController registrazioneController) {
-        this.registrazioneController = registrazioneController;
-    }
-
-    public void setLoginController(LoginController loginController) {
-        this.loginController = loginController;
-    }
-
-    public static synchronized void invalidate() {
-        model = null;
+    public void setMenuPagineController(ContainerMenuPagineController controller) {
+        this.menuPagineController = controller;
     }
 }

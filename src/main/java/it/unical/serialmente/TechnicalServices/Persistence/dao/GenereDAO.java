@@ -8,4 +8,5 @@ public interface GenereDAO {
     boolean aggiungiGenere(Integer idGenere,String nomeGenere);
     boolean eliminaGenere(Integer idGenere);
     List<Genere> restituisciGeneriPresentiNelDB(String tipologia);
+    Integer getGenereDaNome(String nomeGenere);
 }

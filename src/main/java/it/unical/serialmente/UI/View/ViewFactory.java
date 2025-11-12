@@ -18,6 +18,7 @@ public class ViewFactory {
     private BorderPane paginaSerieTV;
     private BorderPane watchlist;
     private BorderPane paginaProfiloUtente;
+    private GrigliaTitoli grigliaTitoli;
 
     public ViewFactory() {
         this.finestraAttuale = new SimpleStringProperty("");
@@ -139,6 +140,7 @@ public class ViewFactory {
         else if(paginaFilm.getParent() != null){
             ((javafx.scene.layout.Pane) paginaFilm.getParent()).getChildren().remove(paginaFilm);
         }
+        this.invalidateGrigliaTitoli();
         return paginaFilm;
     }
 
@@ -159,6 +161,7 @@ public class ViewFactory {
         else if(paginaSerieTV.getParent() != null){
             ((javafx.scene.layout.Pane) paginaSerieTV.getParent()).getChildren().remove(paginaSerieTV);
         }
+        this.invalidateGrigliaTitoli();
         return paginaSerieTV;
     }
 
@@ -180,6 +183,7 @@ public class ViewFactory {
         else if(watchlist.getParent() != null){
             ((javafx.scene.layout.Pane) watchlist.getParent()).getChildren().remove(watchlist);
         }
+        this.invalidateGrigliaTitoli();
         return watchlist;
     }
 
@@ -201,7 +205,22 @@ public class ViewFactory {
         else if(paginaProfiloUtente.getParent() != null){
             ((javafx.scene.layout.Pane) paginaProfiloUtente.getParent()).getChildren().remove(paginaProfiloUtente);
         }
+        this.invalidateGrigliaTitoli();
         return paginaProfiloUtente;
+    }
+
+    public GrigliaTitoli getGrigliaTitoli(String nomeGenere, String tipologia) {
+
+        if (grigliaTitoli == null) {
+            grigliaTitoli = new GrigliaTitoli(nomeGenere, tipologia);
+        } else if(grigliaTitoli.getParent() != null){
+            ((javafx.scene.layout.Pane) grigliaTitoli.getParent()).getChildren().remove(grigliaTitoli);
+        }
+            return grigliaTitoli;
+    }
+
+    public void invalidateGrigliaTitoli() {
+        this.grigliaTitoli = null;
     }
 
     /**

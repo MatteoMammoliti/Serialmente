@@ -83,7 +83,7 @@ public class PaginaFilmController implements Initializable {
         List<Genere> generi = modelSezioneFilm.getGeneri();
 
         lista.setCellFactory(lv -> new ListCell<>() {
-            private final BannerGeneri bannerGenere = new BannerGeneri();
+            private final BannerGeneri bannerGenere = new BannerGeneri("movie");
 
             @Override
             protected void updateItem(String nome, boolean empty) {

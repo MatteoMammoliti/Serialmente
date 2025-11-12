@@ -4,7 +4,9 @@ import it.unical.serialmente.Application.Mapper.Mapper;
 import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
 import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
+import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -15,7 +17,16 @@ public class TitoloService {
 
     private final TMDbAPI tmdb = new TMDbAPI();
     private final Mapper mapper = new Mapper();
-    private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
+    private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
+    private final GenereDAOPostgres genereDao = new GenereDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
+
+    public Integer getIdGenereDaNome(String nome) {
+        return genereDao.getGenereDaNome(nome);
+    }
 
     public Integer getNumeroEpisodiStagione(Integer idSerieTV) throws Exception {
         String risposta = tmdb.getSerieTV(idSerieTV);
@@ -63,23 +74,32 @@ public class TitoloService {
         return sommaMinuti;
     }
 
-    public List<Titolo> getTitoliPerGenere(Genere g, String tipologia) throws Exception {
-        String risposta = tmdb.getTitoliPerGenere(g, tipologia);
-        JSONArray jsonArray = mapper.parseRisultato(risposta, "results");
+    public List<Titolo> getTitoliPerGenere(Integer idGenere, String tipologia) throws Exception {
 
         List<Titolo> titoliPerGenere = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
+        String aggiunta = "";
 
-            switch (tipologia) {
-                case "movie":
-                    titoliPerGenere.add(mapper.parseFilmDaJSON(jsonObject));
-                    break;
+        for(int j = 0; j < 2; j++) {
 
-                case "tv":
-                    titoliPerGenere.add(mapper.parseSerieTVDaJSON(jsonObject));
-                    break;
+            String risposta = tmdb.getTitoliPerGenere(idGenere, tipologia, aggiunta);
+            Pair<JSONArray, Integer> p = mapper.parseRisultatoPair(risposta, "results");
+            JSONArray jsonArray = p.getKey();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                switch (tipologia) {
+                    case "movie":
+                        titoliPerGenere.add(mapper.parseFilmDaJSON(jsonObject));
+                        break;
+
+                    case "tv":
+                        titoliPerGenere.add(mapper.parseSerieTVDaJSON(jsonObject));
+                        break;
+                }
             }
+            if(p.getValue() == 1) return titoliPerGenere;
+            else aggiunta = "&page=2";
         }
         return titoliPerGenere;
     }
@@ -124,9 +144,19 @@ public class TitoloService {
      * @throws Exception
      */
      public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo) throws Exception {
-         String risposta = tmdb.getTitoliConsigliati(generi, piattaforme, tipologiaTitolo);
+
+         String aggiunta = "";
          List<Titolo> titoli = new ArrayList<>();
-         estraiTitoli(risposta, titoli, tipologiaTitolo);
+
+         for(int i = 0; i < 2; i++) {
+             String risposta = tmdb.getTitoliConsigliati(generi, piattaforme, tipologiaTitolo, aggiunta);
+             estraiTitoli(risposta, titoli, tipologiaTitolo);
+
+             JSONObject obj = new JSONObject(risposta);
+             if(obj.getInt("total_pages") == 1) return titoli;
+             else aggiunta = "&page=2";
+         }
+
          return titoli;
      }
 
@@ -140,15 +170,24 @@ public class TitoloService {
      * @throws Exception
      */
     public List<Titolo> cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione) throws Exception {
-        String risposta = tmdb.cercaTitolo(nomeTitolo, tipologia, generi, annoPubblicazione);
-        JSONArray array = mapper.parseRisultato(risposta, "results");
 
         List<Titolo> titoli = new ArrayList<Titolo>();
+        String aggiunta = "";
 
-        for(int i = 0; i < array.length(); i++){
-            Titolo t = mapper.parseTitoloDaJSON(array.getJSONObject(i));
-            titoli.add(t);
+        for(int j = 0; j < 2; j++) {
+            String risposta = tmdb.cercaTitolo(nomeTitolo, tipologia, generi, annoPubblicazione,  aggiunta);
+            Pair<JSONArray, Integer> p = mapper.parseRisultatoPair(risposta, "results");
+            JSONArray array = p.getKey();
+
+            for(int i = 0; i < array.length(); i++){
+                Titolo t = mapper.parseTitoloDaJSON(array.getJSONObject(i));
+                titoli.add(t);
+            }
+
+            if(p.getValue() == 1) return titoli;
+            else aggiunta = "&page=2";
         }
+
         return titoli;
     }
 
@@ -158,10 +197,19 @@ public class TitoloService {
      * @return List<Titolo> di titoli più visti
      */
     public List<Titolo> getTitoliPiuVisti(String tipologiaTitolo) throws Exception {
-        String risposta = tmdb.getTitoliConSort(tipologiaTitolo, "popularity.desc");
 
+        String aggiunta = "";
         List<Titolo> titoli = new ArrayList<>();
-        estraiTitoli(risposta, titoli, tipologiaTitolo);
+
+        for(int i = 0; i < 2; i++) {
+            String risposta = tmdb.getTitoliConSort(tipologiaTitolo, "popularity.desc", aggiunta);
+            estraiTitoli(risposta, titoli, tipologiaTitolo);
+
+            JSONObject obj = new JSONObject(risposta);
+            if(obj.getInt("total_pages") == 1) break;
+            aggiunta = "&page=2";
+        }
+
         return titoli;
     }
 
@@ -178,8 +226,8 @@ public class TitoloService {
         }
 
         String risposta = switch (tipologia) {
-            case "movie" -> tmdb.getTitoliConSort(tipologia, "primary_release_date.desc");
-            case "tv" -> tmdb.getTitoliConSort(tipologia, "first_air_date.desc");
+            case "movie" -> tmdb.getTitoliConSort(tipologia, "primary_release_date.desc", "");
+            case "tv" -> tmdb.getTitoliConSort(tipologia, "first_air_date.desc", "");
             default -> "";
         };
 

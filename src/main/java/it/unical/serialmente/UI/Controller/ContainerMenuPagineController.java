@@ -17,7 +17,7 @@ public class ContainerMenuPagineController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        // Ascolta i cambi di finestra
+        ModelContainerMenuPagine.getInstance().setMenuPagineController(this);
         ModelContainerMenuPagine.getInstance().getViewFactory().getFinestraAttuale().addListener((observable, oldValue, newValue) -> {
 
             Node nuovaView = switch (newValue) {
@@ -36,5 +36,9 @@ public class ContainerMenuPagineController implements Initializable {
                 contenitoreView.setCenter(nuovaView);
             }
         });
+    }
+
+    public BorderPane getContenitoreView() {
+        return contenitoreView;
     }
 }

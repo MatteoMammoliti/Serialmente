@@ -22,8 +22,16 @@ public class TMDbAPI {
      * @return
      * @throws Exception
      */
-    public String getTitoliPerGenere(Genere g, String tipologia) throws Exception {
-        String richiesta = "/discover/" + tipologia + "?with_genres=" + g.getIdGenere();
+    public String getTitoliPerGenere(Integer idGenere, String tipologia, String pagina) throws Exception {
+        String richiesta = "";
+
+        if(pagina.isEmpty()){
+            richiesta = "/discover/" + tipologia + "?with_genres=" + idGenere;
+            return inviaRichiesta(richiesta);
+        }
+
+        richiesta = "/discover/" + tipologia + "?with_genres=" + idGenere + pagina;
+
         return inviaRichiesta(richiesta);
     }
 
@@ -64,8 +72,8 @@ public class TMDbAPI {
      * @param piattaforme
      * @return
      */
-    public String getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologia) throws Exception {
-        return cercaTitoliPerCriteri(tipologia, generi, null, piattaforme);
+    public String getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologia, String pagina) throws Exception {
+        return cercaTitoliPerCriteri(tipologia, generi, null, piattaforme, pagina);
     }
 
     /**
@@ -78,7 +86,7 @@ public class TMDbAPI {
      * @return Titolo
      * @throws Exception
      */
-    public String getTitoliConSort(String tipologia, String tipologiaSort) throws Exception {
+    public String getTitoliConSort(String tipologia, String tipologiaSort, String pagina) throws Exception {
         String richiesta = "";
 
         switch (tipologiaSort) {
@@ -103,6 +111,9 @@ public class TMDbAPI {
                 break;
         }
 
+        if(!pagina.isEmpty()){
+            richiesta += pagina;
+        }
         return inviaRichiesta(richiesta);
     }
 
@@ -140,9 +151,9 @@ public class TMDbAPI {
      * @return String
      * @throws Exception
      */
-    public String cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione) throws Exception {
+    public String cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione, String pagina) throws Exception {
         if(nomeTitolo != null) return cercaTitoloPerNome(nomeTitolo, tipologia);
-        return cercaTitoliPerCriteri(tipologia, generi, annoPubblicazione, null);
+        return cercaTitoliPerCriteri(tipologia, generi, annoPubblicazione, null, pagina);
     }
 
     public Integer getDurataMinutiFilm(Integer idFilm) throws Exception {
@@ -196,7 +207,7 @@ public class TMDbAPI {
      * @return String
      * @throws Exception
      */
-    private String cercaTitoliPerCriteri(String tipologia, List<Genere> generi, Integer annoPubblicazione, List<Piattaforma> piattaforme) throws Exception {
+    private String cercaTitoliPerCriteri(String tipologia, List<Genere> generi, Integer annoPubblicazione, List<Piattaforma> piattaforme, String pagina) throws Exception {
         StringBuilder richiesta;
 
         if(tipologia != null) richiesta = new StringBuilder("/discover/" + tipologia);
@@ -235,6 +246,10 @@ public class TMDbAPI {
         }
 
         if(piattaformeAggiunte && annoPubblicazione != null) { richiesta.append("&year=").append(annoPubblicazione); }
+
+        if(pagina != null) {
+            richiesta.append("&page=2");
+        }
 
         return inviaRichiesta(richiesta.toString());
     }

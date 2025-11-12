@@ -2,6 +2,7 @@ package it.unical.serialmente.Application.Mapper;
 
 import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
+import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -101,6 +102,11 @@ public class Mapper {
         );
         s.setNumeroStagioneProgressivo(obj.getInt("season_number"));
         return s;
+    }
+
+    public Pair<JSONArray, Integer> parseRisultatoPair(String risposta, String index) {
+        JSONObject obj = new JSONObject(risposta);
+        return new Pair<>(obj.getJSONArray(index), obj.getInt("total_pages"));
     }
 
     public JSONArray parseRisultato(String risposta, String index) {
