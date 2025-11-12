@@ -17,6 +17,17 @@ import org.json.*;
 
 public class TMDbAPI {
 
+
+    public String getNumeroEpisodiSerie(Integer idSerieTV) throws Exception {
+        String richiesta = "/tv/" + idSerieTV;
+        return inviaRichiesta(richiesta);
+    }
+
+    public String getMinutiEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione)  throws Exception {
+        String richiesta = "/tv/" + idSerieTV + "/season/" + numProgressivoStagione;
+        return inviaRichiesta(richiesta);
+    }
+
     /**
      * Funzione che restituisce titolo della tipologia {tipologia} appartenente al genere {g}
      * @param g
@@ -179,7 +190,7 @@ public class TMDbAPI {
         String descrizioneEpisodio =  array.getJSONObject(indexEpisodio ).optString("overview");
         Integer durataPrimoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("runtime");
         Integer numeroProgressivoEpisodio =  array.getJSONObject(indexEpisodio ).getInt("episode_number");
-        ContenitoreDatiProgressoSerie c = new ContenitoreDatiProgressoSerie(
+        return new ContenitoreDatiProgressoSerie(
                 idPrimaStagione,
                 idPrimoEpisodio,
                 annoPubblicazione,
@@ -188,7 +199,6 @@ public class TMDbAPI {
                 numeroProgressivoStagione,
                 numeroProgressivoEpisodio
         );
-        return c;
     }
 
     private Integer getNumeroStagione(Integer idSerieTV, Integer idStagioneAttuale) throws Exception {

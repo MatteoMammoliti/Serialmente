@@ -21,6 +21,56 @@ public class TitoloService {
     private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
 
 
+    public Integer getNumeroEpisodiStagione(Integer idSerieTV) throws Exception {
+        String risposta = tmdb.getNumeroEpisodiSerie(idSerieTV);
+        JSONObject obj = new JSONObject(risposta);
+        return obj.optInt("number_of_episodes");
+    }
+
+    public Integer sommaEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
+        String risposta = tmdb.getNumeroEpisodiSerie(idSerieTV);
+        JSONObject obj = new JSONObject(risposta);
+        JSONArray jsonArray = obj.getJSONArray("seasons");
+
+        int somma = 0;
+        for(int i = 0; i < jsonArray.length(); i++){
+            JSONObject season = jsonArray.getJSONObject(i);
+            if(!season.optString("name").equals("Specials")){
+                if(season.optInt("season_number") == numProgressivoStagione) return somma;
+
+                somma += season.optInt("episode_count");
+            }
+        }
+        return somma;
+    }
+
+    public Integer sommaMinutiEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione, Integer numProgressivoEpisodio) throws Exception {
+
+        int sommaMinuti = 0;
+        for(int i = 1; i < numProgressivoStagione; i++){
+            String risposta = tmdb.getMinutiEpisodiVisti(idSerieTV, i);
+            JSONObject obj = new JSONObject(risposta);
+            JSONArray jsonArray = obj.getJSONArray("episodes");
+
+            for(int k = 0; k < jsonArray.length(); k++){
+                JSONObject episodio = jsonArray.getJSONObject(k);
+                    sommaMinuti += episodio.optInt("runtime");
+            }
+        }
+
+        String risposta = tmdb.getMinutiEpisodiVisti(idSerieTV, numProgressivoStagione);
+        JSONObject obj = new JSONObject(risposta);
+        JSONArray jsonArray = obj.getJSONArray("episodes");
+
+        for(int k = 0; k < jsonArray.length(); k++){
+            JSONObject episodio = jsonArray.getJSONObject(k);
+            if(episodio.optInt("episode_number") == numProgressivoEpisodio) return sommaMinuti;
+
+            sommaMinuti += episodio.optInt("runtime");
+        }
+        return sommaMinuti;
+    }
+
     public List<Titolo> getTitoliPerGenere(Genere g, String tipologia) throws Exception {
         String risposta = tmdb.getTitoliPerGenere(g, tipologia);
         JSONObject obj = new JSONObject(risposta);
