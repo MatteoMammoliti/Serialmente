@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -18,6 +19,15 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SezioneUtenteController implements Initializable {
+    public Label mesiTempoSerie;
+    public Label giorniTempoSerie;
+    public Label oreTempoSerie;
+    public Label numeroEpisodiVisti;
+    public Label mesiTempoFim;
+    public Label giorniTempoFilm;
+    public Label oreTempoFilm;
+    public Label numeroFilmVisti;
+
     public record TitoloDato(String imgUrl){};
     public VBox contenitoreSalutiUtente;
     public Label labelSalutiUtente;
@@ -40,6 +50,7 @@ public class SezioneUtenteController implements Initializable {
     private final Integer dimensioneBannerini=250;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.contenitoreSalutiUtente.setPrefHeight(300);
         this.listSeriePreferite.setPrefHeight(dimensioneBannerini);
         this.listSerieVisionate.setPrefHeight(dimensioneBannerini);
         this.listFilmPreferiti.setPrefHeight(dimensioneBannerini);
@@ -50,8 +61,11 @@ public class SezioneUtenteController implements Initializable {
             caricaSezione(listSeriePreferite,"Preferiti","SerieTv");
             caricaSezione(listFilmVisionati,"Visionati","Film");
             caricaSezione(listFilmPreferiti,"Preferiti","Film");
+            caricaStatistiche();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -78,5 +92,18 @@ public class SezioneUtenteController implements Initializable {
             dati.add(new TitoloDato(titolo.getImmagine()));
         }
         lista.setItems(dati);
+    }
+
+    public void caricaStatistiche() throws Exception {
+        this.numeroFilmVisti.setText(modelSezioneUtente.getNmeroFilmVisionati().toString());
+        List<Integer> oreGiornoMesiFilm= modelSezioneUtente.getOreGiorniMesiVisionatiFilm();
+        this.mesiTempoFim.setText(oreGiornoMesiFilm.get(0).toString());
+        this.giorniTempoFilm.setText(oreGiornoMesiFilm.get(1).toString());
+        this.oreTempoFilm.setText(oreGiornoMesiFilm.get(2).toString());
+        ModelSezioneUtente.StatisticheSerieTv statisticheSerieTv = modelSezioneUtente.getStatisticheSerieTv();
+        this.mesiTempoSerie.setText(statisticheSerieTv.durate().get(0).toString());
+        this.giorniTempoSerie.setText(statisticheSerieTv.durate().get(1).toString());
+        this.oreTempoSerie.setText(statisticheSerieTv.durate().get(2).toString());
+        this.numeroEpisodiVisti.setText(statisticheSerieTv.episodiVisti().toString());
     }
 }

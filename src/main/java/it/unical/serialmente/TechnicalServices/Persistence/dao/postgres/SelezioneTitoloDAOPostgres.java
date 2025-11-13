@@ -222,4 +222,24 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return 0;
     }
+
+    @Override
+    public List<Integer> getIdSerieVisionate(Integer idUtente) {
+        List<Integer> lista=new ArrayList<>();
+        String query="SELECT s.id_titolo FROM selezionetitolo s JOIN titolo t ON t.id_titolo=s.id_titolo" +
+                " WHERE s.id_utente=? AND t.tipologia=? AND s.tipo_lista=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1, idUtente);
+            st.setString(2,"SerieTv");
+            st.setString(3,"Visionati");
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                lista.add(rs.getInt(1));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }

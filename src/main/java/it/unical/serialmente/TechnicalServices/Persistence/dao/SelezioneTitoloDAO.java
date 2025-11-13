@@ -14,4 +14,5 @@ public interface SelezioneTitoloDAO {
     boolean controlloTitoloInListe(Integer idTitolo);
     Integer getNumeroFilmVisionati(Integer idUtente);
     Integer getMinutiVisioneFilm(Integer idUtente);
+    List<Integer> getIdSerieVisionate(Integer idUtente);
 }

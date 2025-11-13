@@ -14,4 +14,5 @@ public interface ProgressoSerieDAO {
     Integer getIdStagioneCorrente(Integer idUtente, Integer idSerieTV);
     Integer getNumeroProgressivoEpisodio(Integer idUtente, Integer idSerieTV);
     Integer getNumeroProgressivoStagione(Integer idUtente, Integer idSerieTV);
+    String getNomeEpisodio(Integer idUtente, Integer idSerieTV);
 }

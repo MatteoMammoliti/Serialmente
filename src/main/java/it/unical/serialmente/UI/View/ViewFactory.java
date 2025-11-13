@@ -177,6 +177,7 @@ public class ViewFactory {
                         "Errore durante l'apertura della pagina",
                         "Qualcosa è andato storto durante l'apertura della pagina di profilo utente"
                 );
+                e.printStackTrace();
             }
         }
         else if(paginaProfiloUtente.getParent() != null){
