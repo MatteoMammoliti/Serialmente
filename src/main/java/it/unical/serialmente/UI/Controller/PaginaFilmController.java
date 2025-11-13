@@ -2,13 +2,16 @@ package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelSezioneFilm;
 import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -17,9 +20,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class PaginaFilmController implements Initializable {
+
     private final ModelSezioneFilm modelSezioneFilm = new ModelSezioneFilm();
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+
     public ListView<TitoloData> listConsigliati;
     public ListView <TitoloData>listPopolari;
     public ListView<String> listGeneri;
@@ -28,10 +36,10 @@ public class PaginaFilmController implements Initializable {
 
     public record TitoloData(String nome, double voto, String imageUrl) {}
     public ListView<TitoloData> listNovita;
-    private final Integer dimensioneBannerini=250;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        int dimensioneBannerini = 250;
         listNovita.setPrefHeight(dimensioneBannerini);
         listConsigliati.setPrefHeight(dimensioneBannerini);
         listPopolari.setPrefHeight(dimensioneBannerini);
@@ -44,19 +52,11 @@ public class PaginaFilmController implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     public void caricaSezione(ListView<TitoloData> lista,String tipologia) throws Exception {
-        List<Titolo> titoli = new ArrayList<>();
 
-        titoli = switch (tipologia) {
-            case "Novita" -> modelSezioneFilm.getTitoliNovita();
-            case "Popolari" -> modelSezioneFilm.getTitoliPopolari();
-            case "Consigliati" -> modelSezioneFilm.getTitoliConsigliati();
-            default -> titoli;
-        };
+        Task<ObservableList<TitoloData>> task = getObservableListTaskTitoli(lista,tipologia);
 
         lista.setCellFactory(lv ->new ListCell<>(){
             private final BannerTitolo bannerTitolo = new BannerTitolo();
@@ -71,16 +71,12 @@ public class PaginaFilmController implements Initializable {
                 }
             }
         });
-
-        ObservableList<TitoloData> dati = FXCollections.observableArrayList();
-        for (Titolo titolo : titoli) {
-            dati.add(new TitoloData(titolo.getNomeTitolo(), titolo.getVotoMedio(), titolo.getImmagine()));
-        }
-        lista.setItems(dati);
+        executor.execute(task);
     }
 
     public void caricaSezioneGeneri(ListView<String> lista) throws Exception {
-        List<Genere> generi = modelSezioneFilm.getGeneri();
+
+        Task<ObservableList<String>> task = getObservableListTaskGeneri(lista);
 
         lista.setCellFactory(lv -> new ListCell<>() {
             private final BannerGeneri bannerGenere = new BannerGeneri("movie");
@@ -98,11 +94,62 @@ public class PaginaFilmController implements Initializable {
                 }
             }
         });
+        executor.execute(task);
+    }
 
-        ObservableList<String> dati = FXCollections.observableArrayList();
-        for (Genere genere : generi) {
-            dati.add(genere.getNomeGenere());
-        }
-        lista.setItems(dati);
+    private Task<ObservableList<String>> getObservableListTaskGeneri(ListView<String> lista) {
+        Task<ObservableList<String>> task = new Task<>() {
+            @Override
+            protected ObservableList<String> call() throws Exception {
+                List<Genere> generi = modelSezioneFilm.getGeneri();
+                ObservableList<String> dati = FXCollections.observableArrayList();
+                for (Genere genere : generi) {
+                    dati.add(genere.getNomeGenere());
+                }
+                return dati;
+            }
+        };
+
+        task.setOnSucceeded(e -> lista.setItems(task.getValue()));
+        task.setOnFailed(e ->
+                AlertHelper.nuovoAlert(
+                        "Errore Thread",
+                        Alert.AlertType.ERROR,
+                        "Qualcosa è andato storto!",
+                        "Qualcosa è andato storto durante il completamento di un'attività"
+                ));
+        return task;
+    }
+
+    private Task<ObservableList<TitoloData>> getObservableListTaskTitoli(ListView<TitoloData> lista,String tipologia) {
+        Task<ObservableList<TitoloData>> task = new Task<>() {
+            @Override
+            protected ObservableList<TitoloData> call() throws Exception {
+                List<Titolo> titoli = new ArrayList<>();
+
+                titoli = switch (tipologia) {
+                    case "Novita" -> modelSezioneFilm.getTitoliNovita();
+                    case "Popolari" -> modelSezioneFilm.getTitoliPopolari();
+                    case "Consigliati" -> modelSezioneFilm.getTitoliConsigliati();
+                    default -> titoli;
+                };
+
+                ObservableList<TitoloData> dati = FXCollections.observableArrayList();
+                for (Titolo titolo : titoli) {
+                    dati.add(new TitoloData(titolo.getNomeTitolo(), titolo.getVotoMedio(), titolo.getImmagine()));
+                }
+                return dati;
+            }
+        };
+
+        task.setOnSucceeded(e -> lista.setItems(task.getValue()));
+        task.setOnFailed(e ->
+                AlertHelper.nuovoAlert(
+                        "Errore Thread",
+                        Alert.AlertType.ERROR,
+                        "Qualcosa è andato storto!",
+                        "Qualcosa è andato storto durante il completamento di un'attività"
+                ));
+        return task;
     }
 }

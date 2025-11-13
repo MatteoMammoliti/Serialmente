@@ -12,11 +12,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TitoloService {
 
     private final TMDbAPI tmdb = new TMDbAPI();
     private final Mapper mapper = new Mapper();
+    private final ExecutorService executor = Executors.newFixedThreadPool(4);
     private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(
             DBManager.getInstance().getConnection()
     );
@@ -74,34 +78,40 @@ public class TitoloService {
         return sommaMinuti;
     }
 
-    public List<Titolo> getTitoliPerGenere(Integer idGenere, String tipologia) throws Exception {
+    public CompletableFuture<List<Titolo>> loadPage(Integer idGenere, String tipologia, Integer pagina) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                String aggiunta = "&page=" + pagina;
+                long start = System.currentTimeMillis();
+                String risposta = tmdb.getTitoliPerGenere(idGenere, tipologia, aggiunta);
+                System.out.println("TMDB PAGE " + pagina + " = " + (System.currentTimeMillis() - start) + "ms");
 
-        List<Titolo> titoliPerGenere = new ArrayList<>();
-        String aggiunta = "";
+                Pair<JSONArray, Integer> p = mapper.parseRisultatoPair(risposta, "results");
+                JSONArray jsonArray = p.getKey();
+                List<Titolo> titoli = new ArrayList<>();
 
-        for(int j = 0; j < 2; j++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-            String risposta = tmdb.getTitoliPerGenere(idGenere, tipologia, aggiunta);
-            Pair<JSONArray, Integer> p = mapper.parseRisultatoPair(risposta, "results");
-            JSONArray jsonArray = p.getKey();
+                    switch (tipologia) {
+                        case "movie":
+                            titoli.add(mapper.parseFilmDaJSON(jsonObject));
+                            break;
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                switch (tipologia) {
-                    case "movie":
-                        titoliPerGenere.add(mapper.parseFilmDaJSON(jsonObject));
-                        break;
-
-                    case "tv":
-                        titoliPerGenere.add(mapper.parseSerieTVDaJSON(jsonObject));
-                        break;
+                        case "tv":
+                            titoli.add(mapper.parseSerieTVDaJSON(jsonObject));
+                            break;
+                    }
                 }
+                return titoli;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-            if(p.getValue() == 1) return titoliPerGenere;
-            else aggiunta = "&page=2";
-        }
-        return titoliPerGenere;
+        }, executor);
+    }
+
+    public CompletableFuture<List<Titolo>> getTitoliPerGenerePaginaSingola(Integer idGenere, String tipologia, Integer pagina) {
+        return loadPage(idGenere, tipologia, pagina);
     }
 
     /**

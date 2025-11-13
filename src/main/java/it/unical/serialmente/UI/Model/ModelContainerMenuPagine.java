@@ -26,13 +26,9 @@ public class ModelContainerMenuPagine {
 
 
     // GETTER
-    public ViewFactory getViewFactory() {
-        return viewFactory;
-    }
+    public ViewFactory getViewFactory() { return viewFactory; }
     public ContainerMenuPagineController getMenuPagineController() { return this.menuPagineController; }
 
     // SETTER
-    public void setMenuPagineController(ContainerMenuPagineController controller) {
-        this.menuPagineController = controller;
-    }
+    public void setMenuPagineController(ContainerMenuPagineController controller) { this.menuPagineController = controller; }
 }

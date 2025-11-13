@@ -4,13 +4,14 @@ import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.Titolo;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class ModelGrigliaTitoli {
 
     private final TitoloService titoloService = new TitoloService();
 
-    public List<Titolo> getTitoliPerGenere(String nome, String tipologia) throws Exception {
-        return titoloService.getTitoliPerGenere(getIdGenereDaNome(nome), tipologia);
+    public CompletableFuture<List<Titolo>> getTitoliPerGenere(String nome, String tipologia, Integer pagina) throws Exception {
+        return titoloService.getTitoliPerGenerePaginaSingola(getIdGenereDaNome(nome), tipologia, pagina);
     }
 
     private Integer getIdGenereDaNome(String nome) {

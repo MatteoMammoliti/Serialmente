@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelSezioneFilm {
-    private TitoloService titoloService = new TitoloService();
-    private PreferenzeService preferenzeService = new PreferenzeService();
+    private final TitoloService titoloService = new TitoloService();
+    private final PreferenzeService preferenzeService = new PreferenzeService();
 
     public List<Titolo> getTitoliConsigliati() throws Exception {
 
