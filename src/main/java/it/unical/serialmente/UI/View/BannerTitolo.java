@@ -27,7 +27,7 @@ public class BannerTitolo extends VBox {
         this.immagineTitolo.setFitWidth(bannerLarghezza);
         this.immagineTitolo.setFitHeight(bannerAltezza);
         VBox.setVgrow(this.immagineTitolo, Priority.ALWAYS);
-        this.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-border-radius: 5;");
+        this.getStyleClass().add("banner-poster");
         this.getChildren().addAll(this.immagineTitolo,this.nomeTitolo,this.votoTitolo);
     }
 
