@@ -7,9 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 
 public interface SelezioneTitoloDAO {
-    List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista);
+    List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista,String tipologiaTitolo);
     boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
     boolean eliminaTitoloInLista(Integer idUtente,Integer idTitolo,String nomeLista);
     HashSet<Genere> restituisciGeneriVisionati(Integer idUtente);
     boolean controlloTitoloInListe(Integer idTitolo);
+    Integer getNumeroFilmVisionati(Integer idUtente);
+    Integer getMinutiVisioneFilm(Integer idUtente);
+    List<Integer> getIdSerieVisionate(Integer idUtente);
 }

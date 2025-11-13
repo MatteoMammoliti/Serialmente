@@ -13,57 +13,57 @@
        <ScrollPane fx:id="scrollPrincipale" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
            <VBox>
                <VBox>
-                   <Label text="NOVITÀ">
+                   <Label id="labelNovita" fx:id="labelNovita" text="NOVITÀ">
                        <font>
-                           <Font size="18.0"/>
+                           <Font size="18.0" />
                        </font>
                        <VBox.margin>
-                           <Insets bottom="5.0" left="5.0" top="5.0"/>
+                           <Insets bottom="5.0" left="5.0" top="5.0" />
                        </VBox.margin>
                    </Label>
-                   <ListView fx:id="listNovita" focusTraversable="false" orientation="HORIZONTAL" VBox.vgrow="NEVER"/>
+                   <ListView id="listNovita" fx:id="listNovita" focusTraversable="false" orientation="HORIZONTAL" VBox.vgrow="NEVER" />
                </VBox>
                <VBox>
                    <VBox.margin>
-                       <Insets top="20.0"/>
+                       <Insets top="20.0" />
                    </VBox.margin>
-                   <Label text="CONSIGLIATI">
+                   <Label id="labelConsigliati" text="CONSIGLIATI">
                        <font>
-                           <Font size="18.0"/>
+                           <Font size="18.0" />
                        </font>
                        <VBox.margin>
-                           <Insets bottom="5.0" left="5.0" top="15.0"/>
+                           <Insets bottom="5.0" left="5.0" top="15.0" />
                        </VBox.margin>
                    </Label>
-                   <ListView fx:id="listConsigliati" focusTraversable="false" orientation="HORIZONTAL" VBox.vgrow="NEVER" prefHeight="220"/>
+                   <ListView id="listConsigliati" fx:id="listConsigliati" focusTraversable="false" orientation="HORIZONTAL" prefHeight="220" VBox.vgrow="NEVER" />
                </VBox>
                <VBox layoutX="10.0" layoutY="242.0">
                    <VBox.margin>
-                       <Insets top="20.0"/>
+                       <Insets top="20.0" />
                    </VBox.margin>
-                   <Label text="POPOLARI">
+                   <Label id="labelPopolari" text="POPOLARI">
                        <font>
-                           <Font size="18.0"/>
+                           <Font size="18.0" />
                        </font>
                        <VBox.margin>
-                           <Insets bottom="5.0" left="5.0" top="15.0"/>
+                           <Insets bottom="5.0" left="5.0" top="15.0" />
                        </VBox.margin>
                    </Label>
-                   <ListView fx:id="listPopolari" focusTraversable="false" orientation="HORIZONTAL" VBox.vgrow="NEVER" prefHeight="220"/>
+                   <ListView id="listPopolari" fx:id="listPopolari" focusTraversable="false" orientation="HORIZONTAL" prefHeight="220" VBox.vgrow="NEVER" />
                </VBox>
                <VBox layoutX="10.0" layoutY="442.0">
                    <VBox.margin>
-                       <Insets top="20.0"/>
+                       <Insets top="20.0" />
                    </VBox.margin>
                    <Label text="GENERI">
                        <font>
-                           <Font size="18.0"/>
+                           <Font size="18.0" />
                        </font>
                        <VBox.margin>
-                           <Insets bottom="5.0" left="5.0" top="15.0"/>
+                           <Insets bottom="5.0" left="5.0" top="15.0" />
                        </VBox.margin>
                    </Label>
-                   <ListView fx:id="listGeneri" focusTraversable="false" orientation="HORIZONTAL" VBox.vgrow="NEVER" prefHeight="220"/>
+                   <ListView id="listGeneri" fx:id="listGeneri" focusTraversable="false" orientation="HORIZONTAL" prefHeight="220" VBox.vgrow="NEVER" />
                </VBox>
            </VBox>
        </ScrollPane>

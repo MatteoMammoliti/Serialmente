@@ -56,8 +56,8 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         try(PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idTitolo);
-            st.setInt(3, idEpisodio);
-            st.setInt(4, idStagione);
+            st.setInt(3, idStagione);
+            st.setInt(4, idEpisodio);
             st.setInt(5, annoPubblicazioneStagione);
             st.setString(6, descrizioneEpisodio);
             st.setInt(7, durataMinuti);
@@ -128,6 +128,20 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             while(rs.next()){
                 return rs.getInt("numero_progressivo_stagione");
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getNomeEpisodio(Integer idUtente, Integer idSerieTV) {
+        String query="SELECT nome_episodio FROM progressoserie WHERE id_utente=? AND id_serie=?";
+        try(PreparedStatement st = conn.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            st.setInt(2,idSerieTV);
+            ResultSet rs = st.executeQuery();
+            return  rs.getString("nome_episodio");
         }catch (Exception e){
             e.printStackTrace();
         }

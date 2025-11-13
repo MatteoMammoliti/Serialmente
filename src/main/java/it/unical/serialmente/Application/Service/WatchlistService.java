@@ -223,13 +223,27 @@ public class WatchlistService {
 
     public List<Titolo> restituisciTitoliInWatchlist() throws Exception {
 
-        List<Titolo> t = selezioneTitoloDao.restituisciTitoliInLista(
+        List<Titolo> titoliSerie = selezioneTitoloDao.restituisciTitoliInLista(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                "Watchlist"
+                "Watchlist","SerieTv"
         );
+        List<Titolo> titoliFilm = selezioneTitoloDao.restituisciTitoliInLista(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                "Watchlist","Film"
+        );
+        titoliSerie.addAll(titoliFilm);
 
-        titoloService.popolaListaSerieTV(t);
-        titoloService.rendiEpisodiVistiSerieTV(t);
-        return t;
+        titoloService.popolaListaSerieTV(titoliSerie);
+        titoloService.rendiEpisodiVistiSerieTV(titoliSerie);
+        return titoliSerie;
+    }
+    public String getNomeEpisodio(Integer idSerie){
+        return progressoDao.getNomeEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
+    public Integer getNumeroStagione(Integer idSerie){
+        return progressoDao.getNumeroProgressivoStagione(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
+    public Integer getNumeroEpisodio(Integer idSerie){
+        return  progressoDao.getNumeroProgressivoEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
     }
 }

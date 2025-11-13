@@ -9,6 +9,7 @@ module it.unical.serialmente.UI {
     requires java.sql;
     requires spring.security.crypto;
     requires javafx.base;
+    requires javafx.graphics;
 
     opens it.unical.serialmente.UI to javafx.fxml;
     opens it.unical.serialmente.UI.Controller to javafx.fxml;

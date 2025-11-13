@@ -103,6 +103,9 @@ public class ViewFactory {
 
         try {
             scene = new Scene(homePage.load());
+            scene.getStylesheets().add(
+                    getClass().getResource("/it/unical/serialmente/UI/Css/pagineFilm.css").toExternalForm()
+            );
         } catch (Exception e) {
             AlertHelper.nuovoAlert(
                     "Errore!",
@@ -200,6 +203,7 @@ public class ViewFactory {
                         "Errore durante l'apertura della pagina",
                         "Qualcosa è andato storto durante l'apertura della pagina di profilo utente"
                 );
+                e.printStackTrace();
             }
         }
         else if(paginaProfiloUtente.getParent() != null){

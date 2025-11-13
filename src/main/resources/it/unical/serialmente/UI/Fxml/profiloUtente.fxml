@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.SezioneUtenteController">
+   <center>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" BorderPane.alignment="CENTER">
+         <content>
+            <VBox>
+               <children>
+                  <VBox fx:id="contenitoreSalutiUtente">
+                     <children>
+                        <Label fx:id="labelSalutiUtente" text="Benevnuto utente" />
+                        <Label text="Label" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="contenitoreStatistiche">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="Statistiche:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <ScrollPane fx:id="scrollPaneStatistiche" fitToHeight="true" focusTraversable="false" pannable="true" prefHeight="150.0" vbarPolicy="NEVER">
+                           <content>
+                              <HBox fx:id="contenitoreCardStatistiche" spacing="15.0">
+                                 <children>
+                                    <VBox prefHeight="140.0" prefWidth="360.0" spacing="8.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                             <children>
+                                                <Label text="Tempo serie">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator style="-fx-background-color: black;" />
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="24.0">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="mesiTempoSerie" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Mesi" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="giorniTempoSerie" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Giorni" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="oreTempoSerie" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Ore" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                    <VBox layoutX="20.0" layoutY="10.0" prefHeight="140.0" prefWidth="360.0" spacing="8.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                             <children>
+                                                <Label text="Episodi visti">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator style="-fx-background-color: black;" />
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="24.0">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="numeroEpisodiVisti" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox layoutX="20.0" layoutY="10.0" prefHeight="140.0" prefWidth="360.0" spacing="8.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                             <children>
+                                                <Label text="Tempo film">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator style="-fx-background-color: black;" />
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="24.0">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="mesiTempoFim" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Mesi" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="giorniTempoFilm" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Giorni" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="oreTempoFilm" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="Ore" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                    <VBox layoutX="20.0" layoutY="10.0" prefHeight="140.0" prefWidth="360.0" spacing="8.0" style="-fx-border-color: black;">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="8.0">
+                                             <children>
+                                                <Label text="Film visti">
+                                                   <font>
+                                                      <Font size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Separator style="-fx-background-color: black;" />
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="24.0">
+                                             <children>
+                                                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                                   <children>
+                                                      <Label fx:id="numeroFilmVisti" text="0">
+                                                         <font>
+                                                            <Font size="24.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                    </VBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets></HBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="contenitoreSerieTvVisionate">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="Serie Tv visionate:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnMostraSerieVisionate" mnemonicParsing="false" prefHeight="26.0" prefWidth="34.0" text="-&gt;" />
+                           </children>
+                        </HBox>
+                        <ListView fx:id="listSerieVisionate" focusTraversable="false" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="contenitoreSerieTvPreferite">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="Serie Tv preferite:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnMostraSeriePreferite" mnemonicParsing="false" prefHeight="26.0" prefWidth="34.0" text="-&gt;" />
+                           </children>
+                        </HBox>
+                        <ListView fx:id="listSeriePreferite" focusTraversable="false" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="contenitoreFilmVisionati">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="Film visionati:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnMostraFilmVisionati" mnemonicParsing="false" prefHeight="26.0" prefWidth="34.0" text="-&gt;" />
+                           </children>
+                        </HBox>
+                        <ListView fx:id="listFilmVisionati" focusTraversable="false" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <VBox fx:id="contenitoreFimPreferiti">
+                     <children>
+                        <HBox spacing="10.0">
+                           <children>
+                              <Label text="Film preferiti:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="btnMostraFilmPreferiti" mnemonicParsing="false" prefHeight="26.0" prefWidth="34.0" text="-&gt;" />
+                           </children>
+                        </HBox>
+                        <ListView fx:id="listFilmPreferiti" focusTraversable="false" orientation="HORIZONTAL" prefHeight="200.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
