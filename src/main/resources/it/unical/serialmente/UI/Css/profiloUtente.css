@@ -1,0 +1,134 @@
+#scrollPaneStatistiche,
+ScrollPane {
+    -fx-background: #141414;
+    -fx-background-color: #141414;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #141414;
+}
+
+
+
+#contenitoreSalutiUtente {
+    -fx-padding: 20 0 10 20;
+}
+
+#labelSalutiUtente {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+#contenitoreSalutiUtente Label {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 14px;
+}
+
+
+
+#contenitoreStatistiche Label,
+#contenitoreSerieTvVisionate Label,
+#contenitoreSerieTvPreferite Label,
+#contenitoreFilmVisionati Label,
+#contenitoreFimPreferiti Label {
+    -fx-text-fill: #e5e5e5;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+
+
+#contenitoreCardStatistiche .card {
+    -fx-background-color: linear-gradient(to bottom, #262626, #1b1b1b);
+    -fx-border-color: #e50914;
+    -fx-border-width: 2;
+    -fx-padding: 8;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-min-width: 330;
+    -fx-max-width: 330;
+    -fx-min-height: 150;
+    -fx-spacing: 10;
+
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 20, 0.4, 0, 5);
+}
+
+
+#contenitoreCardStatistiche .card-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+
+#contenitoreCardStatistiche Separator {
+    -fx-background-color: #333333;
+}
+
+
+#contenitoreCardStatistiche .value-big {
+    -fx-text-fill: #e50914;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+#contenitoreCardStatistiche .value-label {
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 14px;
+}
+
+
+#contenitoreCardStatistiche .card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(229,9,20,0.6), 30, 0.5, 0, 8);
+    -fx-cursor: hand;
+}
+
+
+ListView {
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8 0 0;
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 20, 0.2, 0, 5);
+    -fx-cursor: hand;
+}
+
+
+.list-view .scroll-bar:vertical {
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+}
+
+
+
+#btnMostraSerieVisionate,
+#btnMostraSeriePreferite,
+#btnMostraFilmVisionati,
+#btnMostraFilmPreferiti {
+    -fx-background-color: #e50914;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 4;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+
+#btnMostraSerieVisionate:hover,
+#btnMostraSeriePreferite:hover,
+#btnMostraFilmVisionati:hover,
+#btnMostraFilmPreferiti:hover {
+    -fx-background-color: #f6121d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 12, 0.2, 0, 2);
+    -fx-cursor: hand;
+}

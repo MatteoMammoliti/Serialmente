@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SceltaPreferenzeController implements Initializable {
+public class ControllerSceltaPreferenze implements Initializable {
     @FXML private Button procediButton;
     @FXML private Label labelErrore;
     @FXML private MenuButton elencoPiattaforme;

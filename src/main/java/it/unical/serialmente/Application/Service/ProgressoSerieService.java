@@ -1,9 +1,7 @@
 package it.unical.serialmente.Application.Service;
 
 import it.unical.serialmente.Domain.model.SessioneCorrente;
-import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import javafx.util.Pair;
 

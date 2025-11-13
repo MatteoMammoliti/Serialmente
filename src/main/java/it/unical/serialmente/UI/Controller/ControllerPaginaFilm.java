@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PaginaFilmController implements Initializable {
+public class ControllerPaginaFilm implements Initializable {
 
     private final ModelSezioneFilm modelSezioneFilm = new ModelSezioneFilm();
     private final ExecutorService executor = Executors.newFixedThreadPool(4);

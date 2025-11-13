@@ -10,7 +10,7 @@ import javafx.scene.Node;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ContainerViewController implements Initializable {
+public class ControllerContainerView implements Initializable {
 
     @FXML private BorderPane contenitoreView;
 

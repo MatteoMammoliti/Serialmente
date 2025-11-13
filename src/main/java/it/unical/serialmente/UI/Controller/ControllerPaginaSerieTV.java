@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PaginaSerieTVController implements Initializable {
+public class ControllerPaginaSerieTV implements Initializable {
 
     public record TitoloData(String nome, double voto, String imageUrl) {}
 

@@ -2,23 +2,21 @@ package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelSezioneUtente;
-import it.unical.serialmente.UI.View.BannerTitolo;
 import it.unical.serialmente.UI.View.PosterSezioneUtente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SezioneUtenteController implements Initializable {
+public class ControllerSezioneUtente implements Initializable {
     public Label mesiTempoSerie;
     public Label giorniTempoSerie;
     public Label oreTempoSerie;
@@ -55,7 +53,7 @@ public class SezioneUtenteController implements Initializable {
         this.listSerieVisionate.setPrefHeight(dimensioneBannerini);
         this.listFilmPreferiti.setPrefHeight(dimensioneBannerini);
         this.listFilmVisionati.setPrefHeight(dimensioneBannerini);
-
+        this.contenitoreCardStatistiche.setPadding(new Insets(15));
         try {
             caricaSezione(listSerieVisionate,"Visionati","SerieTv");
             caricaSezione(listSeriePreferite,"Preferiti","SerieTv");

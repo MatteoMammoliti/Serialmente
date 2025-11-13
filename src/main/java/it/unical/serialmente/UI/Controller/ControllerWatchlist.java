@@ -2,16 +2,10 @@ package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Film;
 import it.unical.serialmente.Domain.model.Titolo;
-import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
-import it.unical.serialmente.UI.Model.ModelHomepage;
-import it.unical.serialmente.UI.Model.ModelSezioneSerieTv;
 import it.unical.serialmente.UI.Model.ModelWatchlist;
 import it.unical.serialmente.UI.View.BannerWatchlistFilm;
 import it.unical.serialmente.UI.View.BannerWatchlistSerieTv;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
@@ -21,13 +15,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class WatchlistController implements Initializable {
+public class ControllerWatchlist implements Initializable {
     public ListView<Titolo> listTitoli;
     public Button btnSfigliaTitoli;
     private final ModelWatchlist model = new ModelWatchlist();
-
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

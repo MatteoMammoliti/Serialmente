@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuController implements Initializable {
+public class ControllerMenu implements Initializable {
 
     @FXML private Button film;
     @FXML private Button serieTV;

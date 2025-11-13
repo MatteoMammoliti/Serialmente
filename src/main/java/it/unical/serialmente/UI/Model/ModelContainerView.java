@@ -1,11 +1,11 @@
 package it.unical.serialmente.UI.Model;
 
-import it.unical.serialmente.UI.Controller.ContainerViewController;
+import it.unical.serialmente.UI.Controller.ControllerContainerView;
 import it.unical.serialmente.UI.View.ViewFactory;
 
 public class ModelContainerView {
 
-    private ContainerViewController menuPagineController;
+    private ControllerContainerView menuPagineController;
 
     private static ModelContainerView model;
 
@@ -26,8 +26,8 @@ public class ModelContainerView {
 
     // GETTER
     public ViewFactory getViewFactory() { return viewFactory; }
-    public ContainerViewController getMenuPagineController() { return this.menuPagineController; }
+    public ControllerContainerView getMenuPagineController() { return this.menuPagineController; }
 
     // SETTER
-    public void setMenuPagineController(ContainerViewController controller) { this.menuPagineController = controller; }
+    public void setMenuPagineController(ControllerContainerView controller) { this.menuPagineController = controller; }
 }

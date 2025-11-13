@@ -16,7 +16,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class RegistrazioneController implements Initializable {
+public class ControllerRegistrazione implements Initializable {
 
     @FXML private Button loginButton;
     @FXML private Button signUpButton;
