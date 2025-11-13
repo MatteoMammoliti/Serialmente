@@ -1,6 +1,6 @@
 package it.unical.serialmente.UI.View;
 
-import it.unical.serialmente.UI.Model.ModelContainerMenuPagine;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -19,11 +19,11 @@ public class BannerGeneri extends VBox {
         this.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-border-radius: 5; -fx-font-size: 20;");
         this.getChildren().add(this.nomeGenere);
         this.setOnMouseClicked(e -> {
-            GrigliaTitoli g = ModelContainerMenuPagine.getInstance().getViewFactory().getGrigliaTitoli(
+            GrigliaTitoli g = ModelContainerView.getInstance().getViewFactory().getGrigliaTitoli(
                     this.nomeGenere.getText(),
                     this.tipologia
             );
-            ModelContainerMenuPagine.getInstance().getMenuPagineController().getContenitoreView().setCenter(g);
+            ModelContainerView.getInstance().getMenuPagineController().getContenitoreView().setCenter(g);
         });
     }
 

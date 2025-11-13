@@ -1,6 +1,6 @@
 package it.unical.serialmente.UI.Controller;
 
-import it.unical.serialmente.UI.Model.ModelContainerMenuPagine;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,23 +22,23 @@ public class MenuController implements Initializable {
 
     private void aggiungiListenersPulsanti() {
         this.film.setOnAction(_ ->
-                ModelContainerMenuPagine.getInstance().getViewFactory().getFinestraAttuale().set("Film")
+                ModelContainerView.getInstance().getViewFactory().getFinestraAttuale().set("Film")
         );
 
         this.serieTV.setOnAction(_ ->
-                ModelContainerMenuPagine.getInstance().getViewFactory().getFinestraAttuale().set("SerieTV")
+                ModelContainerView.getInstance().getViewFactory().getFinestraAttuale().set("SerieTV")
         );
 
         this.watchlist.setOnAction(_ ->
-                ModelContainerMenuPagine.getInstance().getViewFactory().getFinestraAttuale().set("Watchlist")
+                ModelContainerView.getInstance().getViewFactory().getFinestraAttuale().set("Watchlist")
         );
 
         this.areaUtente.setOnAction(_ ->
-                ModelContainerMenuPagine.getInstance().getViewFactory().getFinestraAttuale().set("ProfiloUtente")
+                ModelContainerView.getInstance().getViewFactory().getFinestraAttuale().set("ProfiloUtente")
         );
 
         this.logout.setOnAction(_ ->
-                ModelContainerMenuPagine.getInstance().getViewFactory().getFinestraAttuale().set("Logout")
+                ModelContainerView.getInstance().getViewFactory().getFinestraAttuale().set("Logout")
         );
     }
 }

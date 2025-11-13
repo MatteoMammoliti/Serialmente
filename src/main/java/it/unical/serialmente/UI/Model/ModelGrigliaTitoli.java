@@ -11,10 +11,10 @@ public class ModelGrigliaTitoli {
     private final TitoloService titoloService = new TitoloService();
 
     public CompletableFuture<List<Titolo>> getTitoliPerGenere(String nome, String tipologia, Integer pagina) throws Exception {
-        return titoloService.getTitoliPerGenerePaginaSingola(getIdGenereDaNome(nome), tipologia, pagina);
-    }
-
-    private Integer getIdGenereDaNome(String nome) {
-        return titoloService.getIdGenereDaNome(nome);
+        return titoloService.getTitoliPerGenerePaginaSingola(
+                titoloService.getIdGenereDaNome(nome),
+                tipologia,
+                pagina
+        );
     }
 }

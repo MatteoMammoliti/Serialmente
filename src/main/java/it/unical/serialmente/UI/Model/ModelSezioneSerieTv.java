@@ -14,13 +14,23 @@ public class ModelSezioneSerieTv {
     private final PreferenzeService preferenzeService = new PreferenzeService();
 
     public List<Titolo> getTitoliConsigliati() throws Exception {
-        return titoliService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
+        List<Titolo> g = titoliService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
                 preferenzeService.visualizzaPreferenzePiattaformeUtente(),
-                "tv");
+                "tv",
+                1);
+
+        g.addAll(titoliService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
+                preferenzeService.visualizzaPreferenzePiattaformeUtente(),
+                "tv",
+                2)
+        );
+        return g;
     }
 
     public List<Titolo> getTitoliPopolari() throws Exception {
-        return titoliService.getTitoliPiuVisti("tv");
+        List<Titolo> g = titoliService.getTitoliPiuVisti("tv", 1);
+        g.addAll(titoliService.getTitoliPiuVisti("tv", 2));
+        return g;
     }
 
     public List<Titolo> getTitoliNovita() throws Exception {

@@ -15,13 +15,24 @@ public class ModelSezioneFilm {
 
     public List<Titolo> getTitoliConsigliati() throws Exception {
 
-        return titoloService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
+        List<Titolo> g = titoloService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
                 preferenzeService.visualizzaPreferenzePiattaformeUtente(),
-                "movie");
+                "movie",
+                1);
+
+        g.addAll(
+                titoloService.getTitoliConsigliati(preferenzeService.visualizzaPreferenzeGenereUtente(),
+                        preferenzeService.visualizzaPreferenzePiattaformeUtente(),
+                        "movie",
+                        2)
+        );
+        return g;
     }
 
     public List<Titolo> getTitoliPopolari() throws Exception {
-        return titoloService.getTitoliPiuVisti("movie");
+        List<Titolo> g = titoloService.getTitoliPiuVisti("movie", 1);
+        g.addAll(titoloService.getTitoliPiuVisti("movie", 2));
+        return g;
     }
 
     public List<Titolo> getTitoliNovita() throws Exception {

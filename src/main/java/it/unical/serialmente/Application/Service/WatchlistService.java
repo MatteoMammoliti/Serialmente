@@ -4,7 +4,8 @@ import it.unical.serialmente.Application.Mapper.Mapper;
 import it.unical.serialmente.Domain.model.ContenitoreDatiProgressoSerie;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Titolo;
-import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
+import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
+import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
@@ -15,7 +16,8 @@ import java.util.List;
 
 public class WatchlistService {
 
-    private final TMDbAPI tmDbAPI = new  TMDbAPI();
+    private final TMDbRequest tmdbRequest = new TMDbRequest();
+    private final TMDbHttpClient tmdbHttpClient = new TMDbHttpClient();
     private final Mapper mapper = new Mapper();
     private final TitoloDAOPostgres titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
     private final SelezioneTitoloDAOPostgres selezioneTitoloDao = new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
@@ -46,7 +48,20 @@ public class WatchlistService {
             }
 
             if(titolo.getTipologia().equals("SerieTv")) {
-                ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(titolo.getIdTitolo(), 0, 0);
+                String urlSerieTV = tmdbRequest.getSerieTV(titolo.getIdTitolo());
+                String infoSerieTV = tmdbHttpClient.richiesta(urlSerieTV);
+
+                String urlStagione = "/tv/" +
+                    titolo.getIdTitolo() +
+                    "/season/" +
+                    progressoDao.getNumeroProgressivoStagione(
+                            SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                            titolo.getIdTitolo()
+                    );
+
+                String infoStagione = tmdbHttpClient.richiesta(urlStagione);
+
+                ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(infoSerieTV, infoStagione, 0, 0);
                 inserimentoConSuccesso = progressoDao.creaIstanzaProgressoSerie(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         titolo.getIdTitolo(),
@@ -113,9 +128,13 @@ public class WatchlistService {
     }
 
     public void rendiStagioneVisionata(Titolo titolo) throws Exception {
-        Integer idProssimaStagione = tmDbAPI.getIdProssimaStagione(titolo.getIdTitolo(), progressoDao.getIdStagioneCorrente(
-                SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                titolo.getIdTitolo())
+        String url = tmdbRequest.getSerieTV(titolo.getIdTitolo());
+        String rispostaIdProssimaStagione = tmdbHttpClient.richiesta(url);
+        Integer idProssimaStagione = mapper.parseIdProssimaStagione(
+                rispostaIdProssimaStagione,
+                progressoDao.getIdStagioneCorrente(
+                        SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                        titolo.getIdTitolo())
         );
 
         if(idProssimaStagione == null) {
@@ -123,8 +142,17 @@ public class WatchlistService {
             return;
         }
 
+        String infoSerieTV = tmdbHttpClient.richiesta(url);
+        String urlStagione = "/tv/" +
+            titolo.getIdTitolo() +
+            "/season/" +
+            progressoDao.getNumeroProgressivoStagione(
+                    SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                    titolo.getIdTitolo()
+            );
+        String infoStagione = tmdbHttpClient.richiesta(urlStagione);
         ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(
-                titolo.getIdTitolo(),
+                infoSerieTV, infoStagione,
                 progressoDao.getNumeroProgressivoStagione(SessioneCorrente.getUtenteCorrente().getIdUtente(), titolo.getIdTitolo()),
                 0
         );
@@ -139,11 +167,16 @@ public class WatchlistService {
     }
 
     public void rendiEpisodioVisionato(Titolo titolo) throws Exception {
-        Integer idProssimoEpisodio = tmDbAPI.getIdProssimoEpisodio(titolo.getIdTitolo(),
-                progressoDao.getNumeroProgressivoStagione(
-                        SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                        titolo.getIdTitolo()
-                ),
+        String urlProssimoEpisodio = tmdbRequest.getEpisodiDaStagione(
+            titolo.getIdTitolo(),
+            progressoDao.getNumeroProgressivoStagione(
+                    SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                    titolo.getIdTitolo()
+            )
+        );
+        String RispostaIdProssimoEpisodio = tmdbHttpClient.richiesta(urlProssimoEpisodio);
+        Integer idProssimoEpisodio = mapper.parseIdProssimoEpisodio(
+                RispostaIdProssimoEpisodio,
                 progressoDao.getIdEpisodioCorrente(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         titolo.getIdTitolo()
@@ -155,8 +188,19 @@ public class WatchlistService {
             return;
         }
 
+        String urlSerieTV = tmdbRequest.getSerieTV(titolo.getIdTitolo());
+        String infoSerieTV = tmdbHttpClient.richiesta(urlSerieTV);
+        String url = "/tv/" +
+                titolo.getIdTitolo() +
+                "/season/" +
+                progressoDao.getNumeroProgressivoStagione(
+                        SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                        titolo.getIdTitolo()
+                );
+        String infoStagione = tmdbHttpClient.richiesta(url);
         ContenitoreDatiProgressoSerie c = mapper.getDatiProgressoSerie(
-                titolo.getIdTitolo(),
+                infoSerieTV,
+                infoStagione,
                 progressoDao.getNumeroProgressivoStagione(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         titolo.getIdTitolo()

@@ -4,7 +4,7 @@ import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Utente;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelLogin;
-import it.unical.serialmente.UI.Model.ModelContainerMenuPagine;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,7 +24,7 @@ public class LoginController implements Initializable {
     @FXML private TextField showPassword;
     @FXML private Button eyeButton;
 
-    private final ViewFactory viewFactory = ModelContainerMenuPagine.getInstance().getViewFactory();
+    private final ViewFactory viewFactory = ModelContainerView.getInstance().getViewFactory();
     private final ModelLogin modelLogin = new ModelLogin();
 
     @Override

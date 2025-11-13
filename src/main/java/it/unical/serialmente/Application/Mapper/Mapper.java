@@ -1,7 +1,6 @@
 package it.unical.serialmente.Application.Mapper;
 
 import it.unical.serialmente.Domain.model.*;
-import it.unical.serialmente.TechnicalServices.API.TMDbAPI;
 import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,12 +11,8 @@ import java.util.List;
 
 public class Mapper {
 
-    private final TMDbAPI tmdb = new TMDbAPI();
-
-    public ContenitoreDatiProgressoSerie getDatiProgressoSerie(Integer idSerieTV, Integer indexStagione, Integer indexEpisodio) throws Exception {
-        String richiesta = "/tv/" + idSerieTV;
-        String risposta = tmdb.inviaRichiesta(richiesta);
-        JSONObject json = new JSONObject(risposta);
+    public ContenitoreDatiProgressoSerie getDatiProgressoSerie(String rispostaInfoSerieTV, String rispostaInfoStagione, Integer indexStagione, Integer indexEpisodio) throws Exception {
+        JSONObject json = new JSONObject(rispostaInfoSerieTV);
         JSONArray array = json.getJSONArray("seasons");
 
         JSONObject stagione =  array.getJSONObject(indexStagione);
@@ -26,9 +21,7 @@ public class Mapper {
         Integer annoPubblicazione = Integer.parseInt(airDate.substring(0,4));
         Integer numeroProgressivoStagione = stagione.getInt("season_number");
 
-        richiesta = "/tv/" + idSerieTV + "/season/" + numeroProgressivoStagione;
-        risposta = tmdb.inviaRichiesta(richiesta);
-        json = new JSONObject(risposta);
+        json = new JSONObject(rispostaInfoStagione);
         array = json.getJSONArray("episodes");
         Integer idPrimoEpisodio = array.getJSONObject(indexEpisodio).getInt("id");
         String descrizioneEpisodio =  array.getJSONObject(indexEpisodio ).optString("overview");
@@ -45,13 +38,9 @@ public class Mapper {
         );
     }
 
-    public JSONArray parseEpisodiDiUnaStagione(Integer idSerieTV, Integer numeroProgressivoStagione) throws Exception {
-        String risposta =  tmdb.getEpisodiDaStagione(idSerieTV, numeroProgressivoStagione);
+    public List<Episodio> parseEpisodiDiUnaStagione(String risposta) throws Exception {
         JSONObject json = new JSONObject(risposta);
-        return json.getJSONArray("episodes");
-    }
-
-    public List<Episodio> parseEpisodiDiUnaStagioneDaJSONArray(JSONArray array) throws Exception {
+        JSONArray array = json.getJSONArray("episodes");
         List<Episodio> episodi = new  ArrayList<>();
         for(int i = 0; i < array.length(); i++){
             JSONObject obj = array.getJSONObject(i);
@@ -65,12 +54,6 @@ public class Mapper {
         return episodi;
     }
 
-    public Titolo parseTitoloDaJSON(JSONObject object) throws Exception {
-        if(object.has("name")) return  parseSerieTVDaJSON(object);
-        if(object.has("title")) return parseFilmDaJSON(object);
-        return null;
-    }
-
     public Film parseFilmDaJSON(JSONObject object) throws Exception {
         int annoPubblicazioneFilm = estraiAnnoDaData(object.optString("release_date"));
         return new Film(object.getInt("id"),
@@ -78,7 +61,7 @@ public class Mapper {
                 object.optString("overview"),
                 object.optString("poster_path"),
                 object.getDouble("vote_average"),
-                tmdb.getDurataMinutiFilm(object.getInt("id")),
+                null,
                 annoPubblicazioneFilm
         );
     }
@@ -114,8 +97,68 @@ public class Mapper {
         return obj.getJSONArray(index);
     }
 
+    public Integer parseDurataFilm(String risposta) {
+        JSONObject json = new JSONObject(risposta);
+        return json.getInt("runtime");
+    }
+
+    public Integer parseIdProssimoEpisodio(String risposta, Integer idEpisodioAttuale) {
+        JSONObject json = new JSONObject(risposta);
+        JSONArray arrayRisposta = json.getJSONArray("episodes");
+        return getInteger(idEpisodioAttuale, arrayRisposta);
+    }
+
+    public Integer parseIdProssimaStagione(String risposta, Integer idStagioneAttuale) {
+        JSONObject json = new JSONObject(risposta);
+        JSONArray arrayRisposta = json.getJSONArray("seasons");
+        return getInteger(idStagioneAttuale, arrayRisposta);
+    }
+
+    public Integer parseNumeroEpisodiDaStagione(String risposta) {
+        JSONObject obj = new JSONObject(risposta);
+        return obj.optInt("number_of_episodes");
+    }
+
+    public List<Stagione> parseStagioni(String rispostaStagioni) throws Exception {
+        JSONArray stagioniArray = parseRisultato(rispostaStagioni, "seasons");
+        List<Stagione> stagioni = new ArrayList<>();
+        for(int i = 0; i < stagioniArray.length(); i++){
+            Stagione s = parseStagioneDaJSON(stagioniArray.getJSONObject(i));
+            stagioni.add(s);
+        }
+        return stagioni;
+    }
+
+    public List<Titolo> parseTitoli(String risposta, String tipologia) throws Exception {
+        JSONArray array = parseRisultato(risposta, "results");
+        List<Titolo> titoli = new ArrayList<>();
+
+        for(int i = 0; i < array.length(); i++){
+
+            JSONObject object = array.getJSONObject(i);
+            Titolo t = switch (tipologia) {
+                case "movie" -> parseFilmDaJSON(object);
+                case "tv" -> parseSerieTVDaJSON(object);
+                default -> null;
+            };
+
+            titoli.add(t);
+        }
+        return titoli;
+    }
+
     private int estraiAnnoDaData(String dataStr) {
         LocalDate data = LocalDate.parse(dataStr);
         return data.getYear();
+    }
+
+    private Integer getInteger(Integer id, JSONArray arrayRisposta) {
+        for(int i = 0; i < arrayRisposta.length() - 1; i++) {
+            JSONObject obj =  arrayRisposta.getJSONObject(i);
+            if(obj.getInt("id") == id) {
+                return arrayRisposta.getJSONObject(i + 1).getInt("id");
+            }
+        }
+        return null;
     }
 }

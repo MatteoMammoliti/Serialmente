@@ -63,6 +63,7 @@ public abstract class  Titolo {
     public void setVotoMedio(double votoMedio) {
         this.votoMedio = votoMedio;
     }
+
     public void setAnnoPubblicazione(Integer annoPubblicazione) {this.annoPubblicazione = annoPubblicazione;}
     public void aggiungiGenere(Genere genere) {
         this.generiPresenti.add(genere);
