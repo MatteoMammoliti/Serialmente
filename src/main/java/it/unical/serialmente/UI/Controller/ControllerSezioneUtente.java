@@ -44,11 +44,12 @@ public class ControllerSezioneUtente implements Initializable {
     public VBox contenitoreFimPreferiti;
     public Button btnMostraFilmPreferiti;
     public ListView<TitoloDato> listFilmPreferiti;
-    private ModelSezioneUtente modelSezioneUtente = new ModelSezioneUtente();
-    private final Integer dimensioneBannerini=250;
+    private final ModelSezioneUtente modelSezioneUtente = new ModelSezioneUtente();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.contenitoreSalutiUtente.setPrefHeight(300);
+        int dimensioneBannerini = 250;
         this.listSeriePreferite.setPrefHeight(dimensioneBannerini);
         this.listSerieVisionate.setPrefHeight(dimensioneBannerini);
         this.listFilmPreferiti.setPrefHeight(dimensioneBannerini);
