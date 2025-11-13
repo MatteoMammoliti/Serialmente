@@ -24,10 +24,7 @@ public class ViewFactory {
         this.finestraAttuale = new SimpleStringProperty("");
     }
 
-    /**
-     * Funzione per ottenere l'attuale pagina in cui si trova l'utente
-     * @return StringProperty finestraAttuale
-     */
+
     public StringProperty getFinestraAttuale() {
         return finestraAttuale;
     }
@@ -227,13 +224,19 @@ public class ViewFactory {
         this.grigliaTitoli = null;
     }
 
-    /**
-     * Funzione per chiudere la pagina che si sta lasciando durante una transizione
-     * @param stage
-     */
+
     public void closeStage(Stage stage) {
         if (stage != null) {
             stage.close();
         }
+    }
+
+    public void logout() {
+        paginaFilm = null;
+        paginaSerieTV = null;
+        watchlist = null;
+        paginaProfiloUtente = null;
+        grigliaTitoli = null;
+        this.mostraFinestraLogin();
     }
 }

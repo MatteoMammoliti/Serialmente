@@ -27,6 +27,7 @@ public class ControllerContainerView implements Initializable {
                 case "ProfiloUtente" -> ModelContainerView.getInstance().getViewFactory().getPaginaProfiloUtente();
                 case "Logout" -> {
                     SessioneCorrente.resetSessioneCorrente();
+                    ModelContainerView.getInstance().getViewFactory().logout();
                     yield null;
                 }
                 default -> null;
