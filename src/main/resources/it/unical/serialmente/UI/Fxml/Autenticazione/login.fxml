@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,92 +14,80 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerLogin"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../CSS/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerLogin">
 
     <right>
-        <HBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="330.0" BorderPane.alignment="CENTER">
-            <Pane prefHeight="500.0" prefWidth="345.0">
-                <Label contentDisplay="CENTER" layoutX="106.0" layoutY="157.0" text="Sei nuovo?" textFill="BLACK">
-                    <font>
-                        <Font name="Arial Bold" size="22.0"/>
-                    </font>
-                </Label>
-                <Label layoutX="102.0" layoutY="199.0" text="Entra a far parte&#10;della nostra famiglia"
-                       textAlignment="CENTER" textFill="BLACK">
-                    <font>
-                        <Font name="Arial Bold" size="13.0"/>
-                    </font>
-                </Label>
-                <Button fx:id="signupButton" layoutX="60.0" layoutY="266.0" mnemonicParsing="false"
-                        prefHeight="39.0" prefWidth="210.0" text="Registrati"/>
-                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"/>
-            </Pane>
+        <HBox alignment="CENTER" prefHeight="500.0" prefWidth="330.0" styleClass="right-pane">
+            <Pane styleClass="image-overlay" />
+
+            <VBox alignment="CENTER" layoutX="0" layoutY="0" spacing="10">
+
+                <Label styleClass="title-right" text="Sei nuovo?" />
+
+                <Label styleClass="subtitle-right" text="Entra a far parte della nostra famiglia" textAlignment="CENTER" />
+
+                <Button fx:id="signupButton" prefWidth="200" text="Registrati" />
+
+            </VBox>
         </HBox>
     </right>
     <center>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <AnchorPane id="sfondo_login" prefHeight="500.0" prefWidth="670.0">
-                <Text fill="black" layoutX="268.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Bentornato">
+                <Text fill="black" layoutX="193.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bentornato">
                     <font>
-                        <Font name="Arial Bold" size="25.0"/>
+                        <Font name="Arial Bold" size="25.0" />
                     </font>
                 </Text>
-                <VBox alignment="TOP_CENTER" layoutX="170.0" layoutY="99.0" prefHeight="357.0" prefWidth="330.0">
+                <VBox alignment="TOP_CENTER" layoutX="103.0" layoutY="82.0" prefHeight="357.0" prefWidth="330.0">
                     <padding>
-                        <Insets top="20.0"/>
+                        <Insets top="20.0" />
                     </padding>
                     <Label alignment="CENTER" prefHeight="20.0" prefWidth="82.0" text="Email:">
                         <font>
-                            <Font name="Arial Bold" size="14.0"/>
+                            <Font name="Arial Bold" size="14.0" />
                         </font>
                         <VBox.margin>
-                            <Insets top="5.0"/>
+                            <Insets top="5.0" />
                         </VBox.margin>
                     </Label>
                     <TextField fx:id="textEmail" prefWidth="330.0">
                         <opaqueInsets>
-                            <Insets/>
+                            <Insets />
                         </opaqueInsets>
                         <VBox.margin>
-                            <Insets top="5.0"/>
+                            <Insets top="5.0" />
                         </VBox.margin>
                     </TextField>
                     <Label alignment="CENTER" prefHeight="20.0" prefWidth="169.0" text="Password:">
                         <font>
-                            <Font name="Arial Bold" size="14.0"/>
+                            <Font name="Arial Bold" size="14.0" />
                         </font>
                         <VBox.margin>
-                            <Insets top="15.0"/>
+                            <Insets top="15.0" />
                         </VBox.margin>
                     </Label>
                     <StackPane prefWidth="330.0">
-                        <PasswordField fx:id="passwordField" prefWidth="330.0"/>
-                        <TextField fx:id="showPassword" visible="false"/>
+                        <PasswordField fx:id="passwordField" prefWidth="330.0" />
+                        <TextField fx:id="showPassword" visible="false" />
                     </StackPane>
                     <VBox prefHeight="0.0" prefWidth="330.0">
                         <VBox.margin>
-                            <Insets top="3.0"/>
+                            <Insets top="3.0" />
                         </VBox.margin>
                     </VBox>
-                    <Label fx:id="labelLoginError" prefHeight="18.0" prefWidth="332.0"
-                           text="Email o Password errati.." textFill="#ff0000" visible="false">
+                    <Label fx:id="labelLoginError" prefHeight="18.0" prefWidth="332.0" text="Email o Password errati.." textFill="#ff0000" visible="false">
                         <font>
-                            <Font name="Arial" size="12.0"/>
+                            <Font name="Arial" size="12.0" />
                         </font>
                     </Label>
-                    <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="642.0"
-                            text="Accedi">
+                    <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="642.0" text="Accedi">
                         <VBox.margin>
-                            <Insets top="30.0"/>
+                            <Insets top="30.0" />
                         </VBox.margin>
                     </Button>
                 </VBox>
-                <Button fx:id="eyeButton" layoutX="510.0" layoutY="217.0" mnemonicParsing="false" text="🔍"
-                        textFill="#27374d"/>
+                <Button fx:id="eyeButton" layoutX="423.0" layoutY="202.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="125.0" text="🔍" textFill="#27374d" />
             </AnchorPane>
         </HBox>
     </center>
