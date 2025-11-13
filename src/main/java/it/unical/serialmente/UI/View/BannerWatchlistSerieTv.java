@@ -12,9 +12,9 @@ import java.util.Objects;
 
 public class BannerWatchlistSerieTv extends HBox {
     private final CacheImmagini cache=CacheImmagini.getInstance();
-    private static final Image PLACEHOLDER =
+    private final Image PLACEHOLDER =
             new Image(Objects.requireNonNull(
-                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/GeneriImg/action.png")).toExternalForm()
+                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
             );
     private final ImageView immagineTitolo= new ImageView();
     private final VBox contenitoreInfo = new VBox();

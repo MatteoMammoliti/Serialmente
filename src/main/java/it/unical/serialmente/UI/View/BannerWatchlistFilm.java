@@ -11,9 +11,9 @@ import java.util.Objects;
 
 public class BannerWatchlistFilm extends HBox {
     private final CacheImmagini cache=CacheImmagini.getInstance();
-    private static final Image PLACEHOLDER =
+    private final Image PLACEHOLDER =
             new Image(Objects.requireNonNull(
-                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/GeneriImg/action.png")).toExternalForm()
+                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
             );
     private final ImageView immagineTitolo= new ImageView();
     private final VBox contenitoreInfo = new VBox();
@@ -31,8 +31,9 @@ public class BannerWatchlistFilm extends HBox {
         this.getChildren().addAll(immagineTitolo,contenitoreInfo,btnAggiungiVisionati);
     }
     public void update(String nome,Integer durata,String imgUrl){
+        System.out.println("CARICO" + nome);
         this.labelTitolo.setText(nome != null ? nome:"");
-        this.labelDurataFilm.setText(durata != null ? String.valueOf(durata):"");
+        this.labelDurataFilm.setText(durata != null ? durata.toString():"");
         this.immagineTitolo.setImage(PLACEHOLDER);
         if(imgUrl!=null && !imgUrl.isEmpty()){
             Image img = cache.getImg(imgUrl);

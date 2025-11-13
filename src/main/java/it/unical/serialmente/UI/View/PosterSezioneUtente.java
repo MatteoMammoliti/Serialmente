@@ -9,9 +9,9 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 
 public class PosterSezioneUtente extends VBox {
-    private static final Image PLACEHOLDER =
+    private final Image PLACEHOLDER =
             new Image(Objects.requireNonNull(
-                    PosterSezioneUtente.class.getResource("/it/unical/serialmente/UI/GeneriImg/action.png")).toExternalForm()
+                    PosterSezioneUtente.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
             );
     private final CacheImmagini cache = CacheImmagini.getInstance();
     private final ImageView immagineTitolo= new ImageView();

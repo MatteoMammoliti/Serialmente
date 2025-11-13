@@ -48,6 +48,8 @@ public class SezioneUtenteService {
 
     public ModelSezioneUtente.StatisticheSerieTv getStatisticheSerieTv() throws Exception{
         List<Integer> listaSerieTvVisionate = selezioneTitoloDAOPostgres.getIdSerieVisionate(SessioneCorrente.getUtenteCorrente().getIdUtente());
+        List<Integer> listaSerieTvInCorso= progressoSerieService.getIdserieInCorso();
+        listaSerieTvVisionate.addAll(listaSerieTvInCorso);
         Integer minutiTotali=0;
         Integer episodiTotali=0;
         for (Integer idserie : listaSerieTvVisionate) {

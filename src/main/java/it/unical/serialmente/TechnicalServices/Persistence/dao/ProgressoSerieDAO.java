@@ -5,6 +5,8 @@ import it.unical.serialmente.Domain.model.Episodio;
 import it.unical.serialmente.Domain.model.Stagione;
 import it.unical.serialmente.Domain.model.Titolo;
 
+import java.util.List;
+
 public interface ProgressoSerieDAO {
     boolean cambiaEpisodioCorrente(Integer idUtente, Integer idSerieTV, String descrizioneEpisodio, Integer durataEpisodio,  Integer idEpisodioProssimo, Integer numeroProgressivoEpisodio);
     boolean cambiaStagioneCorrente(Integer idUtente, Integer idSerieTV, Integer annoPubblicazione, Integer idStagioneProssima, Integer numeroProgressivoStagione);
@@ -15,4 +17,5 @@ public interface ProgressoSerieDAO {
     Integer getNumeroProgressivoEpisodio(Integer idUtente, Integer idSerieTV);
     Integer getNumeroProgressivoStagione(Integer idUtente, Integer idSerieTV);
     String getNomeEpisodio(Integer idUtente, Integer idSerieTV);
+    List<Integer> getStagioniInCorso(Integer idUtente);
 }

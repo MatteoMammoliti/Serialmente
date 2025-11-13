@@ -67,7 +67,9 @@ public class TitoloService {
         int sommaMinuti = 0;
         for(int i = 1; i < numProgressivoStagione; i++){
             String url = tmdbRequest.getEpisodiDaStagione(idSerieTV, i);
+            System.out.println(url);
             String risposta = tmdbHttpClient.richiesta(url);
+            System.out.println(risposta);
             List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
 
             for(Episodio episodio : episodi) {
@@ -76,7 +78,9 @@ public class TitoloService {
         }
 
         String url = tmdbRequest.getEpisodiDaStagione(idSerieTV, numProgressivoStagione);
+        System.out.println(url);
         String risposta = tmdbHttpClient.richiesta(url);
+        System.out.println(risposta);
         List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
 
         for(Episodio episodio : episodi) {
@@ -87,6 +91,7 @@ public class TitoloService {
 
         return sommaMinuti;
     }
+
 
     public CompletableFuture<List<Titolo>> loadPage(Integer idGenere, String tipologia, Integer pagina) {
         return CompletableFuture.supplyAsync(() -> {

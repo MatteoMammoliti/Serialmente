@@ -5,6 +5,8 @@ import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import javafx.util.Pair;
 
+import java.util.List;
+
 public class ProgressoSerieService {
 
     private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(
@@ -30,8 +32,12 @@ public class ProgressoSerieService {
         );
 
         Integer numEpisodiPerStagione = titoloService.getNumeroEpisodiStagione(idSerieTV);
-        Integer numEpisodiVisti = titoloService.sommaEpisodiVisti(idSerieTV, numEpisodiPerStagione) + numProgressivoEpisodio - 1;
+        Integer numEpisodiVisti = titoloService.sommaEpisodiVisti(idSerieTV, numProgressivoStagione) + numProgressivoEpisodio - 1;
         Integer sommaMinuti = titoloService.sommaMinutiEpisodiVisti(idSerieTV, numProgressivoStagione, idEpisodioCorrente);
         return new Pair<>(sommaMinuti, numEpisodiVisti);
+    }
+
+    public List<Integer> getIdserieInCorso(){
+        return progressoSerieDao.getStagioniInCorso(SessioneCorrente.getUtenteCorrente().getIdUtente());
     }
 }

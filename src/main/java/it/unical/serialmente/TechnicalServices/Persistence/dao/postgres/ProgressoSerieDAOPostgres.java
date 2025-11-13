@@ -7,6 +7,8 @@ import javafx.util.Pair;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
     Connection conn;
@@ -146,6 +148,22 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Integer> getStagioniInCorso(Integer idUtente) {
+        List<Integer> idSerie=new ArrayList<>();
+        String query="SELECT id_serie FROM progressoserie WHERE id_utente=?";
+        try(PreparedStatement st = conn.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                idSerie.add(rs.getInt("id_serie"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return idSerie;
     }
 
     @Override

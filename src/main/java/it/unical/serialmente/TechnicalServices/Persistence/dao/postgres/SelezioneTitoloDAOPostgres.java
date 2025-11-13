@@ -214,7 +214,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             st.setString(3,"Visionati");
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                return rs.getInt(1);
+                return rs.getInt("totale_minuti");
             }
 
         }catch (Exception e){
