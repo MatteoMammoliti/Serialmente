@@ -1,5 +1,6 @@
 package it.unical.serialmente.UI.Controller;
 
+import it.unical.serialmente.Domain.model.Film;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
@@ -24,7 +25,7 @@ public class WatchlistController implements Initializable {
     public ListView<Titolo> listTitoli;
     public Button btnSfigliaTitoli;
     private final ModelWatchlist model = new ModelWatchlist();
-    private final ModelSezioneSerieTv modelHomepage = new ModelSezioneSerieTv();
+
 
 
 
@@ -38,7 +39,7 @@ public class WatchlistController implements Initializable {
     }
 
     public void popolaLista() throws Exception {
-        List<Titolo> titoli = modelHomepage.getTitoliNovita();
+        List<Titolo> titoli = model.getTitoliInWatchlist();
 
         listTitoli.setCellFactory(lv -> new ListCell<>() {
             private final BannerWatchlistFilm bannerFilm = new BannerWatchlistFilm();
@@ -53,8 +54,9 @@ public class WatchlistController implements Initializable {
                 }
                 String tipo = t.getTipologia();
                 if ("FilmS".equalsIgnoreCase(tipo)) {
-                    bannerFilm.update(t.getImmagine());
-                    //setGraphic(bannerFilm);
+                    Film titolo = (Film)t;
+                    bannerFilm.update(titolo.getNomeTitolo(),titolo.getDurataMinuti(),titolo.getImmagine());
+                    setGraphic(bannerFilm);
                 } else if ("SerieTv".equalsIgnoreCase(tipo)) {
                     bannerSerie.update(t.getNomeTitolo(),model.getNumeroStagione(t.getIdTitolo()),model.getNumeroEpisodio(t.getIdTitolo()),
                             model.getNomeEpisodio(t.getIdTitolo()),t.getImmagine());

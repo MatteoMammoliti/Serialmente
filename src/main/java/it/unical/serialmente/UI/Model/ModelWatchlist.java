@@ -1,20 +1,24 @@
 package it.unical.serialmente.UI.Model;
 
-import it.unical.serialmente.Domain.model.SessioneCorrente;
-import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
+import it.unical.serialmente.Application.Service.WatchlistService;
+import it.unical.serialmente.Domain.model.Titolo;
+
+import java.util.List;
 
 public class ModelWatchlist {
-    private final ProgressoSerieDAOPostgres progressoSerieDAO = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
-
+    private final WatchlistService watchlistService = new WatchlistService();
 
     public Integer getNumeroStagione(Integer idSerie){
-        return progressoSerieDAO.getNumeroProgressivoStagione(SessioneCorrente.getUtenteCorrente().getIdUtente(), idSerie);
+        return watchlistService.getNumeroStagione(idSerie);
     }
     public Integer getNumeroEpisodio(Integer idSerie){
-        return progressoSerieDAO.getNumeroProgressivoEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(), idSerie);
+        return watchlistService.getNumeroEpisodio(idSerie);
     }
     public String getNomeEpisodio(Integer idSerie){
-        return progressoSerieDAO.getNomeEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(), idSerie);
+        return watchlistService.getNomeEpisodio(idSerie);
+    }
+
+    public List<Titolo> getTitoliInWatchlist() throws Exception {
+        return watchlistService.restituisciTitoliInWatchlist();
     }
 }

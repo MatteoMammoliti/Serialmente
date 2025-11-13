@@ -191,4 +191,13 @@ public class WatchlistService {
         titoloService.rendiEpisodiVistiSerieTV(titoliSerie);
         return titoliSerie;
     }
+    public String getNomeEpisodio(Integer idSerie){
+        return progressoDao.getNomeEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
+    public Integer getNumeroStagione(Integer idSerie){
+        return progressoDao.getNumeroProgressivoStagione(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
+    public Integer getNumeroEpisodio(Integer idSerie){
+        return  progressoDao.getNumeroProgressivoEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
 }
