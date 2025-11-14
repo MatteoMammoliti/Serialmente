@@ -76,7 +76,6 @@ public class TitoloDAOPostgres implements TitoloDAO {
         String queryInserimentoGeneri="INSERT into appartiene (id_titolo,id_genere) VALUES(?,?) ";
         String queryInserimentoPiattaforme="INSERT INTO trasmessosu (id_titolo,id_piattaforma) VALUES(?,?)";
 
-        con.setAutoCommit(false);
         try(PreparedStatement stTitolo=con.prepareStatement(queryInserimentoTitolo);
             PreparedStatement stGeneri=con.prepareStatement(queryInserimentoGeneri);
             PreparedStatement stPiattafome=con.prepareStatement(queryInserimentoPiattaforme)){
@@ -91,7 +90,11 @@ public class TitoloDAOPostgres implements TitoloDAO {
             }
             else {
                 Film titoloFilm=(Film) titolo;
-                stTitolo.setInt(7,(titoloFilm.getDurataMinuti()));
+                if(titoloFilm.getDurataMinuti()!=null){
+                    stTitolo.setInt(7,(titoloFilm.getDurataMinuti()));
+                }else{
+                    stTitolo.setInt(7,0);
+                }
             }
             stTitolo.setInt(8,titolo.getAnnoPubblicazione());
             stTitolo.executeUpdate();
@@ -120,8 +123,6 @@ public class TitoloDAOPostgres implements TitoloDAO {
             System.out.println("Errore inserimento titolo nel DB");
             return false;
 
-        }finally {
-            con.setAutoCommit(true);
         }
     }
 

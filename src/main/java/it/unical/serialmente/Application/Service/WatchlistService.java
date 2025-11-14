@@ -252,4 +252,12 @@ public class WatchlistService {
     public Integer getNumeroEpisodio(Integer idSerie){
         return  progressoDao.getNumeroProgressivoEpisodio(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
     }
+
+    public boolean controlloPresenzaTitoloInListe(Integer idTitolo){
+        return selezioneTitoloDao.controlloTitoloInListeUtente(SessioneCorrente.getUtenteCorrente().getIdUtente(),idTitolo);
+    }
+    public boolean controlloPresenzaSerieTvInListe(Integer idSerie){
+        return selezioneTitoloDao.controlloTitoloInListeUtente(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie)&&
+                progressoDao.controlloSerieTvInCorso(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
 }

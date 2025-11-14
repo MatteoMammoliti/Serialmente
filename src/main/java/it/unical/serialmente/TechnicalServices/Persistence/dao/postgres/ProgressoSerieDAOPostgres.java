@@ -149,6 +149,38 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
     }
 
     @Override
+    public List<Integer> getStagioniInCorso(Integer idUtente) {
+        List<Integer> idSerie=new ArrayList<>();
+        String query="SELECT id_serie FROM progressoserie WHERE id_utente=?";
+        try(PreparedStatement st = conn.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                idSerie.add(rs.getInt("id_serie"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return idSerie;
+    }
+
+    @Override
+    public boolean controlloSerieTvInCorso(Integer idUtente, Integer idSerieTV) {
+        String query="SELECT 1 FROM  progressoserie WHERE id_utente=? AND id_serie=?";
+        try(PreparedStatement st = conn.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            st.setInt(2,idSerieTV);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    @Override
     public Integer getNumeroProgressivoEpisodio(Integer idUtente, Integer idSerieTV) {
         String query="SELECT numero_progressivo_episodio FROM progressoserie WHERE id_utente=? AND id_serie=?";
         try(PreparedStatement st = conn.prepareStatement(query)){
@@ -182,11 +214,3 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         try(PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             ResultSet rs = st.executeQuery();
-
-            while (rs.next()) p.add(rs.getInt("id_serie"));
-            return p;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}

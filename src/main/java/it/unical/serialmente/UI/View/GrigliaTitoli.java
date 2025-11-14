@@ -96,11 +96,7 @@ public class GrigliaTitoli extends BorderPane {
             Titolo t = titoli.get(i);
 
             BannerTitolo banner = new BannerTitolo();
-            banner.update(
-                    t.getNomeTitolo(),
-                    (int) t.getVotoMedio(),
-                    t.getImmagine()
-            );
+            banner.update(t);
 
             griglia.getChildren().add(banner);
         }

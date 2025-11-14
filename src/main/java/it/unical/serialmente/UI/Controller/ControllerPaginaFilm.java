@@ -36,7 +36,7 @@ public class ControllerPaginaFilm implements Initializable {
     @FXML
     public ScrollPane scrollPrincipale;
 
-    public record TitoloData(String nome, double voto, String imageUrl) {}
+    public record TitoloData(Titolo titolo) {}
     public ListView<TitoloData> listNovita;
 
     @Override
@@ -68,7 +68,7 @@ public class ControllerPaginaFilm implements Initializable {
                 if(empty || data == null){
                     setGraphic(null);
                 }else {
-                    bannerTitolo.update(data.nome, (int) data.voto,data.imageUrl);
+                    bannerTitolo.update(data.titolo);
                     setGraphic(bannerTitolo);
                 }
             }
@@ -140,7 +140,7 @@ public class ControllerPaginaFilm implements Initializable {
 
                 ObservableList<TitoloData> dati = FXCollections.observableArrayList();
                 for (Titolo titolo : titoli) {
-                    dati.add(new TitoloData(titolo.getNomeTitolo(), titolo.getVotoMedio(), titolo.getImmagine()));
+                    dati.add(new TitoloData(titolo));
                 }
                 return dati;
             }
