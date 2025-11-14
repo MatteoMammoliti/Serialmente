@@ -51,7 +51,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         });
     }
 
-    public void init(Titolo titolo) throws SQLException {
+    public void init(Titolo titolo) throws Exception {
         SerieTV serie=(SerieTV) titolo;
         this.serie=serie;
         this.labelTitoloSerie.setText(this.serie.getNomeTitolo());
@@ -60,10 +60,16 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         caricaStagioni(this.serie.getStagioni());
         aggiornaBottone();
         caricaPiattaforme(serie.getPiattaforme());
+        caricaGeneri(modelPagineInfoSerieTv.getGeneriSerie(this.serie.getIdTitolo()));
 
 
     }
 
+    private void caricaGeneri(List<Genere> generi){
+        for(Genere g:generi){
+            this.labelGeneriSerie.setText(g.getNomeGenere()+" ");
+        }
+    }
     private void caricaStagioni(List<Stagione> stagioni){
         for(int i=0;i<stagioni.size();i++){
             TitledPane pane= new TitledPane();
@@ -119,7 +125,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
 
     private void caricaPiattaforme(List<Piattaforma> piattaforme) throws SQLException {
         for(Piattaforma p:piattaforme){
-            BannerinoPiattaforme banner = new BannerinoPiattaforme(p.getImmagine());
+            BannerinoPiattaforme banner = new BannerinoPiattaforme(p.getImgUrl());
             this.contenitorePiattafome.getChildren().add(banner);
         }
     }

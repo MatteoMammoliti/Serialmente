@@ -44,7 +44,7 @@ public class ControllerWatchlist implements Initializable {
                     return;
                 }
                 String tipo = t.getTipologia();
-                if ("FilmS".equalsIgnoreCase(tipo)) {
+                if ("Film".equalsIgnoreCase(tipo)) {
                     Film titolo = (Film)t;
                     bannerFilm.update(titolo.getNomeTitolo(),titolo.getDurataMinuti(),titolo.getImmagine());
                     setGraphic(bannerFilm);

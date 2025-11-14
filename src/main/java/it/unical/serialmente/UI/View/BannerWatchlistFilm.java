@@ -1,53 +1,81 @@
 package it.unical.serialmente.UI.View;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-
-import java.util.Objects;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 public class BannerWatchlistFilm extends HBox {
-    private final CacheImmagini cache=CacheImmagini.getInstance();
-    private static Image PLACEHOLDER = loadPlaceholder();
-    private final ImageView immagineTitolo= new ImageView();
-    private final Label labelTitolo = new Label();
-    private final Label labelDurataFilm = new Label();
+
+
+    private final ImageView imageViewPoster;
+    private final Label labelNome;
+    private final Label labelDurata;
+    private final Button btnRimuovi;
+    private final Button btnVisionato;
+
+    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
 
     public BannerWatchlistFilm() {
-        this.setPrefHeight(150);
-        this.immagineTitolo.setFitHeight(150);
-        this.immagineTitolo.setFitWidth(150);
-        this.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-border-radius: 5;");
         this.setAlignment(Pos.CENTER_LEFT);
-        VBox contenitoreInfo = new VBox();
-        contenitoreInfo.setAlignment(Pos.CENTER_LEFT);
-        contenitoreInfo.getChildren().addAll(labelTitolo,labelDurataFilm);
-        Button btnAggiungiVisionati = new Button();
-        this.getChildren().addAll(immagineTitolo, contenitoreInfo, btnAggiungiVisionati);
-    }
+        this.setSpacing(15.0);
+        this.getStyleClass().add("card-film");
+        this.setPadding(new Insets(10.0));
+        this.setPrefHeight(100.0);
 
-    public void update(String nome,Integer durata,String imgUrl){
-        this.labelTitolo.setText(nome != null ? nome:"");
-        this.labelDurataFilm.setText(durata != null ? String.valueOf(durata):"");
-        this.immagineTitolo.setImage(PLACEHOLDER);
-        if(imgUrl!=null && !imgUrl.isEmpty()){
-            Image img = cache.getImg(imgUrl);
-            this.immagineTitolo.setImage(img);
-        }
-    }
+        imageViewPoster = new ImageView();
+        imageViewPoster.setFitHeight(80.0);
+        imageViewPoster.setFitWidth(60.0);
+        imageViewPoster.setPreserveRatio(true);
+        imageViewPoster.getStyleClass().add("poster-card");
 
-    private static Image loadPlaceholder() {
-        if (PLACEHOLDER != null) return PLACEHOLDER;
-        var url = PosterSezioneUtente.class.getResource(
-                "/it/unical/serialmente/UI/Images/Generi/action.png"
+
+        labelNome = new Label("Nome del Film");
+        labelNome.getStyleClass().add("titolo-card");
+
+        labelDurata = new Label("Durata: N/D");
+        labelDurata.getStyleClass().add("metadati-card");
+
+        VBox dettagliVBox = new VBox(labelNome, labelDurata);
+        dettagliVBox.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(dettagliVBox, Priority.ALWAYS);
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        btnRimuovi = new Button("✕");
+        btnRimuovi.getStyleClass().add("btn-rimuovi-card");
+        HBox.setMargin(btnRimuovi, new Insets(0, 5.0, 0, 0));
+
+        btnVisionato = new Button("✓ Visionato");
+        btnVisionato.getStyleClass().add("btn-visionato-card");
+        HBox.setMargin(btnVisionato, new Insets(0, 10.0, 0, 0));
+
+        this.getChildren().addAll(
+                imageViewPoster,
+                dettagliVBox,
+                spacer,
+                btnRimuovi,
+                btnVisionato
         );
-
-        if (url != null) {
-            PLACEHOLDER = new Image(url.toExternalForm());
-        }
-        return PLACEHOLDER;
     }
+    public void update(String nomeTitolo, Integer durata, String immaginePath) {
+        labelNome.setText(nomeTitolo);
+        labelDurata.setText("Durata: " + (durata != null ? durata.toString() + " min" : "N/D"));
+
+
+        if (immaginePath != null && !immaginePath.isEmpty()) {
+            String imageUrl = IMAGE_BASE_URL + immaginePath;
+            imageViewPoster.setImage(new Image(imageUrl, true));
+        } else {
+            imageViewPoster.setImage(null);
+        }
+    }
+
 }

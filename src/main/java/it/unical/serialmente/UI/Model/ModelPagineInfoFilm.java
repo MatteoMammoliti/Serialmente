@@ -12,7 +12,7 @@ public class ModelPagineInfoFilm {
     private final WatchlistService watchlistService = new WatchlistService();
 
     public List<Genere> getGeneriFilm(Integer idTitolo) throws Exception {
-        return titoloService.getGeneriTitolo(idTitolo);
+        return null;
     }
 
     public boolean controlloPresenzaTitoloWatchlist(Integer idTitolo) throws Exception {

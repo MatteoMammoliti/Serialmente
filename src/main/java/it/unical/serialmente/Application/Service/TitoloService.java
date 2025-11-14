@@ -185,49 +185,49 @@ public class TitoloService {
         return titoli;
     }
 
-    public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
+//    public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
+//
+//        for (Titolo titolo : titoli) {
+//
+//            if (titolo.getTipologia().equals("SerieTv")) {
+//
+//                List<Stagione> stagioni = getStagioni(titolo.getIdTitolo());
+//                SerieTV s = (SerieTV) titolo;
+//
+//                for (Stagione stagione : stagioni) {
+//                    List<Episodio> episodi = getEpisodi(titolo.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
+//                    stagione.setEpisodi(episodi);
+//                }
+//                s.setStagioni(stagioni);
+//            }
+//        }
+//    }
 
-        for (Titolo titolo : titoli) {
-
-            if (titolo.getTipologia().equals("SerieTv")) {
-
-                List<Stagione> stagioni = getStagioni(titolo.getIdTitolo());
-                SerieTV s = (SerieTV) titolo;
-
-                for (Stagione stagione : stagioni) {
-                    List<Episodio> episodi = getEpisodi(titolo.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
-                    stagione.setEpisodi(episodi);
-                }
-                s.setStagioni(stagioni);
-            }
-        }
-    }
-
-    public void rendiEpisodiVistiSerieTV(List<Titolo> titoli) throws Exception {
-
-        for (Titolo titolo : titoli) {
-            if (titolo.getTipologia().equals("SerieTv")) {
-                SerieTV s = (SerieTV) titolo;
-
-                ContenitoreDatiProgressoSerie c = progressoSerieDao.getDatiCorrenti(
-                        SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                        s
-                );
-
-                for (int k = 0; k < s.getStagioni().size(); k++) {
-                    Stagione stagione = s.getStagioni().get(k);
-
-                    for (int j = 0; j < stagione.getEpisodi().size(); j++) {
-                        if (!Objects.equals(stagione.getEpisodi().get(j).getIdEpisodio(), c.idEpisodio)) {
-                            stagione.getEpisodi().get(j).setVisualizzato(true);
-                        } else return;
-                    }
-
-                    stagione.setCompletata(true);
-                }
-            }
-        }
-    }
+//    public void rendiEpisodiVistiSerieTV(List<Titolo> titoli) throws Exception {
+//
+//        for (Titolo titolo : titoli) {
+//            if (titolo.getTipologia().equals("SerieTv")) {
+//                SerieTV s = (SerieTV) titolo;
+//
+//                ContenitoreDatiProgressoSerie c = progressoSerieDao.getDatiCorrenti(
+//                        SessioneCorrente.getUtenteCorrente().getIdUtente(),
+//                        s
+//                );
+//
+//                for (int k = 0; k < s.getStagioni().size(); k++) {
+//                    Stagione stagione = s.getStagioni().get(k);
+//
+//                    for (int j = 0; j < stagione.getEpisodi().size(); j++) {
+//                        if (!Objects.equals(stagione.getEpisodi().get(j).getIdEpisodio(), c.idEpisodio)) {
+//                            stagione.getEpisodi().get(j).setVisualizzato(true);
+//                        } else return;
+//                    }
+//
+//                    stagione.setCompletata(true);
+//                }
+//            }
+//        }
+//    }
 
     private void setDatiFilm(List<Titolo> titoli) throws Exception {
         for(Titolo titolo : titoli) {
@@ -260,7 +260,7 @@ public class TitoloService {
         }
     }
 
-    public List<Genere> getGeneriTitolo(Integer idTitolo) throws Exception {
+    public List<Genere> getGeneriTitoloDBInterno(Integer idTitolo) throws Exception {
         return titoloDao.restituisciGeneriTitolo(idTitolo);
     }
 }

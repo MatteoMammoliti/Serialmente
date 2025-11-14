@@ -98,6 +98,7 @@ public class ControllerPagineInfoFilm implements Initializable {
     private void setPiattaforme(){
         List<Piattaforma> piattaforme = this.titolo.getPiattaforme();
         for(Piattaforma p:piattaforme){
+            System.out.println(p.getNomePiattaforma());
             BannerinoPiattaforme piattaforma= new BannerinoPiattaforme(p.getImgUrl());
             this.contenitorePiattafome.getChildren().add(piattaforma);
         }

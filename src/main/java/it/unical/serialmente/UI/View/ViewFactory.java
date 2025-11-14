@@ -175,6 +175,7 @@ public class ViewFactory {
             try {
                 watchlist = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Watchlist.fxml")).load();
             } catch (IOException e) {
+                e.printStackTrace();
                 AlertHelper.nuovoAlert(
                         "Errore!",
                         Alert.AlertType.ERROR,

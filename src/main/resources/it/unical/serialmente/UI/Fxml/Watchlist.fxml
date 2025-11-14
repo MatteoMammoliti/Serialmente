@@ -5,13 +5,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.ControllerWatchlist">
-   <center>
-       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-           <ListView fx:id="listTitoli" focusTraversable="false"/>
-           <Button fx:id="btnSfigliaTitoli" mnemonicParsing="false" prefHeight="26.0" prefWidth="181.0"
-                   text="Sfoglia tutti i titoli"/>
-       </VBox>
-   </center>
+<BorderPane stylesheets="@../Css/watchlist.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.ControllerWatchlist" styleClass="root-watchlist">
+    <center>
+        <VBox alignment="CENTER" BorderPane.alignment="CENTER" styleClass="contenitore-lista">
+            <ListView fx:id="listTitoli" focusTraversable="false" styleClass="lista-titoli"/>
+            <Button fx:id="btnSfigliaTitoli" mnemonicParsing="false" prefHeight="26.0" prefWidth="181.0"
+                    text="Sfoglia tutti i titoli" styleClass="btn-sfoglia"/>
+        </VBox>
+    </center>
 </BorderPane>

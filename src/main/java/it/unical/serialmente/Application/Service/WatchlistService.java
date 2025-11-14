@@ -238,9 +238,6 @@ public class WatchlistService {
                 "Watchlist","Film"
         );
         titoliSerie.addAll(titoliFilm);
-
-        titoloService.popolaListaSerieTV(titoliSerie);
-        titoloService.rendiEpisodiVistiSerieTV(titoliSerie);
         return titoliSerie;
     }
     public String getNomeEpisodio(Integer idSerie){
