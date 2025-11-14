@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="700.0" prefWidth="1000.0" stylesheets="@../Css/infoFilm.css"
+            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unical.serialmente.UI.Controller.ControllerPagineInfoSerieTv">
+    <center>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="btnIndietro" mnemonicParsing="false" styleClass="btn-indietro" text="← Indietro" />
+
+                      <HBox fx:id="contenitoreInfoSerie" alignment="TOP_LEFT" styleClass="header-film" VBox.vgrow="ALWAYS">
+                    <children>
+                        <ImageView fx:id="imageViewPoster" fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="poster">
+                            <HBox.margin>
+                                <Insets right="20.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label fx:id="labelTitoloSerie" styleClass="titolo" text="Titolo Serie TV">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                </Label>
+                                <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="metadati-primari">
+                                    <children>
+                                        <Label fx:id="labelStagioniEpisodi" styleClass="metadati-secondari" text="X Stagioni | Y Episodi" />
+                                        <Label fx:id="labelVoto" styleClass="metadati-secondari" text="7.9/10" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="5.0" />
+                                    </VBox.margin>
+                                </HBox>
+                                <GridPane hgap="10.0" styleClass="metadati-griglia" vgap="5.0">
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Label styleClass="label-metadati" text="Generi:" />
+                                        <Label fx:id="labelGeneriSerie" styleClass="valore-metadati" text="Azione, Dramma" GridPane.columnIndex="1" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" />
+                                    </VBox.margin>
+                                </GridPane>
+                                <Label fx:id="labelTramaSerie" alignment="TOP_LEFT" styleClass="trama" text="Trama della serie TV..." wrapText="true" VBox.vgrow="ALWAYS" />
+                                <Button fx:id="btnAggiungi" mnemonicParsing="false" styleClass="btn-watchlist" text="➕ Aggiungi alla Watchlist">
+                                    <VBox.margin>
+                                        <Insets top="20.0" />
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="40.0" right="40.0" top="40.0" />
+                    </padding>
+                </HBox>
+
+                      <VBox styleClass="sezione-streaming">
+                    <children>
+                        <Label styleClass="titolo-sezione" text="Streaming Ora">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="5.0" />
+                            </VBox.margin>
+                        </Label>
+                        <HBox fx:id="contenitorePiattafome" spacing="10.0" styleClass="contenitore-piattaforme">
+                        </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
+                    </padding>
+                </VBox>
+
+                      <VBox styleClass="sezione-stagioni" VBox.vgrow="ALWAYS">
+                    <children>
+                        <Label styleClass="titolo-sezione" text="Elenco Stagioni">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="10.0" left="40.0" />
+                            </VBox.margin>
+                        </Label>
+
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-accordion" VBox.vgrow="ALWAYS">
+                            <content>
+                                <Accordion fx:id="accordionStagioni" styleClass="accordion-stagioni" />
+                            </content>
+                            <VBox.margin>
+                                <Insets left="40.0" right="40.0" />
+                            </VBox.margin>
+                        </ScrollPane>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

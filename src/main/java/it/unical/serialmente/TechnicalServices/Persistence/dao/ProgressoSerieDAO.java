@@ -17,4 +17,6 @@ public interface ProgressoSerieDAO {
     String getNomeEpisodio(Integer idUtente, Integer idSerieTV);
     void eliminaSerieDaProgressioSerie(Integer idUtente, Integer idSerieTV);
     List<Integer> getIdSerieTvInVisione(Integer idUtente);
+    List<Integer> getStagioniInCorso(Integer idUtente);
+    boolean controlloSerieTvInCorso(Integer idUtente, Integer idSerieTV);
 }

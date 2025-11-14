@@ -242,4 +242,27 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return lista;
     }
+
+    /**
+     * Controlla se, dato un utente e un titolo, quell'utente ha già in qualche lista il titolo selezionato.
+     * Utilizzato per non permettere l'aggiunta di duplicati nella wathclist.
+     * @param idUtente
+     * @param idTitolo
+     * @return
+     */
+    @Override
+    public boolean controlloTitoloInListeUtente(Integer idUtente, Integer idTitolo) {
+        String query="SELECT 1 FROM selezionetitolo WHERE id_utente=? AND id_titolo=?";
+        try(PreparedStatement st= connection.prepareStatement(query)){
+            st.setInt(1, idUtente);
+            st.setInt(2, idTitolo);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
