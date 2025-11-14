@@ -7,6 +7,7 @@ import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -40,12 +41,16 @@ public class ControllerSceltaPreferenze implements Initializable {
     private void caricaGeneri() {
         List<Genere> generi = modelPaginaPreferenze.getGeneri();
 
+        VBox contenitore = new VBox(6);
+        contenitore.setStyle("-fx-padding: 10;");
+
         elencoGeneri.getItems().clear();
         mappaGeneri.clear();
         listaGeneriSelezionati.clear();
 
         for (Genere g : generi) {
             CheckBox checkBox = new CheckBox(g.getNomeGenere());
+            checkBox.setStyle("-fx-text-fill: white;");
 
             checkBox.selectedProperty().addListener((obs, oldVal, isSelected) -> {
                 if (isSelected) {
@@ -56,16 +61,26 @@ public class ControllerSceltaPreferenze implements Initializable {
                 }
             });
 
-            CustomMenuItem item = new CustomMenuItem(checkBox);
-            item.setHideOnClick(false);
-
-            elencoGeneri.getItems().add(item);
+            contenitore.getChildren().add(checkBox);
             mappaGeneri.put(g.getNomeGenere(), g);
         }
+
+        ScrollPane scroll = new ScrollPane(contenitore);
+        scroll.setPrefViewportHeight(200);
+        scroll.setFitToWidth(true);
+        scroll.setStyle("-fx-background-color: transparent;");
+
+        CustomMenuItem item = new CustomMenuItem(scroll);
+        item.setHideOnClick(false);
+
+        elencoGeneri.getItems().add(item);
     }
 
     private void caricaPiattaforme() {
         List<Piattaforma> piattaforme = modelPaginaPreferenze.getPiattaforme();
+
+        VBox contenitore = new VBox(6);
+        contenitore.setStyle("-fx-padding: 10;");
 
         elencoPiattaforme.getItems().clear();
         mappaPiattaforma.clear();
@@ -73,8 +88,8 @@ public class ControllerSceltaPreferenze implements Initializable {
 
         for (Piattaforma p : piattaforme) {
             CheckBox checkBox = new CheckBox(p.getNomePiattaforma());
+            checkBox.setStyle("-fx-text-fill: white;");
 
-            // Listener per aggiornare la lista dei selezionati
             checkBox.selectedProperty().addListener((obs, oldVal, isSelected) -> {
                 if (isSelected) {
                     if (!listaPiattaformeSelezionate.contains(p))
@@ -84,12 +99,19 @@ public class ControllerSceltaPreferenze implements Initializable {
                 }
             });
 
-            CustomMenuItem voce = new CustomMenuItem(checkBox);
-            voce.setHideOnClick(false);
-
-            elencoPiattaforme.getItems().add(voce);
+            contenitore.getChildren().add(checkBox);
             mappaPiattaforma.put(p.getNomePiattaforma(), p);
         }
+
+        ScrollPane scroll = new ScrollPane(contenitore);
+        scroll.setPrefViewportHeight(200);
+        scroll.setFitToWidth(true);
+        scroll.setStyle("-fx-background-color: transparent;");
+
+        CustomMenuItem item = new CustomMenuItem(scroll);
+        item.setHideOnClick(false);
+
+        elencoPiattaforme.getItems().add(item);
     }
 
     private void onProcediButtonClick() {

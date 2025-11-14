@@ -2,6 +2,7 @@ package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import it.unical.serialmente.UI.Model.ModelSezioneSerieTv;
 import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
@@ -13,20 +14,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ControllerPaginaSerieTV implements Initializable {
 
     public record TitoloData(String nome, double voto, String imageUrl) {}
 
     private final ModelSezioneSerieTv modelSezioneSerieTv = new ModelSezioneSerieTv();
-    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+    private final ExecutorService executor = ThreadPool.get();
 
     @FXML public ScrollPane scrollPrincipale;
     @FXML public ListView<TitoloData> listNovita;
@@ -102,7 +101,10 @@ public class ControllerPaginaSerieTV implements Initializable {
         };
 
         task.setOnSucceeded(e -> lista.setItems(task.getValue()));
-        task.setOnFailed(e -> System.out.println("Errore durante caricamento titoli serie TV"));
+        task.setOnFailed(e -> {
+                    task.getException().printStackTrace();
+            System.out.println("Errore durante caricamento titoli serie TV");
+                });
 
         return task;
     }

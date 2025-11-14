@@ -9,7 +9,7 @@ import javafx.scene.layout.*;
 import java.util.Objects;
 
 public class BannerTitolo extends VBox {
-    private final Image PLACEHOLDER =
+    private static final Image PLACEHOLDER =
             new Image(Objects.requireNonNull(
                     BannerTitolo.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
             );

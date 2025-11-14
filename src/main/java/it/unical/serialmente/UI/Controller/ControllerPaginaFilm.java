@@ -1,8 +1,10 @@
 package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Genere;
+import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
+import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import it.unical.serialmente.UI.Model.ModelSezioneFilm;
 import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
@@ -26,7 +28,7 @@ import java.util.concurrent.Executors;
 public class ControllerPaginaFilm implements Initializable {
 
     private final ModelSezioneFilm modelSezioneFilm = new ModelSezioneFilm();
-    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+    private final ExecutorService executor = ThreadPool.get();
 
     public ListView<TitoloData> listConsigliati;
     public ListView <TitoloData>listPopolari;
@@ -111,13 +113,15 @@ public class ControllerPaginaFilm implements Initializable {
         };
 
         task.setOnSucceeded(e -> lista.setItems(task.getValue()));
-        task.setOnFailed(e ->
+        task.setOnFailed(e -> {
+                    task.getException().printStackTrace();
                 AlertHelper.nuovoAlert(
                         "Errore Thread",
                         Alert.AlertType.ERROR,
                         "Qualcosa è andato storto!",
                         "Qualcosa è andato storto durante il completamento di un'attività"
-                ));
+                );
+                });
         return task;
     }
 
@@ -143,13 +147,15 @@ public class ControllerPaginaFilm implements Initializable {
         };
 
         task.setOnSucceeded(e -> lista.setItems(task.getValue()));
-        task.setOnFailed(e ->
-                AlertHelper.nuovoAlert(
-                        "Errore Thread",
-                        Alert.AlertType.ERROR,
-                        "Qualcosa è andato storto!",
-                        "Qualcosa è andato storto durante il completamento di un'attività"
-                ));
+        task.setOnFailed(e ->{
+            task.getException().printStackTrace();
+            AlertHelper.nuovoAlert(
+                    "Errore Thread",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Qualcosa è andato storto durante il completamento di un'attività"
+            );
+        });
         return task;
     }
 }

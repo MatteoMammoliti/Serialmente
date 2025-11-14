@@ -125,6 +125,12 @@ public class WatchlistService {
                 titolo.getIdTitolo(),
                 "Visionati"
         );
+
+        if(titolo.getTipologia().equals("SerieTv"))
+            progressoDao.eliminaSerieDaProgressioSerie(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                titolo.getIdTitolo()
+        );
     }
 
     public void rendiStagioneVisionata(Titolo titolo) throws Exception {

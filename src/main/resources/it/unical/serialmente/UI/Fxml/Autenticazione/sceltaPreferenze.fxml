@@ -7,20 +7,26 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerSceltaPreferenze">
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../CSS/prefefenze.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerSceltaPreferenze">
+    <right>
+        <HBox alignment="CENTER" prefHeight="500.0" prefWidth="330.0" styleClass="right-pane">
+            <Pane styleClass="image-overlay" />
+        </HBox>
+    </right>
     <center>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <AnchorPane id="sfondo_login" prefHeight="500.0" prefWidth="670.0">
-                <Text fill="black" layoutX="90.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prima di procedere, fai la tua scelta">
+                <Text fill="black" layoutX="5.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prima di procedere, fai la tua scelta" textAlignment="CENTER" wrappingWidth="464.4013671875">
                     <font>
                         <Font name="Arial Bold" size="25.0" />
                     </font>
                 </Text>
-                <VBox alignment="TOP_CENTER" layoutX="101.0" layoutY="96.0" prefHeight="357.0" prefWidth="397.0">
+                <VBox alignment="TOP_CENTER" layoutX="18.0" layoutY="82.0" prefHeight="357.0" prefWidth="439.0">
                     <padding>
                         <Insets top="20.0" />
                     </padding>
@@ -33,7 +39,7 @@
                         </VBox.margin>
                     </Label>
                <MenuButton fx:id="elencoGeneri" mnemonicParsing="false" text="Generi:" />
-                    <Label alignment="CENTER" prefHeight="20.0" prefWidth="427.0" text="Seleziona le tue piattaforme di riferimento (facoltativo)">
+                    <Label alignment="CENTER" prefHeight="20.0" prefWidth="456.0" text="Seleziona le tue piattaforme di riferimento (facoltativo)">
                         <font>
                             <Font name="Arial Bold" size="14.0" />
                         </font>

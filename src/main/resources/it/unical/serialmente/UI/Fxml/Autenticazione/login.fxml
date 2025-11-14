@@ -15,12 +15,11 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../CSS/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerLogin">
-
     <right>
         <HBox alignment="CENTER" prefHeight="500.0" prefWidth="330.0" styleClass="right-pane">
             <Pane styleClass="image-overlay" />
 
-            <VBox alignment="CENTER" layoutX="0" layoutY="0" spacing="10">
+            <VBox alignment="CENTER" spacing="10">
 
                 <Label styleClass="title-right" text="Sei nuovo?" />
 

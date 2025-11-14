@@ -1,30 +1,20 @@
-/* ====================== SFONDO INTERA PAGINA ====================== */
-
 #sfondo_login {
     -fx-background-color: linear-gradient(to bottom, #141414, #0d0d0d);
 }
-
-/* ====================== TESTO PRINCIPALE “BENTORNATO” ====================== */
 
 #sfondo_login Text {
     -fx-fill: white;
     -fx-font-size: 28px;
     -fx-font-weight: bold;
 }
-
-/* ====================== LABEL EMAIL / PASSWORD ====================== */
-
 #sfondo_login Label {
     -fx-text-fill: #e5e5e5;
     -fx-font-weight: bold;
 }
 
-/* Error label */
 #labelLoginError {
     -fx-text-fill: #ff3333;
 }
-
-/* ====================== CAMPI DI TESTO ====================== */
 
 TextField,
 PasswordField {
@@ -43,12 +33,9 @@ PasswordField:focused {
     -fx-border-color: #e50914;
 }
 
-/* Campo password visibile */
 #showPassword {
     -fx-background-color: #1f1f1f;
 }
-
-/* ====================== PULSANTE LOGIN ====================== */
 
 #loginButton {
     -fx-background-color: #e50914;
@@ -64,8 +51,6 @@ PasswordField:focused {
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 15, 0.2, 0, 3);
 }
-
-/* ====================== PULSANTE REGISTRATI (a destra) ====================== */
 
 #signupButton {
     -fx-background-color: transparent;
@@ -84,7 +69,6 @@ PasswordField:focused {
     -fx-cursor: hand;
 }
 
-/* ====================== BOTTONE MOSTRA PASSWORD ====================== */
 
 #eyeButton {
     -fx-background-color: transparent;
@@ -97,23 +81,17 @@ PasswordField:focused {
     -fx-cursor: hand;
 }
 
-/* ====================== PANE LATERALE (DESTRA) ====================== */
-
-/* Testo "Sei nuovo?" */
 .right-pane {
-    -fx-background-image: url("../Images/Stile/login_bg.jpg");
+    -fx-background-image: url("../Images/DecorazioniApp/login_bg.jpg");
     -fx-background-size: cover;
     -fx-background-position: center;
-    /* RIMOSSO: -fx-effect: innershadow(...) */
 }
 
-/* Applica l'effetto all'overlay se vuoi che si veda la transizione */
 .image-overlay {
     -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 30, 0.4, 0, 0); /* Applicato solo all'overlay */
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 30, 0.4, 0, 0);
 }
 
-/* Testo sotto */
 .right-pane .title-right {
     -fx-text-fill: white;
     -fx-font-size: 20px;
@@ -128,7 +106,7 @@ PasswordField:focused {
     -fx-font-weight: bold;
 }
 
-/* Bottone Registrati – outline Netflix */
+
 #signupButton {
     -fx-background-color: #e50914;
     -fx-border-color: #e50914;
@@ -146,4 +124,66 @@ PasswordField:focused {
     -fx-text-fill: white;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 2);
+}
+
+.choice-box {
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #333333;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 6 10;
+}
+
+
+.choice-box:focused {
+    -fx-border-color: #e50914;
+}
+
+.choice-box .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+
+.choice-box .arrow {
+    -fx-background-color: white;
+}
+
+.choice-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.choice-box .arrow-button:hover {
+    -fx-background-color: #333333;
+}
+
+
+
+.choice-box .context-menu {
+    -fx-background-color: #101010;
+    -fx-border-color: #e50914;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+
+.choice-box .menu-item .label {
+    -fx-text-fill: #e5e5e5;
+    -fx-padding: 6 10;
+}
+
+.choice-box .menu-item:hover {
+    -fx-background-color: #333333;
+}
+
+
+.choice-box .menu-item:focused {
+    -fx-background-color: #e50914;
+}
+
+.choice-box .menu-item:focused .label {
+    -fx-text-fill: white;
 }

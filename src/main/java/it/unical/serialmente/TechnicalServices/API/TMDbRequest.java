@@ -22,6 +22,14 @@ public class TMDbRequest {
         return BASE + "/tv/" + idSerie;
     }
 
+    public String getFilm(Integer idFilm) {
+        return BASE + "/movie/" + idFilm;
+    }
+
+    public String getPiattaformeFilm(Integer idFilm) {
+        return BASE + "/movie/" + idFilm + "/watch/providers";
+    }
+
     public String getEpisodiDaStagione(Integer numeroStagione, Integer idSerieTV) {
         return BASE + "/tv/" + idSerieTV + "/season/" + numeroStagione;
     }

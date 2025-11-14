@@ -8,11 +8,10 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.ControllerWatchlist">
    <center>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <ListView fx:id="listTitoli" focusTraversable="false" />
-            <Button fx:id="btnSfigliaTitoli" mnemonicParsing="false" prefHeight="26.0" prefWidth="181.0" text="Sfoglia tutti i titoli" />
-         </children>
-      </VBox>
+       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+           <ListView fx:id="listTitoli" focusTraversable="false"/>
+           <Button fx:id="btnSfigliaTitoli" mnemonicParsing="false" prefHeight="26.0" prefWidth="181.0"
+                   text="Sfoglia tutti i titoli"/>
+       </VBox>
    </center>
 </BorderPane>

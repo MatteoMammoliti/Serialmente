@@ -9,10 +9,7 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 
 public class PosterSezioneUtente extends VBox {
-    private final Image PLACEHOLDER =
-            new Image(Objects.requireNonNull(
-                    PosterSezioneUtente.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
-            );
+    private static Image PLACEHOLDER = loadPlaceholder();
     private final CacheImmagini cache = CacheImmagini.getInstance();
     private final ImageView immagineTitolo= new ImageView();
     public Integer bannerAltezza=170;
@@ -36,5 +33,15 @@ public class PosterSezioneUtente extends VBox {
         }
     }
 
+    private static Image loadPlaceholder() {
+        if (PLACEHOLDER != null) return PLACEHOLDER;
+        var url = PosterSezioneUtente.class.getResource(
+                "/it/unical/serialmente/UI/Images/Generi/action.png"
+        );
 
+        if (url != null) {
+            PLACEHOLDER = new Image(url.toExternalForm());
+        }
+        return PLACEHOLDER;
+    }
 }

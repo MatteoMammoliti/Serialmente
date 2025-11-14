@@ -1,9 +1,12 @@
 package it.unical.serialmente.Application.Service;
 
-import it.unical.serialmente.Domain.model.SessioneCorrente;
-import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.Application.Mapper.Mapper;
+import it.unical.serialmente.Domain.model.*;
+import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
+import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
 import it.unical.serialmente.UI.Model.ModelSezioneUtente;
 import javafx.util.Pair;
 
@@ -12,20 +15,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SezioneUtenteService {
-    private final SelezioneTitoloDAOPostgres selezioneTitoloDAOPostgres=new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
+    private final SelezioneTitoloDAOPostgres selezioneTitoloDAOPostgres = new SelezioneTitoloDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
+
+    private final TitoloService titoloService = new TitoloService();
+    private final TMDbHttpClient  tmDbHttpClient = new TMDbHttpClient();
+    private final TMDbRequest   tmDbRequest = new TMDbRequest();
+    private final Mapper mapper = new Mapper();
+
     private final ProgressoSerieService progressoSerieService = new ProgressoSerieService();
+
     public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo) throws SQLException {
-        return selezioneTitoloDAOPostgres.restituisciTitoliInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),tipoLista,tipoTitolo);
+        return selezioneTitoloDAOPostgres.restituisciTitoliInLista(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                tipoLista,
+                tipoTitolo);
     }
+
     public Integer getNumeroFilmVisionati(){
-        return selezioneTitoloDAOPostgres.getNumeroFilmVisionati(SessioneCorrente.getUtenteCorrente().getIdUtente());
+        return selezioneTitoloDAOPostgres.getNumeroFilmVisionati(
+                SessioneCorrente.getUtenteCorrente().getIdUtente()
+        );
     }
 
     public List<Integer> getOreGiorniMesiVisionatiFilm(){
-        return calcoloOreGiorniMesi(selezioneTitoloDAOPostgres.getMinutiVisioneFilm(SessioneCorrente.getUtenteCorrente().getIdUtente()));
+        return calcoloOreGiorniMesi(selezioneTitoloDAOPostgres.getMinutiVisioneFilm(
+                SessioneCorrente.getUtenteCorrente().getIdUtente()
+                )
+        );
     }
 
-    public List<Integer> calcoloOreGiorniMesi(int minutiTotali){
+    public ModelSezioneUtente.StatisticheSerieTv getStatisticheSerieTv() throws Exception{
+        List<Integer> listaSerieTvVisionate = selezioneTitoloDAOPostgres.getIdSerieVisionate(
+                SessioneCorrente.getUtenteCorrente().getIdUtente()
+        );
+
+        List<Integer> listaSerieTvInVisione = progressoSerieService.getIdSerieTvInVisione();
+
+        Integer minutiTotali = 0;
+        Integer episodiTotali = 0;
+
+        for (Integer idserie : listaSerieTvInVisione) {
+            Pair<Integer,Integer> minutiEpisodi = progressoSerieService.getStatisticheEpisodio(idserie);
+            minutiTotali += minutiEpisodi.getKey();
+            episodiTotali = minutiEpisodi.getValue();
+        }
+
+        for(Integer idSerie : listaSerieTvVisionate) {
+            Pair<Integer,Integer> p = getStatisticheSerieVisionate(idSerie);
+            episodiTotali += p.getKey();
+            minutiTotali += p.getValue();
+        }
+        return new ModelSezioneUtente.StatisticheSerieTv(calcoloOreGiorniMesi(minutiTotali),episodiTotali);
+    }
+
+    private List<Integer> calcoloOreGiorniMesi(int minutiTotali){
         List<Integer> oreGiorniMesiVisionati=new ArrayList<>();
         int minutiPerMese = 43200;
         int minutiPerGiorno = 1440;
@@ -46,17 +91,20 @@ public class SezioneUtenteService {
 
     }
 
-    public ModelSezioneUtente.StatisticheSerieTv getStatisticheSerieTv() throws Exception{
-        List<Integer> listaSerieTvVisionate = selezioneTitoloDAOPostgres.getIdSerieVisionate(SessioneCorrente.getUtenteCorrente().getIdUtente());
-        List<Integer> listaSerieTvInCorso= progressoSerieService.getIdserieInCorso();
-        listaSerieTvVisionate.addAll(listaSerieTvInCorso);
-        Integer minutiTotali=0;
-        Integer episodiTotali=0;
-        for (Integer idserie : listaSerieTvVisionate) {
-            Pair<Integer,Integer> minutiEpisodi=progressoSerieService.getStatisticheEpisodio(idserie);
-            minutiTotali+=minutiEpisodi.getKey();
-            episodiTotali+=minutiEpisodi.getValue();
-        }
-        return new ModelSezioneUtente.StatisticheSerieTv(calcoloOreGiorniMesi(minutiTotali),episodiTotali);
+    private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) throws Exception {
+        String url = tmDbRequest.getSerieTV(idSerie);
+        String risposta = tmDbHttpClient.richiesta(url);
+        Pair<Integer, Integer> p = mapper.parseStatistiche(risposta);
+
+        if(p.getValue() != 0) return p;
+        int minutiSpesi = titoloService.sommaMinutiEpisodiVisti(
+                idSerie,
+                titoloService.getStagioni(idSerie).size(),
+                titoloService.getEpisodi(
+                        idSerie,
+                        titoloService.getStagioni(idSerie).size()
+                ).size()
+        );
+        return new Pair<>(p.getKey(), minutiSpesi);
     }
 }

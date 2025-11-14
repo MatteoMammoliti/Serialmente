@@ -95,10 +95,12 @@ public class ControllerSezioneUtente implements Initializable {
 
     public void caricaStatistiche() throws Exception {
         this.numeroFilmVisti.setText(modelSezioneUtente.getNmeroFilmVisionati().toString());
+
         List<Integer> oreGiornoMesiFilm= modelSezioneUtente.getOreGiorniMesiVisionatiFilm();
         this.mesiTempoFim.setText(oreGiornoMesiFilm.get(0).toString());
         this.giorniTempoFilm.setText(oreGiornoMesiFilm.get(1).toString());
         this.oreTempoFilm.setText(oreGiornoMesiFilm.get(2).toString());
+
         ModelSezioneUtente.StatisticheSerieTv statisticheSerieTv = modelSezioneUtente.getStatisticheSerieTv();
         this.mesiTempoSerie.setText(statisticheSerieTv.durate().get(0).toString());
         this.giorniTempoSerie.setText(statisticheSerieTv.durate().get(1).toString());

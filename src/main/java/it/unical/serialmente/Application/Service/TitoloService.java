@@ -7,6 +7,7 @@ import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,12 +22,14 @@ public class TitoloService {
 
     private final TMDbHttpClient tmdbHttpClient = new TMDbHttpClient();
     private final TMDbRequest tmdbRequest = new TMDbRequest();
-
     private final Mapper mapper = new Mapper();
-    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+
+    private final ExecutorService executor = ThreadPool.get();
+
     private final ProgressoSerieDAOPostgres progressoSerieDao = new ProgressoSerieDAOPostgres(
             DBManager.getInstance().getConnection()
     );
+
     private final GenereDAOPostgres genereDao = new GenereDAOPostgres(
             DBManager.getInstance().getConnection()
     );
@@ -35,25 +38,21 @@ public class TitoloService {
         return genereDao.getGenereDaNome(nome);
     }
 
-    public Integer getNumeroEpisodiStagione(Integer idSerieTV) throws Exception {
-        String url = tmdbRequest.getSerieTV(idSerieTV);
-        return mapper.parseNumeroEpisodiDaStagione(tmdbHttpClient.richiesta(url));
-    }
-
     public Integer sommaEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
         String url = tmdbRequest.getSerieTV(idSerieTV);
         String risposta = tmdbHttpClient.richiesta(url);
         List<Stagione> stagioni = mapper.parseStagioni(risposta);
 
         for(Stagione stagione : stagioni) {
-            stagione.setEpisodi(
-                    getEpisodi(stagione.getIdStagione(), stagione.getNumeroStagioneProgressivo())
+            if(stagione.getNumeroStagioneProgressivo() != 0)
+                stagione.setEpisodi(
+                    getEpisodi(idSerieTV, stagione.getNumeroStagioneProgressivo())
             );
         }
 
         int somma = 0;
         for(Stagione stagione : stagioni) {
-            if(!stagione.getNomeStagione().equals("Specials")) {
+            if(!stagione.getNomeStagione().equals("Specials")  && stagione.getNumeroStagioneProgressivo() != 0) {
                 if(Objects.equals(stagione.getNumeroStagioneProgressivo(), numProgressivoStagione)) return somma;
 
                 somma += stagione.getEpisodi().size();
@@ -66,21 +65,16 @@ public class TitoloService {
     public Integer sommaMinutiEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione, Integer idEpisodioCorrente) throws Exception {
         int sommaMinuti = 0;
         for(int i = 1; i < numProgressivoStagione; i++){
-            String url = tmdbRequest.getEpisodiDaStagione(idSerieTV, i);
-            System.out.println(url);
+            String url = tmdbRequest.getEpisodiDaStagione(i, idSerieTV);
             String risposta = tmdbHttpClient.richiesta(url);
-            System.out.println(risposta);
             List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
 
             for(Episodio episodio : episodi) {
                 sommaMinuti += episodio.getDurataEpisodio();
             }
         }
-
-        String url = tmdbRequest.getEpisodiDaStagione(idSerieTV, numProgressivoStagione);
-        System.out.println(url);
+        String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
         String risposta = tmdbHttpClient.richiesta(url);
-        System.out.println(risposta);
         List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
 
         for(Episodio episodio : episodi) {
@@ -91,7 +85,6 @@ public class TitoloService {
 
         return sommaMinuti;
     }
-
 
     public CompletableFuture<List<Titolo>> loadPage(Integer idGenere, String tipologia, Integer pagina) {
         return CompletableFuture.supplyAsync(() -> {
@@ -108,12 +101,7 @@ public class TitoloService {
 
                     switch (tipologia) {
                         case "movie":
-                            Film f = mapper.parseFilmDaJSON(jsonObject);
-                            f.setDurataMinuti(mapper.parseDurataFilm(
-                                    tmdbHttpClient.richiesta(
-                                            tmdbRequest.getDurataFilm(((Titolo) f).getIdTitolo())
-                                    ))
-                            );
+                            Film f = mapper. parseFilmDaJSON(jsonObject);
                             titoli.add(f);
                             break;
 
@@ -122,6 +110,7 @@ public class TitoloService {
                             break;
                     }
                 }
+                setDatiFilm(titoli);
                 return titoli;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -147,7 +136,7 @@ public class TitoloService {
     }
 
     public List<Episodio> getEpisodi(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
-        String url = tmdbRequest.getEpisodiDaStagione(idSerieTV, numProgressivoStagione);
+        String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
         String risposta = tmdbHttpClient.richiesta(url);
         return mapper.parseEpisodiDiUnaStagione(risposta);
     }
@@ -155,7 +144,9 @@ public class TitoloService {
      public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo, Integer pagina) throws Exception {
          String url = tmdbRequest.cercaTitoliPerCriteri(tipologiaTitolo, generi, null, piattaforme, "&page=" + pagina);
          String risposta = tmdbHttpClient.richiesta(url);
-         return mapper.parseTitoli(risposta, tipologiaTitolo);
+         List<Titolo> titoli = mapper.parseTitoli(risposta, tipologiaTitolo);
+         setDatiFilm(titoli);
+         return titoli;
      }
 
     public List<Titolo> cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione, Integer pagina) throws Exception {
@@ -163,13 +154,17 @@ public class TitoloService {
         if(nomeTitolo != null) url = tmdbRequest.cercaTitoloPerNome(nomeTitolo, tipologia);
         else url = tmdbRequest.cercaTitoliPerCriteri(tipologia, generi, annoPubblicazione, null, "&page=" + pagina);
         String risposta = tmdbHttpClient.richiesta(url);
-        return mapper.parseTitoli(risposta, tipologia);
+        List<Titolo> titoli = mapper.parseTitoli(risposta, tipologia);
+        setDatiFilm(titoli);
+        return titoli;
     }
 
     public List<Titolo> getTitoliPiuVisti(String tipologiaTitolo, Integer pagina) throws Exception {
         String url = tmdbRequest.getTitoliConSort(tipologiaTitolo, "popularity.desc", "&page=" + pagina);
         String risposta = tmdbHttpClient.richiesta(url);
-        return mapper.parseTitoli(risposta, tipologiaTitolo);
+        List<Titolo> titoli = mapper.parseTitoli(risposta, tipologiaTitolo);
+        setDatiFilm(titoli);
+        return titoli;
     }
 
     public List<Titolo> getTitoliNovita(String tipologia) throws Exception {
@@ -184,7 +179,9 @@ public class TitoloService {
             default -> "";
         };
 
-        return mapper.parseTitoli(tmdbHttpClient.richiesta(url), tipologia);
+        List<Titolo> titoli = mapper.parseTitoli(tmdbHttpClient.richiesta(url), tipologia);
+        setDatiFilm(titoli);
+        return titoli;
     }
 
     public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
@@ -226,6 +223,37 @@ public class TitoloService {
                     }
 
                     stagione.setCompletata(true);
+                }
+            }
+        }
+    }
+
+    private void setDatiFilm(List<Titolo> titoli) throws Exception {
+        for(Titolo titolo : titoli) {
+            if(titolo.getTipologia().equals("Film")) {
+                Film f  = (Film) titolo;
+                f.setDurataMinuti(mapper.parseDurataFilm(
+                        tmdbHttpClient.richiesta(
+                                tmdbRequest.getDurataFilm(((Titolo) f).getIdTitolo())
+                        ))
+                );
+
+                String url = tmdbRequest.getFilm(titolo.getIdTitolo());
+                List<Genere> generi = mapper.parseGeneriFilm(
+                        tmdbHttpClient.richiesta(url)
+                );
+
+                for(Genere g : generi) {
+                    titolo.aggiungiGenere(g);
+                }
+
+                url = tmdbRequest.getPiattaformeFilm(titolo.getIdTitolo());
+                List<Piattaforma> piattaforme = mapper.parsePiattaforme(
+                        tmdbHttpClient.richiesta(url)
+                );
+
+                for(Piattaforma p : piattaforme) {
+                    titolo.aggiungiPiattaforme(p);
                 }
             }
         }

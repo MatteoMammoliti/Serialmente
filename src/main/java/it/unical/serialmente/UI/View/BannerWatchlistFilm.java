@@ -11,29 +11,27 @@ import java.util.Objects;
 
 public class BannerWatchlistFilm extends HBox {
     private final CacheImmagini cache=CacheImmagini.getInstance();
-    private final Image PLACEHOLDER =
-            new Image(Objects.requireNonNull(
-                    BannerTitolo.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
-            );
+    private static Image PLACEHOLDER = loadPlaceholder();
     private final ImageView immagineTitolo= new ImageView();
-    private final VBox contenitoreInfo = new VBox();
-    private final Button btnAggiungiVisionati = new Button();
     private final Label labelTitolo = new Label();
     private final Label labelDurataFilm = new Label();
+
     public BannerWatchlistFilm() {
         this.setPrefHeight(150);
         this.immagineTitolo.setFitHeight(150);
         this.immagineTitolo.setFitWidth(150);
         this.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-border-radius: 5;");
         this.setAlignment(Pos.CENTER_LEFT);
-        this.contenitoreInfo.setAlignment(Pos.CENTER_LEFT);
-        this.contenitoreInfo.getChildren().addAll(labelTitolo,labelDurataFilm);
-        this.getChildren().addAll(immagineTitolo,contenitoreInfo,btnAggiungiVisionati);
+        VBox contenitoreInfo = new VBox();
+        contenitoreInfo.setAlignment(Pos.CENTER_LEFT);
+        contenitoreInfo.getChildren().addAll(labelTitolo,labelDurataFilm);
+        Button btnAggiungiVisionati = new Button();
+        this.getChildren().addAll(immagineTitolo, contenitoreInfo, btnAggiungiVisionati);
     }
+
     public void update(String nome,Integer durata,String imgUrl){
-        System.out.println("CARICO" + nome);
         this.labelTitolo.setText(nome != null ? nome:"");
-        this.labelDurataFilm.setText(durata != null ? durata.toString():"");
+        this.labelDurataFilm.setText(durata != null ? String.valueOf(durata):"");
         this.immagineTitolo.setImage(PLACEHOLDER);
         if(imgUrl!=null && !imgUrl.isEmpty()){
             Image img = cache.getImg(imgUrl);
@@ -41,4 +39,15 @@ public class BannerWatchlistFilm extends HBox {
         }
     }
 
+    private static Image loadPlaceholder() {
+        if (PLACEHOLDER != null) return PLACEHOLDER;
+        var url = PosterSezioneUtente.class.getResource(
+                "/it/unical/serialmente/UI/Images/Generi/action.png"
+        );
+
+        if (url != null) {
+            PLACEHOLDER = new Image(url.toExternalForm());
+        }
+        return PLACEHOLDER;
+    }
 }

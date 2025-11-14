@@ -59,8 +59,6 @@ public class UtenteService {
             Utente utente=new Utente();
             utente.setIdUtente(credenzialiUtente.cercaIdUtente(email));
             SessioneCorrente.setUtenteCorrente(utente);
-
-            System.out.println("Login effettuata");
             return utente;
         }
         System.out.println("CredenzialiUtente non validata");

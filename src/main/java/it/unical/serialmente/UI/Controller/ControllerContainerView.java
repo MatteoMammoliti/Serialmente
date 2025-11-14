@@ -1,11 +1,13 @@
 package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.SessioneCorrente;
+import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Node;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,7 +29,11 @@ public class ControllerContainerView implements Initializable {
                 case "ProfiloUtente" -> ModelContainerView.getInstance().getViewFactory().getPaginaProfiloUtente();
                 case "Logout" -> {
                     SessioneCorrente.resetSessioneCorrente();
-                    ModelContainerView.getInstance().getViewFactory().logout();
+                    ModelContainerView.getInstance().getViewFactory().closeStage(
+                            (Stage) contenitoreView.getScene().getWindow()
+                    );
+                    ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();
+                    ThreadPool.shutdown();
                     yield null;
                 }
                 default -> null;

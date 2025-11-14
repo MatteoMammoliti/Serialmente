@@ -1,207 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerRegistrazione">
+<BorderPane prefHeight="600" prefWidth="1000" styleClass="register-root" stylesheets="@../../CSS/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerRegistrazione">
+
     <right>
-        <HBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="330.0" BorderPane.alignment="CENTER">
-            <children>
-                <Pane prefHeight="500.0" prefWidth="345.0">
-                    <children>
-                        <ImageView fitHeight="79.0" fitWidth="79.0" layoutY="431.0">
-                            <image>
-                            </image>
-                        </ImageView>
-                        <Label contentDisplay="CENTER" layoutX="69.0" layoutY="157.0" text="Sei già registrato?" textFill="#181818">
-                            <font>
-                                <Font name="Arial Bold" size="22.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="75.0" layoutY="205.0" text="Puoi accedere al tuo account&#10;da qui:" textAlignment="CENTER" textFill="#151515">
-                            <font>
-                                <Font name="Arial Bold" size="13.0" />
-                            </font>
-                        </Label>
-                        <Button fx:id="loginButton" layoutX="60.0" layoutY="290.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="210.0" text="Accedi" />
-                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                    </children>
-                </Pane>
-            </children></HBox>
+        <AnchorPane prefWidth="420" styleClass="right-pane">
+
+            <VBox alignment="CENTER" spacing="12" AnchorPane.leftAnchor="40" AnchorPane.topAnchor="150" />
+
+             <Label layoutX="126.0" layoutY="228.0" styleClass="title-right" text="Sei già registrato?" />
+
+             <Label layoutX="129.0" layoutY="270.0" styleClass="subtitle-right" text="Accedi al tuo account" textAlignment="CENTER" wrapText="true" />
+
+             <Button fx:id="loginButton" layoutX="110.0" layoutY="307.0" prefWidth="200" styleClass="signup-button" text="Accedi" />
+        </AnchorPane>
     </right>
+
     <center>
-        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <AnchorPane prefHeight="500.0" prefWidth="670.0">
-                    <children>
-                        <Text layoutX="268.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Benvenuto">
-                            <font>
-                                <Font name="Arial Bold" size="25.0" />
-                            </font>
-                        </Text>
-                        <VBox alignment="CENTER" layoutX="170.0" layoutY="337.0" prefHeight="120.0" prefWidth="330.0">
-                            <children>
-                                <VBox prefHeight="0.0" prefWidth="330.0">
-                                    <VBox.margin>
-                                        <Insets top="3.0" />
-                                    </VBox.margin>
-                                </VBox>
-                                <Button fx:id="signUpButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="345.0" text="Registrati">
-                                    <VBox.margin>
-                                        <Insets />
-                                    </VBox.margin>
-                                </Button>
-                            </children>
-                        </VBox>
-                        <Pane layoutY="22.0" prefHeight="313.0" prefWidth="670.0">
-                            <children>
-                                <VBox alignment="TOP_CENTER" layoutX="65.0" layoutY="91.0" prefHeight="223.0" prefWidth="270.0">
-                                    <children>
-                                        <Label alignment="CENTER" prefHeight="20.0" prefWidth="82.0" text="Nome">
-                                            <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="textNome" prefWidth="330.0">
-                                            <opaqueInsets>
-                                                <Insets />
-                                            </opaqueInsets>
-                                            <VBox.margin>
-                                                <Insets top="5.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                                        <Label fx:id="labelErroreNome" prefHeight="18.0" prefWidth="269.0" text="Nome utente non valido..." textFill="#f20707" visible="false">
-                                            <font>
-                                                <Font name="Arial" size="12.0" />
-                                            </font>
-                                        </Label>
-                                        <Label alignment="CENTER" prefHeight="20.0" prefWidth="169.0" text="Password:">
-                                            <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets top="7.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <StackPane prefWidth="330.0">
-                                            <children>
-                                                <PasswordField fx:id="passwordField" prefWidth="330.0">
-                                                    <opaqueInsets>
-                                                        <Insets />
-                                                    </opaqueInsets>
-                                                    <StackPane.margin>
-                                                        <Insets top="5.0" />
-                                                    </StackPane.margin>
-                                                </PasswordField>
-                                                <TextField fx:id="passwordVisibile" visible="false">
-                                                    <StackPane.margin>
-                                                        <Insets top="5.0" />
-                                                    </StackPane.margin></TextField>
-                                            </children>
-                                        </StackPane>
-                                        <Label fx:id="labelPasswordNonValida" prefHeight="18.0" prefWidth="304.0" text="Password non valida:almeno 8 caratteri" textFill="#f20505" visible="false" />
-                                        <Label alignment="CENTER" layoutX="55.0" layoutY="86.0" prefHeight="20.0" prefWidth="169.0" text="Domanda di sicurezza:">
-                                            <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <ChoiceBox fx:id="sceltaDomandaSicurezza" prefHeight="26.0" prefWidth="272.0">
-                                            <VBox.margin>
-                                                <Insets top="5.0" />
-                                            </VBox.margin>
-                                        </ChoiceBox>
-                                        <Label fx:id="labelErroreDomandaSicurezza" layoutX="10.0" layoutY="60.0" prefHeight="18.0" prefWidth="269.0" text="Scegli una domanda di sicurezza" textFill="#f20707" visible="false">
-                                            <font>
-                                                <Font name="Arial" size="12.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets right="10.0" />
-                                    </padding>
-                                </VBox>
-                                <VBox alignment="TOP_CENTER" layoutX="335.0" layoutY="91.0" prefHeight="223.0" prefWidth="270.0">
-                                    <children>
-                                        <Label alignment="CENTER" prefHeight="20.0" prefWidth="82.0" text="Email:">
-                                            <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets />
-                                            </VBox.margin>
-                                        </Label>
-                                        <TextField fx:id="textEmail" prefWidth="330.0">
-                                            <opaqueInsets>
-                                                <Insets />
-                                            </opaqueInsets>
-                                            <VBox.margin>
-                                                <Insets top="5.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                                        <Label fx:id="labelErroreEmail" prefHeight="18.0" prefWidth="290.0" text="Email non valida" textFill="#fa0808" visible="false" />
-                                        <Label alignment="CENTER" prefHeight="20.0" prefWidth="169.0" text="Ripeti password:">
-                                            <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets top="7.0" />
-                                            </VBox.margin>
-                                        </Label>
-                                        <StackPane prefWidth="330.0">
-                                            <children>
-                                                <TextField fx:id="repeatPasswordVisibile" visible="false">
-                                                    <StackPane.margin>
-                                                        <Insets top="5.0" />
-                                                    </StackPane.margin></TextField>
-                                                <PasswordField fx:id="repeatPasswordField" prefWidth="330.0">
-                                                    <StackPane.margin>
-                                                        <Insets top="5.0" />
-                                                    </StackPane.margin></PasswordField>
-                                            </children>
-                                        </StackPane>
-                                        <Label fx:id="labelPasswordDiverse" prefHeight="18.0" prefWidth="262.0" text="Password non uguali" textFill="#dc0303" visible="false" />
-                                        <Label alignment="CENTER" layoutX="65.0" layoutY="86.0" prefHeight="20.0" prefWidth="205.0" text="Risposta domanda sicurezza:">
-                                            <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <TextField fx:id="textRispostaDomandaSicurezza">
-                                            <VBox.margin>
-                                                <Insets top="5.0" />
-                                            </VBox.margin>
-                                        </TextField>
-                              <Label fx:id="labelErroreRispostaSicurezza" prefHeight="18.0" prefWidth="269.0" text="Compila il campo di domanda di sicurezza" textFill="#f20707" visible="false">
-                                 <font>
-                                    <Font name="Arial" size="12.0" />
-                                 </font>
-                              </Label>
-                                    </children>
-                                    <padding>
-                                        <Insets left="10.0" />
-                                    </padding>
-                                </VBox>
-                                <Button fx:id="eyeButton" layoutX="605.0" layoutY="189.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="30.0" text="🔍" />
-                            </children>
-                        </Pane>
-                    </children>
-                </AnchorPane>
-            </children>
-        </HBox>
+        <AnchorPane id="sfondo_login">
+
+            <VBox alignment="TOP_CENTER" layoutX="59.0" layoutY="93.0" prefWidth="500" spacing="20" AnchorPane.leftAnchor="59.0" AnchorPane.topAnchor="93.0">
+
+                <Text styleClass="title-left" text="Benvenuto" />
+
+                <HBox alignment="TOP_CENTER" spacing="40">
+
+                    <!-- Nome -->
+                    <VBox prefWidth="230" spacing="5">
+                        <Label styleClass="form-label" text="Nome" />
+                        <TextField fx:id="textNome" styleClass="input-field" />
+                        <Label fx:id="labelErroreNome" styleClass="error-label" text="Nome non valido" visible="false" />
+                    </VBox>
+
+                    <!-- Email -->
+                    <VBox prefWidth="230" spacing="5">
+                        <Label styleClass="form-label" text="Email" />
+                        <TextField fx:id="textEmail" styleClass="input-field" />
+                        <Label fx:id="labelErroreEmail" styleClass="error-label" text="Email non valida" visible="false" />
+                    </VBox>
+
+                </HBox>
+
+                <!-- ========================= RIGA 2: PASSWORD & RIPETI ========================= -->
+                <HBox alignment="TOP_CENTER" spacing="40">
+
+                    <!-- Password -->
+                    <VBox prefWidth="230" spacing="5">
+                        <Label styleClass="form-label" text="Password" />
+                        <StackPane styleClass="password-container">
+                            <PasswordField fx:id="passwordField" styleClass="input-field" />
+                            <TextField fx:id="passwordVisibile" styleClass="input-field" visible="false" />
+                        </StackPane>
+                        <Label fx:id="labelPasswordNonValida" styleClass="error-label" text="Password non valida" visible="false" />
+                    </VBox>
+
+                    <!-- Ripeti Password -->
+                    <VBox prefWidth="230" spacing="5">
+                        <Label styleClass="form-label" text="Ripeti password" />
+                        <StackPane styleClass="password-container">
+                            <PasswordField fx:id="repeatPasswordField" styleClass="input-field" />
+                            <TextField fx:id="repeatPasswordVisibile" styleClass="input-field" visible="false" />
+                        </StackPane>
+                        <Label fx:id="labelPasswordDiverse" styleClass="error-label" text="Le password non coincidono" visible="false" />
+                    </VBox>
+
+                </HBox>
+
+                <!-- ========================= RIGA 3: DOMANDA SICUREZZA ========================= -->
+                <HBox alignment="TOP_CENTER" spacing="40">
+
+                    <!-- Domanda sicurezza -->
+                    <VBox prefWidth="230" spacing="5">
+                        <Label styleClass="form-label" text="Domanda di sicurezza" />
+                        <ChoiceBox fx:id="sceltaDomandaSicurezza" prefWidth="230" styleClass="choice-box" />
+                        <Label fx:id="labelErroreDomandaSicurezza" styleClass="error-label" text="Seleziona una domanda" visible="false" />
+                    </VBox>
+
+                    <!-- Risposta -->
+                    <VBox prefWidth="230" spacing="5">
+                        <Label styleClass="form-label" text="Risposta" />
+                        <TextField fx:id="textRispostaDomandaSicurezza" styleClass="input-field" />
+                        <Label fx:id="labelErroreRispostaSicurezza" styleClass="error-label" text="Inserisci una risposta" visible="false" />
+                    </VBox>
+
+                </HBox>
+
+                <!-- ========================= BOTTONE REGISTRAZIONE ========================= -->
+                <Button id="loginButton" fx:id="signUpButton" prefWidth="260" text="Registrati" />
+
+            </VBox>
+
+            <!-- Eye icons -->
+            <Button fx:id="eyeButton" layoutX="547.0" layoutY="307.0" prefHeight="35.0" prefWidth="70.0" styleClass="eye-button" text="🔍" AnchorPane.leftAnchor="547.0" AnchorPane.topAnchor="307.0" />
+
+        </AnchorPane>
     </center>
+
 </BorderPane>
