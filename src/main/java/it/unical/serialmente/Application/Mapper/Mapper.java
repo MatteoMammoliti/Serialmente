@@ -6,9 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Mapper {
 
@@ -175,33 +173,43 @@ public class Mapper {
     }
 
     public List<Piattaforma> parsePiattaforme(String risposta) {
-        JSONObject obj = new JSONObject(risposta);
-        if (!obj.has("IT")) {
-            return new ArrayList<>();
+        JSONObject root = new JSONObject(risposta);
+        JSONObject results = root.optJSONObject("results");
+        if (results == null) return List.of();
+
+        String[] paesi = {"IT", "DE", "FR", "US", "GB", "ES"};
+
+        Map<Integer, Piattaforma> piattaformeUniche = new HashMap<>();
+
+        for (String paese : paesi) {
+            JSONObject countryObj = results.optJSONObject(paese);
+            if (countryObj == null) continue;
+
+            JSONArray flatrate = countryObj.optJSONArray("flatrate");
+            if (flatrate == null) continue;
+
+            for (int i = 0; i < flatrate.length(); i++) {
+                JSONObject p = flatrate.getJSONObject(i);
+
+                int id = p.optInt("provider_id");
+                if (id == 0) continue; // sicurezza
+
+                if (!piattaformeUniche.containsKey(id)) {
+                    Piattaforma piattaforma = new Piattaforma(
+                            p.optString("provider_name"),
+                            id
+                    );
+                    piattaforma.setImgUrl(
+                            "https://image.tmdb.org/t/p/original/" + p.optString("logo_path")
+                    );
+                    piattaformeUniche.put(id, piattaforma);
+                }
+            }
         }
 
-        JSONObject piattaformeItaliane = obj.getJSONObject("IT");
-
-        if (!piattaformeItaliane.has("providers")) {
-            return new ArrayList<>();
-        }
-
-        JSONArray providers = piattaformeItaliane.getJSONArray("providers");
-        List<Piattaforma> lista = new ArrayList<>();
-
-        for (int i = 0; i < providers.length(); i++) {
-            JSONObject p = providers.getJSONObject(i);
-            Piattaforma piattaforma = new Piattaforma(
-                    p.optString("provider_name"),
-                    p.optInt("provider_id")
-            );
-            piattaforma.setImgUrl(
-                    "https://image.tmdb.org/t/p/original/" + p.optString("logo_path")
-            );
-            lista.add(piattaforma);
-        }
-        return lista;
+        return new ArrayList<>(piattaformeUniche.values());
     }
+
 
     private int estraiAnnoDaData(String dataStr) {
         LocalDate data = LocalDate.parse(dataStr);
