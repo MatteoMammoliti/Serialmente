@@ -2,9 +2,11 @@ package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Film;
 import it.unical.serialmente.Domain.model.Genere;
+import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelPagineInfoFilm;
+import it.unical.serialmente.UI.View.BannerinoPiattaforme;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -65,6 +67,7 @@ public class ControllerPagineInfoFilm implements Initializable {
         caricaGeneri();
         presenteInListe = modelPagineInfoFilm.controlloPresenzaTitoloWatchlist(this.titolo.getIdTitolo());
         aggiornaStatoBottone();
+        setPiattaforme();
     }
 
     public void caricaGeneri() throws Exception {
@@ -90,5 +93,14 @@ public class ControllerPagineInfoFilm implements Initializable {
     private void btnTornaIndietro(){
         ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnIndietro.getScene().getWindow());
         ModelContainerView.getInstance().getViewFactory().mostraPaginaFilmConMenu();
+    }
+
+    private void setPiattaforme(){
+        List<Piattaforma> piattaforme = this.titolo.getPiattaforme();
+        for(Piattaforma p:piattaforme){
+            BannerinoPiattaforme piattaforma= new BannerinoPiattaforme(p.getImgUrl());
+            this.contenitorePiattafome.getChildren().add(piattaforma);
+        }
+
     }
 }

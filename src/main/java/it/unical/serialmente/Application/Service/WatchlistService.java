@@ -250,4 +250,8 @@ public class WatchlistService {
     public boolean controlloPresenzaTitoloInListe(Integer idTitolo){
         return selezioneTitoloDao.controlloTitoloInListeUtente(SessioneCorrente.getUtenteCorrente().getIdUtente(),idTitolo);
     }
+    public boolean controlloPresenzaSerieTvInListe(Integer idSerie){
+        return selezioneTitoloDao.controlloTitoloInListeUtente(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie)&&
+                progressoDao.controlloSerieTvInCorso(SessioneCorrente.getUtenteCorrente().getIdUtente(),idSerie);
+    }
 }

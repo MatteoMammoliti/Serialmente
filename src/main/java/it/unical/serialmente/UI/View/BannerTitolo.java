@@ -2,6 +2,7 @@ package it.unical.serialmente.UI.View;
 
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Controller.ControllerPagineInfoFilm;
+import it.unical.serialmente.UI.Controller.ControllerPagineInfoSerieTv;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -63,6 +64,15 @@ public class BannerTitolo extends VBox {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaInfoFilm.fxml"));
             Parent root = loader.load();
             ControllerPagineInfoFilm controller = loader.getController();
+            controller.init(this.titolo);
+            Stage stage = (Stage) this.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
+        else  if(this.titolo.getTipologia().equals("SerieTv")){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaInfoSerie.fxml"));
+            Parent root = loader.load();
+            ControllerPagineInfoSerieTv controller = loader.getController();
             controller.init(this.titolo);
             Stage stage = (Stage) this.getScene().getWindow();
             stage.setScene(new Scene(root));

@@ -6,6 +6,20 @@
 .header-film {
     -fx-background-color: #303030;
 }
+.btn-indietro {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 14pt;
+    -fx-padding: 10px 40px 10px 40px;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+    -fx-border-width: 0;
+}
+
+.btn-indietro:hover {
+    -fx-background-color: #353535;
+    -fx-text-fill: WHITE;
+}
 
 .poster {
     -fx-background-color: #555555;
@@ -70,4 +84,68 @@
 .voto-simili {
     -fx-text-fill: #aaaaaa;
     -fx-font-size: 9pt;
+}
+
+/* Stili per l'Accordion Stagioni */
+
+.scroll-accordion {
+    -fx-background-color: #202020;
+}
+
+.accordion-stagioni {
+    -fx-background-color: #202020;
+    -fx-padding: 0;
+}
+
+.titled-pane-stagione {
+    /* Stile per l'intestazione della stagione (la barra espandibile) */
+    -fx-background-color: #353535;
+    -fx-text-fill: WHITE;
+    -fx-font-weight: bold;
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.titled-pane-stagione > .title {
+    /* Stile del titolo quando non espanso */
+    -fx-background-color: #353535;
+    -fx-padding: 10px 15px;
+}
+
+.titled-pane-stagione:expanded {
+    /* Stile del titolo quando espanso */
+    -fx-background-color: #404040;
+}
+
+.contenitore-episodi {
+    /* VBox all'interno del TitledPane */
+    -fx-background-color: #2b2b2b;
+    -fx-padding: 5px 0 5px 0;
+}
+
+.card-episodio {
+    /* HBox per il singolo episodio */
+    -fx-background-color: transparent;
+    -fx-border-color: #404040;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.card-episodio:hover {
+    -fx-background-color: #333333;
+}
+
+.numero-episodio {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-weight: bold;
+    -fx-pref-width: 60px; /* Larghezza fissa per allineamento */
+}
+
+.titolo-episodio {
+    -fx-text-fill: WHITE;
+    -fx-font-weight: normal;
+}
+
+.durata-episodio {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 10pt;
 }

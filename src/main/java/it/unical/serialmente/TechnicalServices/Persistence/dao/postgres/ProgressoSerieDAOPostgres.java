@@ -7,6 +7,7 @@ import javafx.util.Pair;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -164,6 +165,22 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             e.printStackTrace();
         }
         return idSerie;
+    }
+
+    @Override
+    public boolean controlloSerieTvInCorso(Integer idUtente, Integer idSerieTV) {
+        String query="SELECT 1 FROM  progressoserie WHERE id_utente=? AND id_serie=?";
+        try(PreparedStatement st = conn.prepareStatement(query)){
+            st.setInt(1,idUtente);
+            st.setInt(2,idSerieTV);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
     @Override
