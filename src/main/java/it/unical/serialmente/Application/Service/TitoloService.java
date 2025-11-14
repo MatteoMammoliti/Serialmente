@@ -7,6 +7,7 @@ import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
 import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ public class TitoloService {
     private final GenereDAOPostgres genereDao = new GenereDAOPostgres(
             DBManager.getInstance().getConnection()
     );
+    private final TitoloDAOPostgres  titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
 
     public Integer getIdGenereDaNome(String nome) {
         return genereDao.getGenereDaNome(nome);
@@ -229,5 +231,9 @@ public class TitoloService {
                 }
             }
         }
+    }
+
+    public List<Genere> getGeneriTitolo(Integer idTitolo) throws Exception {
+        return titoloDao.restituisciGeneriTitolo(idTitolo);
     }
 }

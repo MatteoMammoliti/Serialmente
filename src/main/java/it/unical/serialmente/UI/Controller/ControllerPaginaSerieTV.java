@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 
 public class ControllerPaginaSerieTV implements Initializable {
 
-    public record TitoloData(String nome, double voto, String imageUrl) {}
+    public record TitoloData(Titolo titolo) {}
 
     private final ModelSezioneSerieTv modelSezioneSerieTv = new ModelSezioneSerieTv();
     private final ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -66,7 +66,7 @@ public class ControllerPaginaSerieTV implements Initializable {
                 if (empty || data == null) {
                     setGraphic(null);
                 } else {
-                    banner.update(data.nome(), (int) data.voto(), data.imageUrl());
+                    banner.update(data.titolo);
                     setGraphic(banner);
                 }
             }
@@ -90,11 +90,7 @@ public class ControllerPaginaSerieTV implements Initializable {
 
                 ObservableList<TitoloData> dati = FXCollections.observableArrayList();
                 for (Titolo titolo : titoli) {
-                    dati.add(new TitoloData(
-                            titolo.getNomeTitolo(),
-                            titolo.getVotoMedio(),
-                            titolo.getImmagine()
-                    ));
+                    dati.add(new TitoloData(titolo));
                 }
 
                 return dati;
