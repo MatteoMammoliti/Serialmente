@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerContainerView implements Initializable {
@@ -26,7 +27,13 @@ public class ControllerContainerView implements Initializable {
                 case "Film" -> ModelContainerView.getInstance().getViewFactory().getPaginaFilm();
                 case "SerieTV" -> ModelContainerView.getInstance().getViewFactory().getPaginaSerieTV();
                 case "Watchlist" -> ModelContainerView.getInstance().getViewFactory().getWatchlist();
-                case "ProfiloUtente" -> ModelContainerView.getInstance().getViewFactory().getPaginaProfiloUtente();
+                case "ProfiloUtente" -> {
+                    try {
+                        yield ModelContainerView.getInstance().getViewFactory().getPaginaProfiloUtente();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 case "Logout" -> {
                     SessioneCorrente.resetSessioneCorrente();
                     ModelContainerView.getInstance().getViewFactory().closeStage(

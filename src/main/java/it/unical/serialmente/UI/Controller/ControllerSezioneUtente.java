@@ -66,7 +66,9 @@ public class ControllerSezioneUtente implements Initializable {
 
 
     }
-
+    public void refresh() throws SQLException {
+        aggiornaListe();
+    }
     private void aggiornaListe() throws SQLException {
         caricaSezione(listSerieVisionate,"Visionati","SerieTv");
         caricaSezione(listSeriePreferite,"Preferiti","SerieTv");

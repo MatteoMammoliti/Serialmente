@@ -29,6 +29,13 @@ public class ControllerWatchlist implements Initializable {
             throw new RuntimeException(e);
         }
     }
+    public void refresh() {
+        try {
+            popolaLista();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void popolaLista() throws Exception {
         List<Titolo> titoli = model.getTitoliInWatchlist();

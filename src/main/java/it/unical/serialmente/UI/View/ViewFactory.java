@@ -1,5 +1,7 @@
 package it.unical.serialmente.UI.View;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
+import it.unical.serialmente.UI.Controller.ControllerSezioneUtente;
+import it.unical.serialmente.UI.Controller.ControllerWatchlist;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class ViewFactory {
 
@@ -19,6 +22,8 @@ public class ViewFactory {
     private BorderPane watchlist;
     private BorderPane paginaProfiloUtente;
     private GrigliaTitoli grigliaTitoli;
+    private ControllerWatchlist controllerWatchlist;
+    private ControllerSezioneUtente controllerSezioneUtente;
 
     public ViewFactory() {
         this.finestraAttuale = new SimpleStringProperty("");
@@ -173,7 +178,14 @@ public class ViewFactory {
 
         if (watchlist == null) {
             try {
-                watchlist = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Watchlist.fxml")).load();
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/it/unical/serialmente/UI/Fxml/Watchlist.fxml")
+                );
+                watchlist = loader.load();
+
+                controllerWatchlist = loader.getController();
+
+
             } catch (IOException e) {
                 e.printStackTrace();
                 AlertHelper.nuovoAlert(
@@ -187,16 +199,25 @@ public class ViewFactory {
         else if(watchlist.getParent() != null){
             ((javafx.scene.layout.Pane) watchlist.getParent()).getChildren().remove(watchlist);
         }
+        if(controllerWatchlist != null){
+            controllerWatchlist.refresh();
+        }
         this.invalidateGrigliaTitoli();
         return watchlist;
     }
 
 
-    public BorderPane getPaginaProfiloUtente() {
+    public BorderPane getPaginaProfiloUtente() throws SQLException {
 
         if (paginaProfiloUtente == null) {
             try {
-                paginaProfiloUtente = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/profiloUtente.fxml")).load();
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/it/unical/serialmente/UI/Fxml/profiloUtente.fxml")
+                );
+                paginaProfiloUtente = loader.load();
+
+                controllerSezioneUtente = loader.getController();
+
             } catch (IOException e) {
                 AlertHelper.nuovoAlert(
                         "Errore!",
@@ -209,6 +230,9 @@ public class ViewFactory {
         }
         else if(paginaProfiloUtente.getParent() != null){
             ((javafx.scene.layout.Pane) paginaProfiloUtente.getParent()).getChildren().remove(paginaProfiloUtente);
+        }
+        if(controllerSezioneUtente != null){
+            controllerSezioneUtente.refresh();
         }
         this.invalidateGrigliaTitoli();
         return paginaProfiloUtente;
