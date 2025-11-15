@@ -33,7 +33,6 @@ public class ControllerPagineInfoFilm implements Initializable {
     public Button btnIndietro;
     public HBox contenitoreInfoFilm;
     private Film titolo;
-    private String dimensionePoster = "https://image.tmdb.org/t/p/original";
     boolean presenteInListe = false;
 
 
@@ -62,21 +61,35 @@ public class ControllerPagineInfoFilm implements Initializable {
                 this.titolo.getVotoMedio());
         this.labelTramaFilm.setText(this.titolo.getTrama());
         this.imageViewPoster.setPreserveRatio(true);
-        Image img = new Image(dimensionePoster+this.titolo.getImmagine());
+        String dimensionePoster = "https://image.tmdb.org/t/p/original";
+        Image img = new Image(dimensionePoster +this.titolo.getImmagine());
         this.imageViewPoster.setImage(img);
-        caricaGeneri();
         presenteInListe = modelPagineInfoFilm.controlloPresenzaTitoloWatchlist(this.titolo.getIdTitolo());
         aggiornaStatoBottone();
+    }
+
+    public void initDatiCompleti(Titolo t) {
+        this.titolo = (Film) t;
+
+        if(this.titolo.getDurataMinuti()!=null){
+            this.labelDurata.setText(this.titolo.getDurataMinuti().toString());
+        }
+
+        caricaGeneri();
         setPiattaforme();
     }
 
-    public void caricaGeneri() throws Exception {
-        List<Genere> generi= titolo.getGeneriPresenti();
-        for(Genere g:generi){
-            System.out.println(g.getNomeGenere());
-            this.labelGeneriFilm.setText(g.getNomeGenere()+" ");
+    public void caricaGeneri() {
+        List<Genere> generi = titolo.getGeneriPresenti();
+        StringBuilder sb = new StringBuilder();
+
+        for (Genere g : generi) {
+            sb.append(g.getNomeGenere()).append(" ");
         }
+
+        labelGeneriFilm.setText(sb.toString().trim());
     }
+
     public void clickAggiungi() throws Exception {
         modelPagineInfoFilm.aggiungiFilmInWatchlist(this.titolo);
         presenteInListe = true;
@@ -98,10 +111,8 @@ public class ControllerPagineInfoFilm implements Initializable {
     private void setPiattaforme(){
         List<Piattaforma> piattaforme = this.titolo.getPiattaforme();
         for(Piattaforma p:piattaforme){
-            System.out.println(p.getNomePiattaforma());
             BannerinoPiattaforme piattaforma= new BannerinoPiattaforme(p.getImgUrl());
             this.contenitorePiattafome.getChildren().add(piattaforma);
         }
-
     }
 }

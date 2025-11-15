@@ -1,8 +1,10 @@
 package it.unical.serialmente.UI.View;
 
+import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Controller.ControllerPagineInfoFilm;
 import it.unical.serialmente.UI.Controller.ControllerPagineInfoSerieTv;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -15,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 public class BannerTitolo extends VBox {
     private static final Image PLACEHOLDER =
@@ -22,6 +25,7 @@ public class BannerTitolo extends VBox {
                     BannerTitolo.class.getResource("/it/unical/serialmente/UI/Images/Generi/action.png")).toExternalForm()
             );
 
+    private final TitoloService titoloService = new TitoloService();
     private final CacheImmagini cache = CacheImmagini.getInstance();
     private final ImageView immagineTitolo= new ImageView();
     private final Label nomeTitolo = new Label();
@@ -50,8 +54,8 @@ public class BannerTitolo extends VBox {
     public void update(Titolo titolo) {
         this.titolo = titolo;
         this.nomeTitolo.setText(titolo.getNomeTitolo() != null ? titolo.getNomeTitolo() : "");
-        Integer voto = (int) titolo.getVotoMedio();
-        this.votoTitolo.setText(voto.toString());
+        int voto = (int) titolo.getVotoMedio();
+        this.votoTitolo.setText(Integer.toString(voto));
         this.immagineTitolo.setImage(PLACEHOLDER);
         if(titolo.getImmagine()!=null && !titolo.getImmagine().isEmpty()){
             Image img = cache.getImg(titolo.getImmagine());
@@ -65,6 +69,18 @@ public class BannerTitolo extends VBox {
             Parent root = loader.load();
             ControllerPagineInfoFilm controller = loader.getController();
             controller.init(this.titolo);
+
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    return titoloService.setDatiFilm(this.titolo);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }})
+                .thenAcceptAsync(titoloCompleto -> {
+                    Platform.runLater(() -> controller.initDatiCompleti(titoloCompleto));
+                }
+            );
+
             Stage stage = (Stage) this.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();

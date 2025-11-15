@@ -33,8 +33,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     public Accordion accordionStagioni;
 
     private SerieTV serie;
-    private ModelPagineInfoSerieTv modelPagineInfoSerieTv = new ModelPagineInfoSerieTv();
-    private boolean presenteInLista= false;
+    private final ModelPagineInfoSerieTv modelPagineInfoSerieTv = new ModelPagineInfoSerieTv();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -102,6 +101,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     }
 
     private void aggiornaBottone(){
+        boolean presenteInLista = false;
         if(presenteInLista){
             this.btnAggiungi.setDisable(true);
             this.btnAggiungi.setOpacity(0.6);

@@ -186,28 +186,32 @@ public class Mapper {
             if (countryObj == null) continue;
 
             JSONArray flatrate = countryObj.optJSONArray("flatrate");
-            if (flatrate == null) continue;
+            JSONArray rent = countryObj.optJSONArray("rent");
+            JSONArray buy = countryObj.optJSONArray("buy");
 
-            for (int i = 0; i < flatrate.length(); i++) {
-                JSONObject p = flatrate.getJSONObject(i);
-
-                int id = p.optInt("provider_id");
-                if (id == 0) continue; // sicurezza
-
-                if (!piattaformeUniche.containsKey(id)) {
-                    Piattaforma piattaforma = new Piattaforma(
-                            p.optString("provider_name"),
-                            id
-                    );
-                    piattaforma.setImgUrl(
-                            "https://image.tmdb.org/t/p/original/" + p.optString("logo_path")
-                    );
-                    piattaformeUniche.put(id, piattaforma);
-                }
-            }
+            aggiungiPiattaformeDaArray(flatrate, piattaformeUniche);
+            aggiungiPiattaformeDaArray(rent, piattaformeUniche);
+            aggiungiPiattaformeDaArray(buy, piattaformeUniche);
         }
 
         return new ArrayList<>(piattaformeUniche.values());
+    }
+
+    private void aggiungiPiattaformeDaArray(JSONArray arr, Map<Integer, Piattaforma> out) {
+        if (arr == null) return;
+
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject p = arr.getJSONObject(i);
+
+            int id = p.optInt("provider_id");
+            if (id == 0) continue;
+
+            out.computeIfAbsent(id, k -> {
+                Piattaforma pi = new Piattaforma(p.optString("provider_name"), id);
+                pi.setImgUrl("https://image.tmdb.org/t/p/original/" + p.optString("logo_path"));
+                return pi;
+            });
+        }
     }
 
 
