@@ -1,9 +1,7 @@
 package it.unical.serialmente.Application.Service;
 
 import it.unical.serialmente.Application.Mapper.Mapper;
-import it.unical.serialmente.Domain.model.ContenitoreDatiProgressoSerie;
-import it.unical.serialmente.Domain.model.SessioneCorrente;
-import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
@@ -26,12 +24,17 @@ public class WatchlistService {
     public void inserisciTitoloInWatchlist(Titolo titolo) throws SQLException {
         try {
             DBManager.getInstance().getConnection().setAutoCommit(false);
-            boolean inserimentoConSuccesso = false;
+            boolean inserimentoConSuccesso = true;
+            boolean primoInserimento=true;
             if(titoloDao.restituisciTitoloPerId(titolo.getIdTitolo()) == null) {
-                inserimentoConSuccesso = titoloDao.aggiungiTitolo(titolo);
+                System.out.println("NULL");
+                primoInserimento = titoloDao.aggiungiTitolo(titolo);
+            }else {
+                System.out.println("nonull");
             }
 
-            if(!inserimentoConSuccesso) {
+            if(!primoInserimento) {
+                System.out.println("esco 1");
                 DBManager.getInstance().getConnection().rollback();
                 return;
             }
@@ -40,23 +43,19 @@ public class WatchlistService {
                     titolo.getIdTitolo(),
                     "Watchlist"
             );
-
+            System.out.println("aggiunto con successo");
             if(!inserimentoConSuccesso) {
                 DBManager.getInstance().getConnection().rollback();
+                System.out.println("Esco 2");
                 return;
             }
-
             if(titolo.getTipologia().equals("SerieTv")) {
+                SerieTV serie=(SerieTV)titolo;
+                Stagione primaStagione=serie.getStagioni().getFirst();
                 String urlSerieTV = tmdbRequest.getTitolo(titolo.getIdTitolo(), "tv");
                 String infoSerieTV = tmdbHttpClient.richiesta(urlSerieTV);
 
-                String urlStagione = "/tv/" +
-                    titolo.getIdTitolo() +
-                    "/season/" +
-                    progressoDao.getNumeroProgressivoStagione(
-                            SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                            titolo.getIdTitolo()
-                    );
+                String urlStagione =tmdbRequest.getEpisodiDaStagione(primaStagione.getNumeroStagioneProgressivo(),serie.getIdTitolo());
 
                 String infoStagione = tmdbHttpClient.richiesta(urlStagione);
 
@@ -82,7 +81,7 @@ public class WatchlistService {
             DBManager.getInstance().getConnection().commit();
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
         }
@@ -116,6 +115,22 @@ public class WatchlistService {
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
         }
+    }
+    public void rimuviSerieWatchlist(Titolo titolo) throws SQLException {
+        DBManager.getInstance().getConnection().setAutoCommit(false);
+        boolean successo= selezioneTitoloDao.eliminaTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                titolo.getIdTitolo(),
+                "Watchlist");
+        if(!successo) {
+            DBManager.getInstance().getConnection().rollback();
+            return;
+        }
+        successo= progressoDao.eliminaSerieDaProgressioSerie(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo());
+        if (!successo) {
+            DBManager.getInstance().getConnection().rollback();
+            return;
+        }
+        DBManager.getInstance().getConnection().commit();
     }
 
     public void rendiTitoloVisionato(Titolo titolo) {

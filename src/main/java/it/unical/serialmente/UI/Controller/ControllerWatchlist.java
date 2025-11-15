@@ -12,6 +12,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,10 +48,50 @@ public class ControllerWatchlist implements Initializable {
                 if ("Film".equalsIgnoreCase(tipo)) {
                     Film titolo = (Film)t;
                     bannerFilm.update(titolo.getNomeTitolo(),titolo.getDurataMinuti(),titolo.getImmagine());
+                    bannerFilm.setVisionato(()->{
+                        try {
+                            model.rendiTitoloVisionato(titolo);
+                            popolaLista();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    bannerFilm.setRimuovi(()->{
+                        try {
+                            model.rimuoviTitoloWatchlist(titolo);
+                            popolaLista();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                     setGraphic(bannerFilm);
                 } else if ("SerieTv".equalsIgnoreCase(tipo)) {
                     bannerSerie.update(t.getNomeTitolo(),model.getNumeroStagione(t.getIdTitolo()),model.getNumeroEpisodio(t.getIdTitolo()),
                             model.getNomeEpisodio(t.getIdTitolo()),t.getImmagine());
+                    bannerSerie.setRimuovi(()->{
+                        try {
+                            model.rimuoviSerieWatchlist(t);
+                            popolaLista();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    bannerSerie.setVisionatoSerie(()->{
+                        try {
+                            model.rendiTitoloVisionato(t);
+                            popolaLista();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    bannerSerie.setSegnaEpisodio(()->{
+                        try {
+                            model.episodioSuccessivo(t);
+                            popolaLista();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                     setGraphic(bannerSerie);
                 } else {
                     setGraphic(null);

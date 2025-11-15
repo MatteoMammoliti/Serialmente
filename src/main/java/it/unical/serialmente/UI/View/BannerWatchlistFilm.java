@@ -19,6 +19,8 @@ public class BannerWatchlistFilm extends HBox {
     private final Label labelDurata;
     private final Button btnRimuovi;
     private final Button btnVisionato;
+    private Runnable rimuovi;
+    private Runnable visionato;
 
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
 
@@ -52,10 +54,14 @@ public class BannerWatchlistFilm extends HBox {
         btnRimuovi = new Button("✕");
         btnRimuovi.getStyleClass().add("btn-rimuovi-card");
         HBox.setMargin(btnRimuovi, new Insets(0, 5.0, 0, 0));
+        btnRimuovi.setOnAction(e -> {
+            if(rimuovi!=null){rimuovi.run();}});
+
 
         btnVisionato = new Button("✓ Visionato");
         btnVisionato.getStyleClass().add("btn-visionato-card");
         HBox.setMargin(btnVisionato, new Insets(0, 10.0, 0, 0));
+        btnVisionato.setOnAction(e -> {if(visionato!=null){visionato.run();}});
 
         this.getChildren().addAll(
                 imageViewPoster,
@@ -76,6 +82,13 @@ public class BannerWatchlistFilm extends HBox {
         } else {
             imageViewPoster.setImage(null);
         }
+    }
+
+    public void setRimuovi(Runnable rimuovi) {
+        this.rimuovi = rimuovi;
+    }
+    public void setVisionato(Runnable visionato) {
+        this.visionato = visionato;
     }
 
 }

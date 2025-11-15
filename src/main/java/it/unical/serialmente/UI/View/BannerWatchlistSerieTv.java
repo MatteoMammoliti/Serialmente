@@ -19,6 +19,9 @@ public class BannerWatchlistSerieTv extends HBox {
     private final Button btnRimuovi;
     private final Button btnSegnaEpisodio;
     private final Button btnVisionatoSerie;
+    private Runnable rimuovi;
+    private Runnable segnaEpisodio;
+    private Runnable visionatoSerie;
 
     private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w92";
 
@@ -51,14 +54,19 @@ public class BannerWatchlistSerieTv extends HBox {
         btnRimuovi = new Button("✕");
         btnRimuovi.getStyleClass().add("btn-rimuovi-card");
         HBox.setMargin(btnRimuovi, new Insets(0, 5.0, 0, 0));
+        btnRimuovi.setOnAction(e -> {if(rimuovi!=null){rimuovi.run();}});
+
 
         btnSegnaEpisodio = new Button("▶ Episodio Visto");
         btnSegnaEpisodio.getStyleClass().add("btn-episodio-card");
         HBox.setMargin(btnSegnaEpisodio, new Insets(0, 10.0, 0, 0));
+        btnSegnaEpisodio.setOnAction(event->{if(segnaEpisodio!=null){segnaEpisodio.run();}});
 
         btnVisionatoSerie = new Button("✓ Serie Vista");
         btnVisionatoSerie.getStyleClass().add("btn-visionato-card-alt");
         HBox.setMargin(btnVisionatoSerie, new Insets(0, 10.0, 0, 0));
+        btnVisionatoSerie.setOnAction(event -> {if(visionatoSerie!=null){visionatoSerie.run();}});
+
         this.getChildren().addAll(
                 imageViewPoster,
                 dettagliVBox,
@@ -83,6 +91,16 @@ public class BannerWatchlistSerieTv extends HBox {
         } else {
             imageViewPoster.setImage(null);
         }
+    }
+
+    public void setRimuovi(Runnable rimuovi) {
+        this.rimuovi = rimuovi;
+    }
+    public void setSegnaEpisodio(Runnable segnaEpisodio) {
+        this.segnaEpisodio = segnaEpisodio;
+    }
+    public void setVisionatoSerie(Runnable visionatoSerie) {
+        this.visionatoSerie = visionatoSerie;
     }
 
 }

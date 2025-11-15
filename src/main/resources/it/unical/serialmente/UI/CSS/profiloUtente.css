@@ -132,3 +132,64 @@ ListView {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 12, 0.2, 0, 2);
     -fx-cursor: hand;
 }
+
+
+.poster-utente-card {
+    -fx-background-color: #303030;
+    -fx-background-radius: 5px;
+    -fx-padding: 0;
+}
+
+.poster-utente-card:hover {
+    -fx-effect: dropshadow(gaussian, #e50914, 10, 0.5, 0, 0);
+}
+
+
+.poster-utente-immagine {
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+.btn-rimuovi-poster {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: WHITE;
+    -fx-font-size: 10pt;
+    -fx-padding: 3px 7px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.8;
+}
+
+
+.btn-rimuovi-poster:hover {
+    -fx-background-color: rgba(150, 150, 150, 0.9); /* Grigio per un'azione distruttiva ma meno enfatica del preferito */
+    -fx-text-fill: BLACK;
+    -fx-opacity: 1.0;
+}
+
+
+
+.btn-preferiti {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: WHITE;
+    -fx-font-size: 14pt;
+    -fx-padding: 3px 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.8;
+}
+
+
+.btn-preferiti:hover {
+    -fx-background-color: rgba(229, 9, 20, 0.9);
+    -fx-text-fill: WHITE;
+    -fx-opacity: 1.0;
+}
+
+
+.btn-preferiti.preferito-attivo {
+    -fx-background-color: #e50914;
+    -fx-text-fill: WHITE;
+    -fx-opacity: 1.0;
+}

@@ -3,6 +3,7 @@ package it.unical.serialmente.UI.Model;
 import it.unical.serialmente.Application.Service.WatchlistService;
 import it.unical.serialmente.Domain.model.Titolo;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ModelWatchlist {
@@ -20,5 +21,17 @@ public class ModelWatchlist {
 
     public List<Titolo> getTitoliInWatchlist() throws Exception {
         return watchlistService.restituisciTitoliInWatchlist();
+    }
+    public void rendiTitoloVisionato(Titolo titolo) throws SQLException {
+        watchlistService.rendiTitoloVisionato(titolo);
+    }
+    public void rimuoviTitoloWatchlist(Titolo titolo) throws SQLException {
+        watchlistService.rimuoviTitoloDallaWatchlist(titolo);
+    }
+    public void rimuoviSerieWatchlist(Titolo titolo) throws SQLException {
+        watchlistService.rimuviSerieWatchlist(titolo);
+    }
+    public void episodioSuccessivo(Titolo titolo) throws Exception {
+        watchlistService.rendiEpisodioVisionato(titolo);
     }
 }

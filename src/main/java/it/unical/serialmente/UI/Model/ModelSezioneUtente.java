@@ -30,4 +30,12 @@ public class ModelSezioneUtente {
     public StatisticheSerieTv getStatisticheSerieTv() throws Exception {
         return sezioneUtenteService.getStatisticheSerieTv();
     }
+
+    public void rendiTitoloPreferito(Titolo titolo) throws Exception {
+        sezioneUtenteService.rendiTitoloPreferito(titolo);
+    }
+
+    public void togliTitoloDaiPreferiti(Titolo titolo) throws Exception {
+        sezioneUtenteService.togliTitoloPreferito(titolo);
+    }
 }

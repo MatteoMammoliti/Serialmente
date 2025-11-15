@@ -199,15 +199,19 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         return null;
     }
 
-    public void eliminaSerieDaProgressioSerie(Integer idUtente, Integer idSerieTV) {
+    public boolean eliminaSerieDaProgressioSerie(Integer idUtente, Integer idSerieTV) {
         String query = "DELETE FROM progressoserie WHERE id_utente=? AND id_serie=?";
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
-            st.executeUpdate();
+            int i = st.executeUpdate();
+            if (i > 0) {
+                return true;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 
     @Override

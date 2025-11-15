@@ -26,7 +26,7 @@ public class ControllerSezioneUtente implements Initializable {
     public Label oreTempoFilm;
     public Label numeroFilmVisti;
 
-    public record TitoloDato(String imgUrl){};
+    public record TitoloDato(Titolo titolo) {};
     public VBox contenitoreSalutiUtente;
     public Label labelSalutiUtente;
     public VBox contenitoreStatistiche;
@@ -56,10 +56,7 @@ public class ControllerSezioneUtente implements Initializable {
         this.listFilmVisionati.setPrefHeight(dimensioneBannerini);
         this.contenitoreCardStatistiche.setPadding(new Insets(15));
         try {
-            caricaSezione(listSerieVisionate,"Visionati","SerieTv");
-            caricaSezione(listSeriePreferite,"Preferiti","SerieTv");
-            caricaSezione(listFilmVisionati,"Visionati","Film");
-            caricaSezione(listFilmPreferiti,"Preferiti","Film");
+            aggiornaListe();
             caricaStatistiche();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,17 +67,44 @@ public class ControllerSezioneUtente implements Initializable {
 
     }
 
+    private void aggiornaListe() throws SQLException {
+        caricaSezione(listSerieVisionate,"Visionati","SerieTv");
+        caricaSezione(listSeriePreferite,"Preferiti","SerieTv");
+        caricaSezione(listFilmVisionati,"Visionati","Film");
+        caricaSezione(listFilmPreferiti,"Preferiti","Film");
+    }
+
     public void caricaSezione(ListView<TitoloDato> lista, String tipoLista,String tipoTitolo) throws SQLException {
         List<Titolo> titoli = modelSezioneUtente.getTitoliInLista(tipoLista,tipoTitolo);
+        boolean preferito;
+        if(tipoLista.equals("Preferiti")) {preferito = true;} else {
+            preferito = false;
+        }
         lista.setCellFactory(lv ->new ListCell<>(){
-            private final PosterSezioneUtente bannerTitolo = new PosterSezioneUtente();
+            private final PosterSezioneUtente bannerTitolo = new PosterSezioneUtente(preferito);
             @Override
             protected void updateItem(TitoloDato data, boolean empty) {
                 super.updateItem(data, empty);
                 if(empty || data == null){
                     setGraphic(null);
                 }else {
-                    bannerTitolo.update(data.imgUrl);
+                    bannerTitolo.update(data.titolo);
+                    bannerTitolo.clickPreferito(()->{
+                        try {
+                            modelSezioneUtente.rendiTitoloPreferito(data.titolo);
+                            aggiornaListe();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    bannerTitolo.clickElimina(()->{
+                        try {
+                            modelSezioneUtente.togliTitoloDaiPreferiti(data.titolo);
+                            aggiornaListe();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                     setGraphic(bannerTitolo);
                 }
             }
@@ -88,7 +112,7 @@ public class ControllerSezioneUtente implements Initializable {
 
         ObservableList<TitoloDato> dati = FXCollections.observableArrayList();
         for (Titolo titolo : titoli) {
-            dati.add(new TitoloDato(titolo.getImmagine()));
+            dati.add(new TitoloDato(titolo));
         }
         lista.setItems(dati);
     }

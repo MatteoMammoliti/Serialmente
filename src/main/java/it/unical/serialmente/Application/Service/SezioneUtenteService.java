@@ -24,6 +24,7 @@ public class SezioneUtenteService {
     private final Mapper mapper = new Mapper();
 
     private final ProgressoSerieService progressoSerieService = new ProgressoSerieService();
+    private final SelezioneTitoloDAOPostgres selezioneTitolo = new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
 
     public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo) throws SQLException {
         return selezioneTitoloDAOPostgres.restituisciTitoliInLista(
@@ -105,5 +106,13 @@ public class SezioneUtenteService {
                 ).size()
         );
         return new Pair<>(p.getKey(), minutiSpesi);
+    }
+
+    public void rendiTitoloPreferito(Titolo titolo) throws Exception {
+        selezioneTitoloDAOPostgres.aggiungiTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Preferiti");
+    }
+
+    public void togliTitoloPreferito(Titolo titolo) throws Exception {
+        selezioneTitolo.eliminaTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Preferiti");
     }
 }
