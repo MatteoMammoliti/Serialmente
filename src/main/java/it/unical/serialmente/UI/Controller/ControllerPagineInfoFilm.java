@@ -32,8 +32,10 @@ public class ControllerPagineInfoFilm implements Initializable {
     public HBox contenitorePiattafome;
     public Button btnIndietro;
     public HBox contenitoreInfoFilm;
+    public Label labelPiattaforme;
     private Film titolo;
-    boolean presenteInListe = false;
+    private String dimensionePoster = "https://image.tmdb.org/t/p/original";
+    boolean presenteInListe;
 
 
 
@@ -54,16 +56,13 @@ public class ControllerPagineInfoFilm implements Initializable {
     public void init(Titolo titolo) throws Exception {
         this.titolo = (Film) titolo;
         this.labelTitoloFilm.setText(this.titolo.getNomeTitolo());
-        if(this.titolo.getDurataMinuti()!=null){
-            this.labelDurata.setText(this.titolo.getDurataMinuti().toString());
-        }
-        this.labelAnnoVoti.setText(this.titolo.getAnnoPubblicazione().toString() + " - "+
+        this.labelAnnoVoti.setText("Anno pubblicazione: "+this.titolo.getAnnoPubblicazione().toString() + " - Voto medio: "+
                 this.titolo.getVotoMedio());
         this.labelTramaFilm.setText(this.titolo.getTrama());
         this.imageViewPoster.setPreserveRatio(true);
-        String dimensionePoster = "https://image.tmdb.org/t/p/original";
-        Image img = new Image(dimensionePoster +this.titolo.getImmagine());
+        Image img = new Image(dimensionePoster+this.titolo.getImmagine());
         this.imageViewPoster.setImage(img);
+        caricaGeneri();
         presenteInListe = modelPagineInfoFilm.controlloPresenzaTitoloWatchlist(this.titolo.getIdTitolo());
         aggiornaStatoBottone();
     }
@@ -72,7 +71,7 @@ public class ControllerPagineInfoFilm implements Initializable {
         this.titolo = (Film) t;
 
         if(this.titolo.getDurataMinuti()!=null){
-            this.labelDurata.setText(this.titolo.getDurataMinuti().toString());
+            this.labelDurata.setText("Durata: "+this.titolo.getDurataMinuti().toString()+" minuti");
         }
 
         caricaGeneri();
@@ -100,6 +99,10 @@ public class ControllerPagineInfoFilm implements Initializable {
             btnAggiungi.setText("Film già trackato");
             btnAggiungi.setDisable(true);
             btnAggiungi.setOpacity(0.6);
+        }else {
+            btnAggiungi.setText("Aggiungi film in watchlist");
+            btnAggiungi.setDisable(false);
+            btnAggiungi.setOpacity(1);
         }
     }
 
@@ -110,9 +113,10 @@ public class ControllerPagineInfoFilm implements Initializable {
 
     private void setPiattaforme(){
         List<Piattaforma> piattaforme = this.titolo.getPiattaforme();
-        for(Piattaforma p:piattaforme){
-            BannerinoPiattaforme piattaforma= new BannerinoPiattaforme(p.getImgUrl());
-            this.contenitorePiattafome.getChildren().add(piattaforma);
+        StringBuilder string= new StringBuilder();
+        for (Piattaforma p : piattaforme){
+            string.append(p.getNomePiattaforma()).append(" ");
         }
+        this.labelPiattaforme.setText(string.toString().trim());
     }
 }

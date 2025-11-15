@@ -60,7 +60,7 @@ public class Mapper {
                 object.optString("overview"),
                 object.optString("poster_path"),
                 object.optDouble("vote_average"),
-                null,
+                object.optInt("runtime"),
                 annoPubblicazioneFilm
         );
     }
@@ -213,7 +213,6 @@ public class Mapper {
 
             out.computeIfAbsent(id, k -> {
                 Piattaforma pi = new Piattaforma(p.optString("provider_name"), id);
-                pi.setImgUrl("https://image.tmdb.org/t/p/original/" + p.optString("logo_path"));
                 return pi;
             });
         }

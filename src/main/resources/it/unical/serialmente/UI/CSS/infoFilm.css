@@ -86,9 +86,13 @@
     -fx-font-size: 9pt;
 }
 
-/* Stili per l'Accordion Stagioni */
-
+.accordion {
+    -fx-background-color: #202020;
+}
 .scroll-accordion {
+    -fx-background-color: #202020;
+}
+.scroll-accordion>.viewport{
     -fx-background-color: #202020;
 }
 
@@ -98,7 +102,6 @@
 }
 
 .titled-pane-stagione {
-    /* Stile per l'intestazione della stagione (la barra espandibile) */
     -fx-background-color: #353535;
     -fx-text-fill: WHITE;
     -fx-font-weight: bold;
@@ -107,24 +110,20 @@
 }
 
 .titled-pane-stagione > .title {
-    /* Stile del titolo quando non espanso */
     -fx-background-color: #353535;
     -fx-padding: 10px 15px;
 }
 
 .titled-pane-stagione:expanded {
-    /* Stile del titolo quando espanso */
     -fx-background-color: #404040;
 }
 
 .contenitore-episodi {
-    /* VBox all'interno del TitledPane */
     -fx-background-color: #2b2b2b;
     -fx-padding: 5px 0 5px 0;
 }
 
 .card-episodio {
-    /* HBox per il singolo episodio */
     -fx-background-color: transparent;
     -fx-border-color: #404040;
     -fx-border-width: 0 0 1px 0;
