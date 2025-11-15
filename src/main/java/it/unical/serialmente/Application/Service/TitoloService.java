@@ -28,7 +28,8 @@ public class TitoloService {
     private final GenereDAOPostgres genereDao = new GenereDAOPostgres(
             DBManager.getInstance().getConnection()
     );
-    private final TitoloDAOPostgres  titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
+
+    //private final TitoloDAOPostgres  titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
 
     public Integer getIdGenereDaNome(String nome) {
         return genereDao.getGenereDaNome(nome);
@@ -172,23 +173,15 @@ public class TitoloService {
         return titoli;
     }
 
-//    public void popolaListaSerieTV(List<Titolo> titoli) throws Exception {
-//
-//        for (Titolo titolo : titoli) {
-//
-//            if (titolo.getTipologia().equals("SerieTv")) {
-//
-//                List<Stagione> stagioni = getStagioni(titolo.getIdTitolo());
-//                SerieTV s = (SerieTV) titolo;
-//
-//                for (Stagione stagione : stagioni) {
-//                    List<Episodio> episodi = getEpisodi(titolo.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
-//                    stagione.setEpisodi(episodi);
-//                }
-//                s.setStagioni(stagioni);
-//            }
-//        }
-//    }
+    public void popolaListaSerieTV(SerieTV s) throws Exception {
+        List<Stagione> stagioni = getStagioni(s.getIdTitolo());
+
+        for (Stagione stagione : stagioni) {
+            List<Episodio> episodi = getEpisodi(s.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
+            stagione.setEpisodi(episodi);
+        }
+        s.setStagioni(stagioni);
+    }
 
 //    public void rendiEpisodiVistiSerieTV(List<Titolo> titoli) throws Exception {
 //
@@ -241,9 +234,19 @@ public class TitoloService {
                 }
             });
             futures.add(durata);
+        } else if(titolo.getTipologia().equals("SerieTv")) {
+            SerieTV s = (SerieTV) titolo;
+
+            CompletableFuture<Void> popolamento = CompletableFuture.runAsync(() -> {
+                try {
+                    popolaListaSerieTV(s);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            futures.add(popolamento);
         }
 
-        System.out.println("PER IL TITOLO " + titolo.getNomeTitolo() + "I GENERI SONO");
         CompletableFuture<Void> generi = CompletableFuture.runAsync(() -> {
             try {
                 List<Genere> generiTitolo = mapper.parseGeneri(
@@ -251,7 +254,6 @@ public class TitoloService {
                                 tmdbRequest.getTitolo(titolo.getIdTitolo(), tipologiaTitolo)
                         )
                 );
-                System.out.println(generiTitolo.size());
                 generiTitolo.forEach(titolo::aggiungiGenere);
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -259,7 +261,6 @@ public class TitoloService {
         });
         futures.add(generi);
 
-        System.out.println("PER IL TITOLO " + titolo.getNomeTitolo() + "LE PIATTAFORME SONO");
         CompletableFuture<Void> piattaforme = CompletableFuture.runAsync(() -> {
             try {
                 List<Piattaforma> piattaformeTitolo = mapper.parsePiattaforme(
@@ -268,7 +269,6 @@ public class TitoloService {
                         ),
                         tipologiaTitolo.equals("movie")
                 );
-                System.out.println(piattaformeTitolo.size());
                 piattaformeTitolo.forEach(titolo::aggiungiPiattaforme);
             } catch (Exception e)  {
                 throw new RuntimeException(e);
@@ -280,8 +280,7 @@ public class TitoloService {
         return titolo;
     }
 
-
-    public List<Genere> getGeneriTitoloDBInterno(Integer idTitolo) throws Exception {
-        return titoloDao.restituisciGeneriTitolo(idTitolo);
-    }
+//    public List<Genere> getGeneriTitoloDBInterno(Integer idTitolo) throws Exception {
+//        return titoloDao.restituisciGeneriTitolo(idTitolo);
+//    }
 }

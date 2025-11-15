@@ -55,21 +55,27 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         this.labelTitoloSerie.setText(this.serie.getNomeTitolo());
         this.labelVoto.setText(String.valueOf(this.serie.getVotoMedio()));
         this.labelTramaSerie.setText(this.serie.getTrama());
-        //caricaStagioni(this.serie.getStagioni());
         aggiornaBottone();
     }
 
     public void initDatiCompleti(Titolo t) {
         this.serie = (SerieTV) t;
-        caricaGeneri(t.getGeneriPresenti());
-        caricaPiattaforme(t.getPiattaforme());
+        caricaGeneri();
+        caricaPiattaforme(this.serie.getPiattaforme());
+        caricaStagioni(this.serie.getStagioni());
     }
 
-    private void caricaGeneri(List<Genere> generi){
-        for(Genere g:generi){
-            this.labelGeneriSerie.setText(g.getNomeGenere()+" ");
+    public void caricaGeneri() {
+        List<Genere> generi = this.serie.getGeneriPresenti();
+        StringBuilder sb = new StringBuilder();
+
+        for (Genere g : generi) {
+            sb.append(g.getNomeGenere()).append(" ");
         }
+
+        labelGeneriSerie.setText(sb.toString().trim());
     }
+
     private void caricaStagioni(List<Stagione> stagioni){
         for(int i=0;i<stagioni.size();i++){
             TitledPane pane= new TitledPane();
