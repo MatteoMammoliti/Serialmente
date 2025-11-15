@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.ControllerSezioneRicerca">
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints halignment="LEFT" minWidth="120"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Titolo:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="campoTitolo" promptText="Inserisci titolo" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <MenuButton fx:id="menuGenere" text="Scegli i generi"/>
+
+                <Label text="Anno:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="campoAnno" promptText="Es. 2020" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Tipologia:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <HBox spacing="10" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                    <RadioButton fx:id="radioFilm" text="Film"/>
+                    <RadioButton fx:id="radioSerie" text="Serie TV"/>
+                </HBox>
+            </GridPane>
+
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="bottoneCerca" text="Cerca" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ListView fx:id="listaRisultati" />
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Button fx:id="btnIndietro" text="Torna indietro"/>
+        </HBox>
+    </bottom>
+</BorderPane>

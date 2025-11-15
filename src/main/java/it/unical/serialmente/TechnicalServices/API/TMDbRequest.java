@@ -26,6 +26,18 @@ public class TMDbRequest {
         return BASE + "/" + tipologia + "/" + idTitolo + "/watch/providers";
     }
 
+    public String getTitoliCasuali(String tipologia, Integer pagina) {
+        String url;
+        url = switch (tipologia) {
+            case "movie" -> BASE + "/discover/" + tipologia + "?sort_by=primary_release_date.asc";
+            case "tv" -> BASE + "/discover/" + tipologia + "?sort_by=first_air_date.asc";
+            default -> throw new IllegalStateException("Unexpected value: " + tipologia);
+        };
+
+        if(pagina == null) return url;
+        return url + "&page=" + pagina;
+    }
+
     public String getEpisodiDaStagione(Integer numeroStagione, Integer idSerieTV) {
         return BASE + "/tv/" + idSerieTV + "/season/" + numeroStagione;
     }

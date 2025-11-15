@@ -202,6 +202,11 @@ public class Mapper {
         return new ArrayList<>(piattaformeUniche.values());
     }
 
+    public Integer parsePagineTotali(String risposta) {
+        JSONObject obj = new JSONObject(risposta);
+        return Math.min(obj.optInt("total_pages"), 500);
+    }
+
     private void aggiungiPiattaformeDaArray(JSONArray arr, Map<Integer, Piattaforma> out) {
         if (arr == null) return;
 
@@ -211,13 +216,9 @@ public class Mapper {
             int id = p.optInt("provider_id");
             if (id == 0) continue;
 
-            out.computeIfAbsent(id, k -> {
-                Piattaforma pi = new Piattaforma(p.optString("provider_name"), id);
-                return pi;
-            });
+            out.computeIfAbsent(id, k -> new Piattaforma(p.optString("provider_name"), id));
         }
     }
-
 
     private int estraiAnnoDaData(String dataStr) {
         LocalDate data = LocalDate.parse(dataStr);

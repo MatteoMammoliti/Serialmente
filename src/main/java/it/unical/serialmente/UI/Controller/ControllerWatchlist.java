@@ -1,15 +1,21 @@
 package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.Film;
+import it.unical.serialmente.Domain.model.Stagione;
 import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelWatchlist;
 import it.unical.serialmente.UI.View.BannerWatchlistFilm;
 import it.unical.serialmente.UI.View.BannerWatchlistSerieTv;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.List;
@@ -27,6 +33,10 @@ public class ControllerWatchlist implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        this.btnSfigliaTitoli.setOnAction(e -> {
+            apriRicerca();
+        });
     }
 
     public void popolaLista() throws Exception {
@@ -59,5 +69,21 @@ public class ControllerWatchlist implements Initializable {
         });
 
         listTitoli.setItems(FXCollections.observableArrayList(titoli));
+    }
+
+    private void apriRicerca() {
+        try {
+            Parent paginaCorrente = listTitoli.getScene().getRoot();
+            ModelContainerView.getInstance()
+                    .getViewFactory()
+                    .setPaginaPrecedente(paginaCorrente);
+
+            FXMLLoader paginaRicerca = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/sezioneRicerca.fxml"));
+            Parent root = paginaRicerca.load();
+            Stage stage = (Stage) listTitoli.getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

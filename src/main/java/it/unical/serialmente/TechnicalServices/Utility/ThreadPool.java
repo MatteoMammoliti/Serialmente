@@ -4,13 +4,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ThreadPool {
-    private static final ExecutorService executor = Executors.newFixedThreadPool(8);
+    private static ExecutorService executor;
 
-    public static ExecutorService get() {
+    public static synchronized ExecutorService get() {
+        if (executor == null || executor.isShutdown()) {
+            executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        }
         return executor;
     }
 
-    public static void shutdown() {
-        executor.shutdownNow();
+    public static synchronized void shutdown() {
+        if(executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        };
+        executor = null;
     }
 }

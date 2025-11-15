@@ -70,7 +70,9 @@ public class TitoloService {
                 sommaMinuti += episodio.getDurataEpisodio();
             }
         }
+        System.out.println("MI ARRIVATO COME NUMERO PROGRESSIVO " + numProgressivoStagione);
         String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
+        System.out.println(url);
         String risposta = tmdbHttpClient.richiesta(url);
         List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
 
@@ -169,8 +171,7 @@ public class TitoloService {
             default -> "";
         };
 
-        List<Titolo> titoli = mapper.parseTitoli(tmdbHttpClient.richiesta(url), tipologia);
-        return titoli;
+        return mapper.parseTitoli(tmdbHttpClient.richiesta(url), tipologia);
     }
 
     public void popolaListaSerieTV(SerieTV s) throws Exception {
@@ -280,6 +281,38 @@ public class TitoloService {
         return titolo;
     }
 
+    public List<Titolo> getTitoliCasuali() throws Exception {
+        List<Titolo> film = getFilmCasuali();
+        List<Titolo> tv = getSerieTVCasuali();
+        film.addAll(tv);
+        return film;
+    }
+
+    private List<Titolo> getFilmCasuali() throws Exception {
+        String url = tmdbRequest.getTitoliCasuali(
+                "movie",
+                mapper.parsePagineTotali(
+                        tmdbHttpClient.richiesta(
+                                tmdbRequest.getTitoliCasuali("movie", null)
+                        )
+                )
+        );
+        String risposta = tmdbHttpClient.richiesta(url);
+        return mapper.parseTitoli(risposta, "movie");
+    }
+
+    private List<Titolo> getSerieTVCasuali() throws Exception {
+        String url = tmdbRequest.getTitoliCasuali(
+                "tv",
+                mapper.parsePagineTotali(
+                        tmdbHttpClient.richiesta(
+                                tmdbRequest.getTitoliCasuali("tv", null)
+                        )
+                )
+        );
+        String risposta = tmdbHttpClient.richiesta(url);
+        return mapper.parseTitoli(risposta, "tv");
+    }
 //    public List<Genere> getGeneriTitoloDBInterno(Integer idTitolo) throws Exception {
 //        return titoloDao.restituisciGeneriTitolo(idTitolo);
 //    }

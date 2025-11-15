@@ -98,10 +98,10 @@ public class SezioneUtenteService {
         if(p.getValue() != 0) return p;
         int minutiSpesi = titoloService.sommaMinutiEpisodiVisti(
                 idSerie,
-                titoloService.getStagioni(idSerie).size(),
+                titoloService.getStagioni(idSerie).size() - 1,
                 titoloService.getEpisodi(
                         idSerie,
-                        titoloService.getStagioni(idSerie).size()
+                        titoloService.getStagioni(idSerie).size() - 1
                 ).size()
         );
         return new Pair<>(p.getKey(), minutiSpesi);
