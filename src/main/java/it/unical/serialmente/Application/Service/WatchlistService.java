@@ -140,11 +140,13 @@ public class WatchlistService {
                 "Visionati"
         );
 
-        if(titolo.getTipologia().equals("SerieTv"))
+        if(titolo.getTipologia().equals("SerieTv")){
+            System.out.println("elimino");
             progressoDao.eliminaSerieDaProgressioSerie(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
                 titolo.getIdTitolo()
         );
+        }
     }
 
     public void rendiStagioneVisionata(Titolo titolo) throws Exception {

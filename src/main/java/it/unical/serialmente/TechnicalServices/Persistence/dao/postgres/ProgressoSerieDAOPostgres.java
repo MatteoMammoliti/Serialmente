@@ -209,7 +209,7 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
                 return true;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return false;
     }
