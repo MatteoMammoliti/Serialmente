@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -72,7 +71,7 @@ public class BannerTitolo extends VBox {
 
             CompletableFuture.supplyAsync(() -> {
                 try {
-                    return titoloService.setDatiFilm(this.titolo);
+                    return titoloService.setDati(this.titolo);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }})
@@ -90,6 +89,18 @@ public class BannerTitolo extends VBox {
             Parent root = loader.load();
             ControllerPagineInfoSerieTv controller = loader.getController();
             controller.init(this.titolo);
+
+            CompletableFuture.supplyAsync(() -> {
+                        try {
+                            return titoloService.setDati(this.titolo);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }})
+                    .thenAcceptAsync(titoloCompleto -> {
+                                Platform.runLater(() -> controller.initDatiCompleti(titoloCompleto));
+                            }
+                    );
+
             Stage stage = (Stage) this.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();

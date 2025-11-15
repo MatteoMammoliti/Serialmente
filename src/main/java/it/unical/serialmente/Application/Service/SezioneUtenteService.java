@@ -6,7 +6,6 @@ import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
 import it.unical.serialmente.UI.Model.ModelSezioneUtente;
 import javafx.util.Pair;
 
@@ -92,7 +91,7 @@ public class SezioneUtenteService {
     }
 
     private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) throws Exception {
-        String url = tmDbRequest.getSerieTV(idSerie);
+        String url = tmDbRequest.getTitolo(idSerie, "tv");
         String risposta = tmDbHttpClient.richiesta(url);
         Pair<Integer, Integer> p = mapper.parseStatistiche(risposta);
 

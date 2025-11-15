@@ -18,16 +18,12 @@ public class TMDbRequest {
         return BASE + "/discover/" + tipologia + "?with_genres=" + idGenere + pagina;
     }
 
-    public String getSerieTV(Integer idSerie) {
-        return BASE + "/tv/" + idSerie;
+    public String getTitolo(Integer idTitolo, String tipologia) {
+        return BASE + "/" + tipologia + "/" + idTitolo;
     }
 
-    public String getFilm(Integer idFilm) {
-        return BASE + "/movie/" + idFilm;
-    }
-
-    public String getPiattaformeFilm(Integer idFilm) {
-        return BASE + "/movie/" + idFilm + "/watch/providers";
+    public String getPiattaforme(Integer idTitolo, String tipologia) {
+        return BASE + "/" + tipologia + "/" + idTitolo + "/watch/providers";
     }
 
     public String getEpisodiDaStagione(Integer numeroStagione, Integer idSerieTV) {

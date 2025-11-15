@@ -22,7 +22,6 @@ public class WatchlistService {
     private final TitoloDAOPostgres titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
     private final SelezioneTitoloDAOPostgres selezioneTitoloDao = new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
     private final ProgressoSerieDAOPostgres  progressoDao = new ProgressoSerieDAOPostgres(DBManager.getInstance().getConnection());
-    private final TitoloService titoloService = new TitoloService();
 
     public void inserisciTitoloInWatchlist(Titolo titolo) throws SQLException {
         try {
@@ -48,7 +47,7 @@ public class WatchlistService {
             }
 
             if(titolo.getTipologia().equals("SerieTv")) {
-                String urlSerieTV = tmdbRequest.getSerieTV(titolo.getIdTitolo());
+                String urlSerieTV = tmdbRequest.getTitolo(titolo.getIdTitolo(), "tv");
                 String infoSerieTV = tmdbHttpClient.richiesta(urlSerieTV);
 
                 String urlStagione = "/tv/" +
@@ -134,7 +133,7 @@ public class WatchlistService {
     }
 
     public void rendiStagioneVisionata(Titolo titolo) throws Exception {
-        String url = tmdbRequest.getSerieTV(titolo.getIdTitolo());
+        String url = tmdbRequest.getTitolo(titolo.getIdTitolo(), "tv");
         String rispostaIdProssimaStagione = tmdbHttpClient.richiesta(url);
         Integer idProssimaStagione = mapper.parseIdProssimaStagione(
                 rispostaIdProssimaStagione,
@@ -194,7 +193,7 @@ public class WatchlistService {
             return;
         }
 
-        String urlSerieTV = tmdbRequest.getSerieTV(titolo.getIdTitolo());
+        String urlSerieTV = tmdbRequest.getTitolo(titolo.getIdTitolo(), "tv");
         String infoSerieTV = tmdbHttpClient.richiesta(urlSerieTV);
         String url = "/tv/" +
                 titolo.getIdTitolo() +

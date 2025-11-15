@@ -6,7 +6,6 @@ import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import javafx.util.Pair;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class TitoloService {
 
@@ -37,7 +35,7 @@ public class TitoloService {
     }
 
     public Integer sommaEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
-        String url = tmdbRequest.getSerieTV(idSerieTV);
+        String url = tmdbRequest.getTitolo(idSerieTV, "tv");
         String risposta = tmdbHttpClient.richiesta(url);
         List<Stagione> stagioni = mapper.parseStagioni(risposta);
 
@@ -120,7 +118,7 @@ public class TitoloService {
     }
 
     public List<Stagione> getStagioni(Integer idSerieTV) throws Exception {
-        String url = tmdbRequest.getSerieTV(idSerieTV);
+        String url = tmdbRequest.getTitolo(idSerieTV, "tv");
         String risposta = tmdbHttpClient.richiesta(url);
         List<Stagione> stagioni = mapper.parseStagioni(risposta);
 
@@ -218,57 +216,70 @@ public class TitoloService {
 //        }
 //    }
 
-    public Titolo setDatiFilm(Titolo titolo) throws Exception {
-        if(titolo.getTipologia().equals("Film")) {
-            Film f  = (Film) titolo;
+    public Titolo setDati(Titolo titolo) throws Exception {
 
-            f.getGeneriPresenti().clear();
-            f.getPiattaforme().clear();
+        titolo.getGeneriPresenti().clear();
+        titolo.getPiattaforme().clear();
+
+        String tipologiaTitolo = titolo.getTipologia().equals("Film") ? "movie" : "tv";
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        if (titolo.getTipologia().equals("Film")) {
+            Film f = (Film) titolo;
 
             CompletableFuture<Void> durata = CompletableFuture.runAsync(() -> {
                 try {
                     int durataFilm = mapper.parseDurataFilm(
                             tmdbHttpClient.richiesta(
                                     tmdbRequest.getDurataFilm(titolo.getIdTitolo())
-                            ));
+                            )
+                    );
                     f.setDurataMinuti(durataFilm);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             });
-
-            CompletableFuture<Void> generi = CompletableFuture.runAsync(() -> {
-                try {
-                    List<Genere> generiFilm = mapper.parseGeneriFilm(
-                            tmdbHttpClient.richiesta(
-                                    tmdbRequest.getFilm(titolo.getIdTitolo()
-                                    )
-                            )
-                    );
-                    generiFilm.forEach(f::aggiungiGenere);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            CompletableFuture<Void> piattaforme = CompletableFuture.runAsync(() -> {
-                try {
-                    List<Piattaforma> piattaformeFilm = mapper.parsePiattaforme(
-                            tmdbHttpClient.richiesta(
-                                    tmdbRequest.getPiattaformeFilm(titolo.getIdTitolo())
-                            )
-                    );
-                    piattaformeFilm.forEach(f::aggiungiPiattaforme);
-                } catch (Exception e)  {
-                    throw new RuntimeException(e);
-                }
-            });
-
-            CompletableFuture.allOf(durata, generi, piattaforme).join();
-            return f;
+            futures.add(durata);
         }
-        return null;
+
+        System.out.println("PER IL TITOLO " + titolo.getNomeTitolo() + "I GENERI SONO");
+        CompletableFuture<Void> generi = CompletableFuture.runAsync(() -> {
+            try {
+                List<Genere> generiTitolo = mapper.parseGeneri(
+                        tmdbHttpClient.richiesta(
+                                tmdbRequest.getTitolo(titolo.getIdTitolo(), tipologiaTitolo)
+                        )
+                );
+                System.out.println(generiTitolo.size());
+                generiTitolo.forEach(titolo::aggiungiGenere);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+        futures.add(generi);
+
+        System.out.println("PER IL TITOLO " + titolo.getNomeTitolo() + "LE PIATTAFORME SONO");
+        CompletableFuture<Void> piattaforme = CompletableFuture.runAsync(() -> {
+            try {
+                List<Piattaforma> piattaformeTitolo = mapper.parsePiattaforme(
+                        tmdbHttpClient.richiesta(
+                                tmdbRequest.getPiattaforme(titolo.getIdTitolo(), tipologiaTitolo)
+                        ),
+                        tipologiaTitolo.equals("movie")
+                );
+                System.out.println(piattaformeTitolo.size());
+                piattaformeTitolo.forEach(titolo::aggiungiPiattaforme);
+            } catch (Exception e)  {
+                throw new RuntimeException(e);
+            }
+        });
+        futures.add(piattaforme);
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        return titolo;
     }
+
 
     public List<Genere> getGeneriTitoloDBInterno(Integer idTitolo) throws Exception {
         return titoloDao.restituisciGeneriTitolo(idTitolo);

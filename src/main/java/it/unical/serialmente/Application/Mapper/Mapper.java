@@ -157,8 +157,11 @@ public class Mapper {
         return new Pair<>(numEpisodi, durataEpisodi * numEpisodi);
     }
 
-    public List<Genere> parseGeneriFilm(String risposta) {
+    public List<Genere> parseGeneri(String risposta) {
         JSONObject obj = new JSONObject(risposta);
+
+        if (!obj.has("genres")) return List.of();
+
         JSONArray generiArray = obj.getJSONArray("genres");
 
         List<Genere> generi = new ArrayList<>();
@@ -172,7 +175,7 @@ public class Mapper {
         return generi;
     }
 
-    public List<Piattaforma> parsePiattaforme(String risposta) {
+    public List<Piattaforma> parsePiattaforme(String risposta, boolean includeNonFlatrate) {
         JSONObject root = new JSONObject(risposta);
         JSONObject results = root.optJSONObject("results");
         if (results == null) return List.of();
@@ -186,12 +189,14 @@ public class Mapper {
             if (countryObj == null) continue;
 
             JSONArray flatrate = countryObj.optJSONArray("flatrate");
-            JSONArray rent = countryObj.optJSONArray("rent");
-            JSONArray buy = countryObj.optJSONArray("buy");
-
             aggiungiPiattaformeDaArray(flatrate, piattaformeUniche);
-            aggiungiPiattaformeDaArray(rent, piattaformeUniche);
-            aggiungiPiattaformeDaArray(buy, piattaformeUniche);
+
+            if (includeNonFlatrate) {
+                JSONArray rent = countryObj.optJSONArray("rent");
+                JSONArray buy = countryObj.optJSONArray("buy");
+                aggiungiPiattaformeDaArray(rent, piattaformeUniche);
+                aggiungiPiattaformeDaArray(buy, piattaformeUniche);
+            }
         }
 
         return new ArrayList<>(piattaformeUniche.values());

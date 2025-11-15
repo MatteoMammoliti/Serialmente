@@ -51,17 +51,18 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     }
 
     public void init(Titolo titolo) throws Exception {
-        SerieTV serie=(SerieTV) titolo;
-        this.serie=serie;
+        this.serie= (SerieTV) titolo;
         this.labelTitoloSerie.setText(this.serie.getNomeTitolo());
         this.labelVoto.setText(String.valueOf(this.serie.getVotoMedio()));
         this.labelTramaSerie.setText(this.serie.getTrama());
-        caricaStagioni(this.serie.getStagioni());
+        //caricaStagioni(this.serie.getStagioni());
         aggiornaBottone();
-        caricaPiattaforme(serie.getPiattaforme());
-        caricaGeneri(modelPagineInfoSerieTv.getGeneriSerie(this.serie.getIdTitolo()));
+    }
 
-
+    public void initDatiCompleti(Titolo t) {
+        this.serie = (SerieTV) t;
+        caricaGeneri(t.getGeneriPresenti());
+        caricaPiattaforme(t.getPiattaforme());
     }
 
     private void caricaGeneri(List<Genere> generi){
@@ -80,7 +81,6 @@ public class ControllerPagineInfoSerieTv implements Initializable {
             pane.setContent(contenitoreEpisodi);
             accordionStagioni.getPanes().add(pane);
         }
-
     }
 
     private void popolaEpisodi(VBox contenitore,List<Episodio> episodi,Integer index){
@@ -123,7 +123,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         ModelContainerView.getInstance().getViewFactory().mostraPaginaFilmConMenu();
     }
 
-    private void caricaPiattaforme(List<Piattaforma> piattaforme) throws SQLException {
+    private void caricaPiattaforme(List<Piattaforma> piattaforme) {
         for(Piattaforma p:piattaforme){
             BannerinoPiattaforme banner = new BannerinoPiattaforme(p.getImgUrl());
             this.contenitorePiattafome.getChildren().add(banner);
