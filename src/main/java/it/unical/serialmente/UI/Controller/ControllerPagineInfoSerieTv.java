@@ -109,7 +109,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
             episodioCard.getStyleClass().add("card-episodio");
             episodioCard.setPadding(new javafx.geometry.Insets(10));
             int numeroEp= i +1;
-            Label numeroLabel = new Label( "Epidio: "+ numeroEp );
+            Label numeroLabel = new Label( "Episodio: "+ numeroEp );
             numeroLabel.getStyleClass().add("numero-episodio");
 
             Label durataLabel = new Label("Durata: " + episodi.get(i).getDurataEpisodio().toString() +"minuti");

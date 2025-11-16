@@ -136,7 +136,7 @@
 .numero-episodio {
     -fx-text-fill: #aaaaaa;
     -fx-font-weight: bold;
-    -fx-pref-width: 60px; /* Larghezza fissa per allineamento */
+    -fx-pref-width:140px;
 }
 
 .titolo-episodio {
