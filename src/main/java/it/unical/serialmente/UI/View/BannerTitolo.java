@@ -55,7 +55,7 @@ public class BannerTitolo extends VBox {
         this.titolo = titolo;
         this.nomeTitolo.setText(titolo.getNomeTitolo() != null ? titolo.getNomeTitolo() : "");
         int voto = (int) titolo.getVotoMedio();
-        this.votoTitolo.setText(Integer.toString(voto));
+        this.votoTitolo.setText("Voto: "+voto);
         this.immagineTitolo.setImage(PLACEHOLDER);
         if(titolo.getImmagine()!=null && !titolo.getImmagine().isEmpty()){
             Image img = cache.getImg(titolo.getImmagine());

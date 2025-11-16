@@ -55,7 +55,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     public void init(Titolo titolo) throws Exception {
         this.serie= (SerieTV) titolo;
         this.labelTitoloSerie.setText(this.serie.getNomeTitolo());
-        this.labelVoto.setText(String.valueOf(this.serie.getVotoMedio()));
+        this.labelVoto.setText("Voto medio: "+this.serie.getVotoMedio());
         this.labelTramaSerie.setText(this.serie.getTrama());
         String dimensionePoster = "https://image.tmdb.org/t/p/original";
         this.imageViewPoster.setImage(new Image(dimensionePoster +this.serie.getImmagine()));
@@ -80,7 +80,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
             sb.append(g.getNomeGenere()).append(" ");
         }
 
-        labelGeneriSerie.setText(sb.toString().trim());
+        labelGeneriSerie.setText(sb.toString());
     }
 
     private void calcolaEpisodiTotali(List<Stagione> stagioni){
@@ -146,6 +146,6 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         for(Piattaforma p:piattaforme){
             sb.append(p.getNomePiattaforma()).append(" ");
         }
-        this.labelPiattaforme.setText(sb.toString().trim());
+        this.labelPiattaforme.setText(sb.toString());
     }
 }
