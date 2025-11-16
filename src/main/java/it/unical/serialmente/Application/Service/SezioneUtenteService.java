@@ -1,9 +1,6 @@
 package it.unical.serialmente.Application.Service;
 
-import it.unical.serialmente.Application.Mapper.Mapper;
 import it.unical.serialmente.Domain.model.*;
-import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
-import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
 import it.unical.serialmente.UI.Model.ModelSezioneUtente;
@@ -18,10 +15,10 @@ public class SezioneUtenteService {
             DBManager.getInstance().getConnection()
     );
 
-    private final TitoloService titoloService = new TitoloService();
-    private final TMDbHttpClient  tmDbHttpClient = new TMDbHttpClient();
-    private final TMDbRequest   tmDbRequest = new TMDbRequest();
-    private final Mapper mapper = new Mapper();
+//    private final TitoloService titoloService = new TitoloService();
+//    private final TMDbHttpClient  tmDbHttpClient = new TMDbHttpClient();
+//    private final TMDbRequest   tmDbRequest = new TMDbRequest();
+//    private final Mapper mapper = new Mapper();
 
     private final ProgressoSerieService progressoSerieService = new ProgressoSerieService();
     private final SelezioneTitoloDAOPostgres selezioneTitolo = new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
@@ -57,7 +54,7 @@ public class SezioneUtenteService {
         Integer episodiTotali = 0;
 
         for (Integer idserie : listaSerieTvInVisione) {
-            Pair<Integer,Integer> minutiEpisodi = progressoSerieService.getStatisticheEpisodio(idserie);
+            Pair<Integer,Integer> minutiEpisodi = progressoSerieService.getStatisticheSerieInVisione(idserie);
             minutiTotali += minutiEpisodi.getKey();
             episodiTotali = minutiEpisodi.getValue();
         }
@@ -91,28 +88,40 @@ public class SezioneUtenteService {
 
     }
 
-    private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) throws Exception {
-        String url = tmDbRequest.getTitolo(idSerie, "tv");
-        String risposta = tmDbHttpClient.richiesta(url);
-        Pair<Integer, Integer> p = mapper.parseStatistiche(risposta);
+//    private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) throws Exception {
+//        String url = tmDbRequest.getTitolo(idSerie, "tv");
+//        String risposta = tmDbHttpClient.richiesta(url);
+//        Pair<Integer, Integer> p = mapper.parseStatistiche(risposta);
+//
+//        if(p.getValue() != 0) return p;
+//        int minutiSpesi = titoloService.sommaMinutiEpisodiVisti(
+//                idSerie,
+//                titoloService.getStagioni(idSerie).size() - 1 == 0 ? titoloService.getStagioni(idSerie).size() : titoloService.getStagioni(idSerie).size() - 1,
+//                titoloService.getEpisodi(
+//                        idSerie,
+//                        titoloService.getStagioni(idSerie).size() - 1 == 0 ? titoloService.getStagioni(idSerie).size() : titoloService.getStagioni(idSerie).size() - 1
+//                ).size()
+//        );
+//        return new Pair<>(p.getKey(), minutiSpesi);
+//    }
 
-        if(p.getValue() != 0) return p;
-        int minutiSpesi = titoloService.sommaMinutiEpisodiVisti(
-                idSerie,
-                titoloService.getStagioni(idSerie).size() - 1 == 0 ? titoloService.getStagioni(idSerie).size() : titoloService.getStagioni(idSerie).size() - 1,
-                titoloService.getEpisodi(
-                        idSerie,
-                        titoloService.getStagioni(idSerie).size() - 1 == 0 ? titoloService.getStagioni(idSerie).size() : titoloService.getStagioni(idSerie).size() - 1
-                ).size()
+    private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) {
+        return selezioneTitolo.getStatistcheSerieTV(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                idSerie
         );
-        return new Pair<>(p.getKey(), minutiSpesi);
     }
 
-    public void rendiTitoloPreferito(Titolo titolo) throws Exception {
-        selezioneTitoloDAOPostgres.aggiungiTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Preferiti");
+    public void rendiTitoloPreferito(Titolo titolo) {
+        selezioneTitoloDAOPostgres.aggiungiTitoloInLista(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                titolo.getIdTitolo(),
+                "Preferiti",
+                0,
+                0);
     }
 
-    public void togliTitoloPreferito(Titolo titolo) throws Exception {
+    public void togliTitoloPreferito(Titolo titolo) {
         selezioneTitolo.eliminaTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Preferiti");
     }
 }

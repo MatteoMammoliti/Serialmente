@@ -84,7 +84,7 @@ public class ControllerWatchlist implements Initializable {
                     setGraphic(bannerFilm);
                 } else if ("SerieTv".equalsIgnoreCase(tipo)) {
                     bannerSerie.update(t.getNomeTitolo(),model.getNumeroStagione(t.getIdTitolo()),model.getNumeroEpisodio(t.getIdTitolo()),
-                            model.getNomeEpisodio(t.getIdTitolo()),t.getImmagine());
+                            "",t.getImmagine());
                     bannerSerie.setRimuovi(()->{
                         try {
                             model.rimuoviSerieWatchlist(t);

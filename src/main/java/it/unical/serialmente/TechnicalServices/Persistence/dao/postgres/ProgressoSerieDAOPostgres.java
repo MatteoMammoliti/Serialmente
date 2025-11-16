@@ -1,7 +1,8 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
+import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
-import it.unical.serialmente.Domain.model.*;
+import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,17 +18,18 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         this.conn = conn;
     }
 
+    private final SelezioneTitoloDAOPostgres selezioneDao =  new SelezioneTitoloDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
 
     @Override
-    public void cambiaEpisodioCorrente(Integer idUtente, Integer idSerieTV, String descrizioneEpisodio, Integer durataEpisodio, Integer idEpisodioProssimo, Integer numeroProgressivoEpisodio) {
-        String query = "UPDATE progressoserie SET id_episodio=?,descrizione_episodio=?,durata_minuti_episodio=?, numero_progressivo_episodio = ?  WHERE id_serie=? AND id_utente=?";
+    public void avanzaEpisodio(Integer idUtente, Integer idSerieTV, Integer durataEpisodio, Integer idEpisodioProssimo) {
+        String query = "UPDATE progressoserie SET id_episodio=?,durata_minuti_episodio=?, numero_progressivo_episodio = numero_progressivo_episodio + 1, minuti_visti = minuti_visti + durata_minuti_episodio, numero_episodi_visti = numero_episodi_visti + 1 WHERE id_serie=? AND id_utente=?";
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idEpisodioProssimo);
-            st.setString(2, descrizioneEpisodio);
-            st.setInt(3, durataEpisodio);
-            st.setInt(4, numeroProgressivoEpisodio);
-            st.setInt(5, idSerieTV);
-            st.setInt(6, idUtente);
+            st.setInt(2, durataEpisodio);
+            st.setInt(3, idSerieTV);
+            st.setInt(4, idUtente);
             st.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,32 +37,102 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
     }
 
     @Override
-    public void cambiaStagioneCorrente(Integer idUtente, Integer idSerieTV, Integer idStagioneProssima, Integer numeroProgressivoStagione) {
-        String query = "UPDATE progressoserie SET id_stagione=?, numero_progressivo_stagione = ?, numero_progressivo_episodio = ? WHERE id_serie=? AND id_utente=?";
-        try (PreparedStatement rs = conn.prepareStatement(query)) {
-            rs.setInt(1, idStagioneProssima);
-            rs.setInt(4, idSerieTV);
-            rs.setInt(5, idUtente);
-            rs.setInt(2, numeroProgressivoStagione);
-            rs.setInt(3, 1);
-            rs.executeUpdate();
+    public void avanzaEpisodioEstagione(Integer idUtente, Integer idSerieTV, Integer durataEpisodio, Integer idEpisodioProssimo, Integer idProssimaStagione) throws SQLException {
+
+        int minuti_visti = 0;
+        int numeroEpisodiVisti = 0;
+
+        String query = """
+        UPDATE progressoserie
+        SET\s
+            id_episodio = ?,
+            durata_minuti_episodio = ?,         \s
+            numero_progressivo_episodio = 1,
+            minuti_visti = minuti_visti + ?,    \s
+            numero_episodi_visti = numero_episodi_visti + 1,
+            id_stagione = ?,
+            numero_progressivo_stagione = numero_progressivo_stagione + 1
+        WHERE id_serie = ? AND id_utente = ?
+        RETURNING minuti_visti, numero_episodi_visti
+       \s""";
+
+        DBManager.getInstance().getConnection().setAutoCommit(false);
+
+        try (PreparedStatement st = conn.prepareStatement(query)) {
+            st.setInt(1, idEpisodioProssimo);
+            st.setInt(2, durataEpisodio);
+            st.setInt(3, durataEpisodio);
+            st.setInt(4, idProssimaStagione);
+            st.setInt(5, idSerieTV);
+            st.setInt(6, idUtente);
+
+            try (ResultSet rs = st.executeQuery()) {
+                if (!rs.next()) {
+                    DBManager.getInstance().getConnection().rollback();
+                    return;
+                }
+                minuti_visti = rs.getInt("minuti_visti");
+                numeroEpisodiVisti = rs.getInt("numero_episodi_visti");
+            }
+
+            if (idProssimaStagione == 0) {
+                boolean successo = eliminaSerieDaProgressioSerie(idUtente, idSerieTV);
+                if (!successo) {
+                    DBManager.getInstance().getConnection().rollback();
+                    return;
+                }
+
+                successo = selezioneDao.aggiungiTitoloInLista(
+                        idUtente,
+                        idSerieTV,
+                        "Visionati",
+                        minuti_visti,
+                        numeroEpisodiVisti
+                );
+                if (!successo) {
+                    DBManager.getInstance().getConnection().rollback();
+                    return;
+                }
+            }
+
+            DBManager.getInstance().getConnection().commit();
+
         } catch (Exception e) {
+            DBManager.getInstance().getConnection().rollback();
             e.printStackTrace();
+            return;
+        } finally {
+            DBManager.getInstance().getConnection().setAutoCommit(true);
         }
     }
 
+
+//    @Override
+//    public void cambiaStagioneCorrente(Integer idUtente, Integer idSerieTV, Integer idStagioneProssima, Integer numeroProgressivoStagione) {
+//        String query = "UPDATE progressoserie SET id_stagione=?, numero_progressivo_stagione = ?, numero_progressivo_episodio = ? WHERE id_serie=? AND id_utente=?";
+//        try (PreparedStatement rs = conn.prepareStatement(query)) {
+//            rs.setInt(1, idStagioneProssima);
+//            rs.setInt(4, idSerieTV);
+//            rs.setInt(5, idUtente);
+//            rs.setInt(2, numeroProgressivoStagione);
+//            rs.setInt(3, 1);
+//            rs.executeUpdate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     @Override
-    public boolean creaIstanzaProgressoSerie(Integer idUtente, Integer idTitolo, Integer idEpisodio, Integer idStagione, String descrizioneEpisodio, Integer durataMinuti, Integer numeroProgressivoEpisodio, Integer numeroProgressivoStagione) {
-        String query = "INSERT INTO progressoserie(id_utente, id_serie, id_stagione, id_episodio, descrizione_episodio, durata_minuti_episodio, numero_progressivo_stagione, numero_progressivo_episodio) VALUES (?,?,?,?,?,?,?,?)";
+    public boolean creaIstanzaProgressoSerie(Integer idUtente, Integer idTitolo, Integer idEpisodio, Integer idStagione, Integer durataMinuti, Integer numeroProgressivoEpisodio, Integer numeroProgressivoStagione) {
+        String query = "INSERT INTO progressoserie(id_utente, id_serie, id_stagione, id_episodio, durata_minuti_episodio, numero_progressivo_stagione, numero_progressivo_episodio) VALUES (?,?,?,?,?,?,?)";
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idTitolo);
             st.setInt(3, idStagione);
             st.setInt(4, idEpisodio);
-            st.setString(5, descrizioneEpisodio);
-            st.setInt(6, durataMinuti);
-            st.setInt(7, numeroProgressivoStagione);
-            st.setInt(8, numeroProgressivoEpisodio);
+            st.setInt(5, durataMinuti);
+            st.setInt(6, numeroProgressivoStagione);
+            st.setInt(7, numeroProgressivoEpisodio);
             return st.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +142,7 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
 
     @Override
     public Integer getIdEpisodioCorrente(Integer idUtente, Integer idSerieTV) {
-        String query = "SELECT id_episodio,descrizione_episodio,durata_minuti_episodio FROM progressoserie WHERE id_utente=? AND id_serie=?";
+        String query = "SELECT id_episodio,durata_minuti_episodio FROM progressoserie WHERE id_utente=? AND id_serie=?";
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
@@ -132,21 +204,21 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         return null;
     }
 
-    @Override
-    public String getNomeEpisodio(Integer idUtente, Integer idSerieTV) {
-        String query = "SELECT nome_episodio FROM progressoserie WHERE id_utente=? AND id_serie=?";
-        try (PreparedStatement st = conn.prepareStatement(query)) {
-            st.setInt(1, idUtente);
-            st.setInt(2, idSerieTV);
-            ResultSet rs = st.executeQuery();
-            if(rs.next()) {
-                return rs.getString("nome_episodio");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @Override
+//    public String getNomeEpisodio(Integer idUtente, Integer idSerieTV) {
+//        String query = "SELECT nome_episodio FROM progressoserie WHERE id_utente=? AND id_serie=?";
+//        try (PreparedStatement st = conn.prepareStatement(query)) {
+//            st.setInt(1, idUtente);
+//            st.setInt(2, idSerieTV);
+//            ResultSet rs = st.executeQuery();
+//            if(rs.next()) {
+//                return rs.getString("nome_episodio");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 //    @Override
 //    public List<Integer> getStagioniInCorso(Integer idUtente) {
@@ -226,5 +298,22 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             e.printStackTrace();
         }
         return p;
+    }
+
+    public Pair<Integer, Integer> getStatisticheSerieInVisione(Integer idUtente, Integer idSerie) {
+        String query = "SELECT minuti_visti, numero_episodi_visti FROM progressoserie WHERE id_utente = ?  AND id_serie = ?";
+        try (PreparedStatement st = conn.prepareStatement(query)) {
+            st.setInt(1, idUtente);
+            st.setInt(2, idSerie);
+            ResultSet rs = st.executeQuery();
+
+            if(rs.next()) {
+                return new Pair<>(rs.getInt("minuti_visti"), rs.getInt("numero_episodi_visti"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

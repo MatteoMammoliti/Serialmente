@@ -114,17 +114,17 @@ public class Mapper {
         return json.optInt("runtime");
     }
 
-//    public Integer parseIdProssimoEpisodio(String risposta, Integer idEpisodioAttuale) {
-//        JSONObject json = new JSONObject(risposta);
-//        JSONArray arrayRisposta = json.getJSONArray("episodes");
-//        return getInteger(idEpisodioAttuale, arrayRisposta);
-//    }
-//
-//    public Integer parseIdProssimaStagione(String risposta, Integer idStagioneAttuale) {
-//        JSONObject json = new JSONObject(risposta);
-//        JSONArray arrayRisposta = json.getJSONArray("seasons");
-//        return getInteger(idStagioneAttuale, arrayRisposta);
-//    }
+    public Pair<Integer, Integer> parseIdProssimoEpisodio(String risposta, Integer idEpisodioAttuale) {
+        JSONObject json = new JSONObject(risposta);
+        JSONArray arrayRisposta = json.getJSONArray("episodes");
+        return getInteger(idEpisodioAttuale, arrayRisposta, null);
+    }
+
+    public Pair<Integer, Integer> parseIdProssimaStagione(String risposta, Integer idStagioneAttuale) {
+        JSONObject json = new JSONObject(risposta);
+        JSONArray arrayRisposta = json.getJSONArray("seasons");
+        return getInteger(idStagioneAttuale, arrayRisposta, "tv");
+    }
 
     public List<Stagione> parseStagioni(String rispostaStagioni) throws Exception {
         JSONArray stagioniArray = parseRisultato(rispostaStagioni, "seasons");
@@ -159,21 +159,21 @@ public class Mapper {
         return titoli;
     }
 
-    public Pair<Integer, Integer> parseStatistiche(String risposta) {
-        JSONObject obj = new JSONObject(risposta);
-        int numEpisodi = obj.optInt("number_of_episodes");
-
-        int durataEpisodi = 0;
-        JSONArray durataMedia =  obj.getJSONArray("episode_run_time");
-
-        for(int i = 0; i < durataMedia.length(); i++){
-            durataEpisodi += durataMedia.getInt(i);
-        }
-        if(!durataMedia.isEmpty())
-            durataEpisodi = durataEpisodi / durataMedia.length();
-
-        return new Pair<>(numEpisodi, durataEpisodi * numEpisodi);
-    }
+//    public Pair<Integer, Integer> parseStatistiche(String risposta) {
+//        JSONObject obj = new JSONObject(risposta);
+//        int numEpisodi = obj.optInt("number_of_episodes");
+//
+//        int durataEpisodi = 0;
+//        JSONArray durataMedia =  obj.getJSONArray("episode_run_time");
+//
+//        for(int i = 0; i < durataMedia.length(); i++){
+//            durataEpisodi += durataMedia.getInt(i);
+//        }
+//        if(!durataMedia.isEmpty())
+//            durataEpisodi = durataEpisodi / durataMedia.length();
+//
+//        return new Pair<>(numEpisodi, durataEpisodi * numEpisodi);
+//    }
 
     public List<Genere> parseGeneri(String risposta) {
         JSONObject obj = new JSONObject(risposta);
@@ -243,13 +243,50 @@ public class Mapper {
         return data.getYear();
     }
 
-//    private Integer getInteger(Integer id, JSONArray arrayRisposta) {
-//        for(int i = 0; i < arrayRisposta.length() - 1; i++) {
-//            JSONObject obj =  arrayRisposta.getJSONObject(i);
-//            if(obj.optInt("id") == id) {
-//                return arrayRisposta.getJSONObject(i + 1).optInt("id");
-//            }
-//        }
-//        return null;
-//    }
+    private Pair<Integer, Integer> getInteger(Integer id, JSONArray arrayRisposta, String tipologia) {
+
+        System.out.println("CONTROLLO ID: " + id);
+        System.out.println("Risposta: " + arrayRisposta);
+
+        if (arrayRisposta == null || arrayRisposta.isEmpty()) {
+            return new Pair<>(0, 0);
+        }
+
+        if (id == null || id == 0) {
+            JSONObject primoEpisodioProssimaStagione = arrayRisposta.getJSONObject(0);
+
+            int prossimoId = primoEpisodioProssimaStagione.optInt("id");
+
+            Integer runtime = (tipologia == null)
+                    ? primoEpisodioProssimaStagione.optInt("runtime")
+                    : null;
+
+            return new Pair<>(prossimoId, runtime);
+        }
+
+        for (int i = 0; i < arrayRisposta.length(); i++) {
+
+            JSONObject curr = arrayRisposta.getJSONObject(i);
+
+            if (curr.optInt("id") == id) {
+
+                boolean ultimo = (i == arrayRisposta.length() - 1);
+
+                if (!ultimo) {
+                    JSONObject next = arrayRisposta.getJSONObject(i + 1);
+                    int nextId = next.optInt("id");
+                    Integer runtime = (tipologia == null)
+                            ? next.optInt("runtime")
+                            : null;
+                    return new Pair<>(nextId, runtime);
+                }
+
+                Integer runtime = (tipologia == null)
+                        ? curr.optInt("runtime")
+                        : null;
+                return new Pair<>(0, runtime);
+            }
+        }
+        return new Pair<>(0, 0);
+    }
 }

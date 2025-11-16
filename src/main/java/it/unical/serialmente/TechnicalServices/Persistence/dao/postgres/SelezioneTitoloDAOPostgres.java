@@ -5,6 +5,7 @@ import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDA
 import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
+import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,7 +62,7 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
      * @return valore booleano per confermare l'eventuale successo del metodo.
      */
     @Override
-    public boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo, String nomeLista) {
+    public boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo, String nomeLista, Integer minuti_visti, Integer numero_episodi_visti) {
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
             System.out.println("Nome lista non valido");
             return false;
@@ -71,17 +72,27 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             query="UPDATE selezionetitolo SET e_preferito=true WHERE id_utente=? AND id_titolo=?";
         }
         else if(nomeLista.equals("Visionati")){
-            query="UPDATE selezionetitolo SET tipo_lista='Visionati' WHERE id_utente=? AND id_titolo=?";
+
+            if(minuti_visti == 0 && numero_episodi_visti == 0) query="UPDATE selezionetitolo SET tipo_lista='Visionati' WHERE id_utente=? AND id_titolo=?";
+            else query = "UPDATE selezionetitolo SET tipo_lista='Visionati', minuti_visti = ?, numero_episodi_visti = ? WHERE id_utente=? AND id_titolo=?";
         }
         else{
             query ="INSERT INTO selezionetitolo (id_utente,id_titolo,tipo_lista) VALUES (?,?,?)";
         }
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1,idUtente);
-            st.setInt(2,idTitolo);
-            if(nomeLista.equals("Watchlist")){
-                st.setString(3,nomeLista);
-            }
+
+           if(minuti_visti == 0 &&  numero_episodi_visti == 0) {
+               st.setInt(1,idUtente);
+               st.setInt(2,idTitolo);
+               if(nomeLista.equals("Watchlist")){
+                   st.setString(3,nomeLista);
+               }
+           } else {
+               st.setInt(3,idUtente);
+               st.setInt(4,idTitolo);
+               st.setInt(1, minuti_visti);
+               st.setInt(2, numero_episodi_visti);
+           }
             int riga= st.executeUpdate();
             if(riga>0){
                 System.out.println("Titolo aggiunto nella lista "+nomeLista);
@@ -204,14 +215,29 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         return 0;
     }
 
-    @Override
+//    @Override
+//    public Integer getMinutiVisioneFilm(Integer idUtente) {
+//        String query= "SELECT SUM(t.durata_minuti) AS totale_minuti FROM selezionetitolo s JOIN titolo t" +
+//                " on s.id_titolo=t.id_titolo WHERE s.id_utente=? AND t.tipologia=? AND s.tipo_lista=?";
+//        try(PreparedStatement st = connection.prepareStatement(query)){
+//            st.setInt(1, idUtente);
+//            st.setString(2,"Film");
+//            st.setString(3,"Visionati");
+//            ResultSet rs = st.executeQuery();
+//            if(rs.next()){
+//                return rs.getInt(1);
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return 0;
+//    }
+
     public Integer getMinutiVisioneFilm(Integer idUtente) {
-        String query= "SELECT SUM(t.durata_minuti) AS totale_minuti FROM selezionetitolo s JOIN titolo t" +
-                " on s.id_titolo=t.id_titolo WHERE s.id_utente=? AND t.tipologia=? AND s.tipo_lista=?";
+        String query= "SELECT SUM(minuti_visti) FROM selezionetitolo WHERE id_utente = ? AND tipo_lista = 'Visionati' AND numero_episodi_visti = 0";
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1, idUtente);
-            st.setString(2,"Film");
-            st.setString(3,"Visionati");
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 return rs.getInt(1);
@@ -221,6 +247,22 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public Pair<Integer, Integer> getStatistcheSerieTV(Integer idUtente, Integer idSerie) {
+        String query = "SELECT numero_episodi_visti, minuti_visti FROM selezionetitolo WHERE id_utente=? AND id_titolo=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1, idUtente);
+            st.setInt(2, idSerie);
+            ResultSet rs = st.executeQuery();
+
+            if(rs.next()){
+                return new Pair<>(rs.getInt("numero_episodi_visti"), rs.getInt("minuti_visti"));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

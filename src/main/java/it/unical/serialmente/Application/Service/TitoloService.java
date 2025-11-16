@@ -6,6 +6,7 @@ import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import javafx.util.Pair;
 import org.json.JSONArray;
@@ -30,58 +31,61 @@ public class TitoloService {
     );
 
     //private final TitoloDAOPostgres  titoloDao = new TitoloDAOPostgres(DBManager.getInstance().getConnection());
+    private final ProgressoSerieDAOPostgres progressoDao = new ProgressoSerieDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
 
     public Integer getIdGenereDaNome(String nome) {
         return genereDao.getGenereDaNome(nome);
     }
 
-    public Integer sommaEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
-        String url = tmdbRequest.getTitolo(idSerieTV, "tv");
-        String risposta = tmdbHttpClient.richiesta(url);
-        List<Stagione> stagioni = mapper.parseStagioni(risposta);
+//    public Integer sommaEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
+//        String url = tmdbRequest.getTitolo(idSerieTV, "tv");
+//        String risposta = tmdbHttpClient.richiesta(url);
+//        List<Stagione> stagioni = mapper.parseStagioni(risposta);
+//
+//        for(Stagione stagione : stagioni) {
+//            if(stagione.getNumeroStagioneProgressivo() != 0)
+//                stagione.setEpisodi(
+//                    getEpisodi(idSerieTV, stagione.getNumeroStagioneProgressivo())
+//            );
+//        }
+//
+//        int somma = 0;
+//        for(Stagione stagione : stagioni) {
+//            if(!stagione.getNomeStagione().equals("Specials")  && stagione.getNumeroStagioneProgressivo() != 0) {
+//                if(Objects.equals(stagione.getNumeroStagioneProgressivo(), numProgressivoStagione)) return somma;
+//
+//                somma += stagione.getEpisodi().size();
+//            }
+//        }
+//
+//        return somma;
+//    }
 
-        for(Stagione stagione : stagioni) {
-            if(stagione.getNumeroStagioneProgressivo() != 0)
-                stagione.setEpisodi(
-                    getEpisodi(idSerieTV, stagione.getNumeroStagioneProgressivo())
-            );
-        }
-
-        int somma = 0;
-        for(Stagione stagione : stagioni) {
-            if(!stagione.getNomeStagione().equals("Specials")  && stagione.getNumeroStagioneProgressivo() != 0) {
-                if(Objects.equals(stagione.getNumeroStagioneProgressivo(), numProgressivoStagione)) return somma;
-
-                somma += stagione.getEpisodi().size();
-            }
-        }
-
-        return somma;
-    }
-
-    public Integer sommaMinutiEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione, Integer idEpisodioCorrente) throws Exception {
-        int sommaMinuti = 0;
-        for(int i = 1; i < numProgressivoStagione; i++){
-            String url = tmdbRequest.getEpisodiDaStagione(i, idSerieTV);
-            String risposta = tmdbHttpClient.richiesta(url);
-            List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
-
-            for(Episodio episodio : episodi) {
-                sommaMinuti += episodio.getDurataEpisodio();
-            }
-        }
-        String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
-        String risposta = tmdbHttpClient.richiesta(url);
-        List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
-
-        for(Episodio episodio : episodi) {
-            if(Objects.equals(episodio.getIdEpisodio(), idEpisodioCorrente)) return sommaMinuti;
-
-            sommaMinuti += episodio.getDurataEpisodio();
-        }
-
-        return sommaMinuti;
-    }
+//    public Integer sommaMinutiEpisodiVisti(Integer idSerieTV, Integer numProgressivoStagione, Integer idEpisodioCorrente) throws Exception {
+//        int sommaMinuti = 0;
+//        for(int i = 1; i < numProgressivoStagione; i++){
+//            String url = tmdbRequest.getEpisodiDaStagione(i, idSerieTV);
+//            String risposta = tmdbHttpClient.richiesta(url);
+//            List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
+//
+//            for(Episodio episodio : episodi) {
+//                sommaMinuti += episodio.getDurataEpisodio();
+//            }
+//        }
+//        String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
+//        String risposta = tmdbHttpClient.richiesta(url);
+//        List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
+//
+//        for(Episodio episodio : episodi) {
+//            if(Objects.equals(episodio.getIdEpisodio(), idEpisodioCorrente)) return sommaMinuti;
+//
+//            sommaMinuti += episodio.getDurataEpisodio();
+//        }
+//
+//        return sommaMinuti;
+//    }
 
     public CompletableFuture<List<Titolo>> loadPage(Integer idGenere, String tipologia, Integer pagina) {
         return CompletableFuture.supplyAsync(() -> {

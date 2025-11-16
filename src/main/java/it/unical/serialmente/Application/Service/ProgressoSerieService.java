@@ -12,7 +12,7 @@ public class ProgressoSerieService {
             DBManager.getInstance().getConnection()
     );
 
-    private final TitoloService titoloService = new TitoloService();
+//    private final TitoloService titoloService = new TitoloService();
 
     public List<Integer> getIdSerieTvInVisione() {
         return progressoSerieDao.getIdSerieTvInVisione(
@@ -20,25 +20,32 @@ public class ProgressoSerieService {
         );
     }
 
-    public Pair<Integer, Integer> getStatisticheEpisodio(Integer idSerieTV) throws Exception {
+//    public Pair<Integer, Integer> getStatisticheSerieInVisione(Integer idSerieTV) throws Exception {
+//
+//        Integer numProgressivoStagione = progressoSerieDao.getNumeroProgressivoStagione(
+//                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+//                idSerieTV
+//        );
+//
+//        Integer idEpisodioCorrente = progressoSerieDao.getIdEpisodioCorrente(
+//                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+//                idSerieTV
+//        );
+//
+//        Integer numProgressivoEpisodio = progressoSerieDao.getNumeroProgressivoEpisodio(
+//                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+//                idSerieTV
+//        );
+//
+//        Integer numEpisodiVisti = titoloService.
+//        Integer sommaMinuti = titoloService.sommaMinutiEpisodiVisti(idSerieTV, numProgressivoStagione, idEpisodioCorrente);
+//        return new Pair<>(sommaMinuti, numEpisodiVisti);
+//    }
 
-        Integer numProgressivoStagione = progressoSerieDao.getNumeroProgressivoStagione(
+    public Pair<Integer, Integer> getStatisticheSerieInVisione(Integer idSerie) {
+        return progressoSerieDao.getStatisticheSerieInVisione(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                idSerieTV
+                idSerie
         );
-
-        Integer idEpisodioCorrente = progressoSerieDao.getIdEpisodioCorrente(
-                SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                idSerieTV
-        );
-
-        Integer numProgressivoEpisodio = progressoSerieDao.getNumeroProgressivoEpisodio(
-                SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                idSerieTV
-        );
-
-        Integer numEpisodiVisti = titoloService.sommaEpisodiVisti(idSerieTV, numProgressivoStagione) + numProgressivoEpisodio - 1;
-        Integer sommaMinuti = titoloService.sommaMinutiEpisodiVisti(idSerieTV, numProgressivoStagione, idEpisodioCorrente);
-        return new Pair<>(sommaMinuti, numEpisodiVisti);
     }
 }
