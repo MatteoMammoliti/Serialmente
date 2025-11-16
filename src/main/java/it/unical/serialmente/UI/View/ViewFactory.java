@@ -258,7 +258,7 @@ public class ViewFactory {
     }
 
 
-    public BorderPane getPaginaProfiloUtente() throws SQLException {
+    public BorderPane getPaginaProfiloUtente() throws Exception {
 
         if (paginaProfiloUtente == null) {
             try {

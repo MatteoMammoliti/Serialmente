@@ -26,11 +26,13 @@ public class WatchlistService {
             DBManager.getInstance().getConnection().setAutoCommit(false);
 
             boolean inserimentoConSuccesso = false;
+            boolean primoInserimento=true;
             if(titoloDao.restituisciTitoloPerId(titolo.getIdTitolo()) == null) {
-                inserimentoConSuccesso = titoloDao.aggiungiTitolo(titolo);
+                primoInserimento=titoloDao.aggiungiTitolo(titolo);
             }
 
-            if(!inserimentoConSuccesso) {
+            if(!primoInserimento) {
+                System.out.println("Esco 1");
                 DBManager.getInstance().getConnection().rollback();
                 return;
             }
@@ -41,7 +43,9 @@ public class WatchlistService {
             );
 
             if(!inserimentoConSuccesso) {
+                System.out.println("Esco 2");
                 DBManager.getInstance().getConnection().rollback();
+
                 return;
             }
 
@@ -96,6 +100,7 @@ public class WatchlistService {
             }
 
             if(!inserimentoConSuccesso) {
+                System.out.println("Esco 3");
                 DBManager.getInstance().getConnection().rollback();
                 return;
             }

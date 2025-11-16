@@ -42,8 +42,8 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         btnAggiungi.setOnAction(e -> {
             try {
                 aggiungiSerieTvInWatchlist(this.serie);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
 
