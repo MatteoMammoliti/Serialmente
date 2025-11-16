@@ -1,5 +1,7 @@
 package it.unical.serialmente.UI.View;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
+import it.unical.serialmente.UI.Controller.ControllerSezioneUtente;
+import it.unical.serialmente.UI.Controller.ControllerWatchlist;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;

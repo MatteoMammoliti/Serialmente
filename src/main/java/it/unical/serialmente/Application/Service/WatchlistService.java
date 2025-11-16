@@ -373,7 +373,7 @@ public class WatchlistService {
         return selezioneTitoloDao.controlloTitoloInListeUtente(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
                 idSerie
-        ) &&
+        ) ||
                 progressoDao.controlloSerieTvInCorso(
                         SessioneCorrente.getUtenteCorrente().getIdUtente(),
                         idSerie
