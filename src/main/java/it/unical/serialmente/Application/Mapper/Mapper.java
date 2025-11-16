@@ -243,13 +243,13 @@ public class Mapper {
         return data.getYear();
     }
 
-    private Integer getInteger(Integer id, JSONArray arrayRisposta) {
-        for(int i = 0; i < arrayRisposta.length() - 1; i++) {
-            JSONObject obj =  arrayRisposta.getJSONObject(i);
-            if(obj.optInt("id") == id) {
-                return arrayRisposta.getJSONObject(i + 1).optInt("id");
-            }
-        }
-        return null;
-    }
+//    private Integer getInteger(Integer id, JSONArray arrayRisposta) {
+//        for(int i = 0; i < arrayRisposta.length() - 1; i++) {
+//            JSONObject obj =  arrayRisposta.getJSONObject(i);
+//            if(obj.optInt("id") == id) {
+//                return arrayRisposta.getJSONObject(i + 1).optInt("id");
+//            }
+//        }
+//        return null;
+//    }
 }

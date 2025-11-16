@@ -26,7 +26,7 @@ public class ModelWatchlist {
         watchlistService.rendiTitoloVisionato(titolo);
     }
     public void rimuoviTitoloWatchlist(Titolo titolo) throws SQLException {
-        watchlistService.rimuoviTitoloDallaWatchlist(titolo);
+        watchlistService.rimuoviFilmDallaWatchlist(titolo);
     }
     public void rimuoviSerieWatchlist(Titolo titolo) throws SQLException {
         watchlistService.rimuviSerieWatchlist(titolo);

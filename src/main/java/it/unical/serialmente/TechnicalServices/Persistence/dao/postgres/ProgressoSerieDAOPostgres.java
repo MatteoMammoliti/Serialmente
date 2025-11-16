@@ -35,35 +35,32 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
     }
 
     @Override
-    public void cambiaStagioneCorrente(Integer idUtente, Integer idSerieTV, Integer annoPubblicazione, Integer idStagioneProssima, Integer numeroProgressivoStagione) {
-        String query = "UPDATE progressoserie SET id_stagione=?,anno_pubblicazione_stagione=?, numero_progressivo_stagione = ?, numero_progressivo_episodio = ? WHERE id_serie=? AND id_utente=?";
+    public void cambiaStagioneCorrente(Integer idUtente, Integer idSerieTV, Integer idStagioneProssima, Integer numeroProgressivoStagione) {
+        String query = "UPDATE progressoserie SET id_stagione=?, numero_progressivo_stagione = ?, numero_progressivo_episodio = ? WHERE id_serie=? AND id_utente=?";
         try (PreparedStatement rs = conn.prepareStatement(query)) {
             rs.setInt(1, idStagioneProssima);
-            rs.setInt(2, annoPubblicazione);
-            rs.setInt(5, idSerieTV);
-            rs.setInt(6, idUtente);
-            rs.setInt(3, numeroProgressivoStagione);
-            rs.setInt(4, 1);
+            rs.setInt(4, idSerieTV);
+            rs.setInt(5, idUtente);
+            rs.setInt(2, numeroProgressivoStagione);
+            rs.setInt(3, 1);
             rs.executeUpdate();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public boolean creaIstanzaProgressoSerie(Integer idUtente, Integer idTitolo, Integer idEpisodio, Integer idStagione, Integer annoPubblicazioneStagione, String descrizioneEpisodio, Integer durataMinuti, Integer numeroProgressivoEpisodio, Integer numeroProgressivoStagione) {
-        String query = "INSERT INTO progressoserie(id_utente, id_serie, id_stagione, id_episodio, anno_pubblicazione_stagione, descrizione_episodio, durata_minuti_episodio, numero_progressivo_stagione, numero_progressivo_episodio) VALUES (?,?,?,?,?,?,?,?,?)";
+    public boolean creaIstanzaProgressoSerie(Integer idUtente, Integer idTitolo, Integer idEpisodio, Integer idStagione, String descrizioneEpisodio, Integer durataMinuti, Integer numeroProgressivoEpisodio, Integer numeroProgressivoStagione) {
+        String query = "INSERT INTO progressoserie(id_utente, id_serie, id_stagione, id_episodio, descrizione_episodio, durata_minuti_episodio, numero_progressivo_stagione, numero_progressivo_episodio) VALUES (?,?,?,?,?,?,?,?)";
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idTitolo);
             st.setInt(3, idStagione);
             st.setInt(4, idEpisodio);
-            st.setInt(5, annoPubblicazioneStagione);
-            st.setString(6, descrizioneEpisodio);
-            st.setInt(7, durataMinuti);
-            st.setInt(8, numeroProgressivoStagione);
-            st.setInt(9, numeroProgressivoEpisodio);
+            st.setString(5, descrizioneEpisodio);
+            st.setInt(6, durataMinuti);
+            st.setInt(7, numeroProgressivoStagione);
+            st.setInt(8, numeroProgressivoEpisodio);
             return st.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
