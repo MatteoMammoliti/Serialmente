@@ -25,7 +25,6 @@ public class UtenteService {
             boolean inserimentoRiuscito;
             emailtrovata= credenzialiUtente.cercaEmail(email);
             if(emailtrovata){
-                System.out.println("Email già presente");
                 DBManager.getInstance().getConnection().rollback();
             }
             int inserisciUtente= utenteDao.inserisciUtente(nome);
@@ -71,5 +70,18 @@ public class UtenteService {
 
     public void impostaPrimoAccesso(Utente u) {
         utenteDao.impostaPrimoAccesso(u.getIdUtente());
+    }
+
+    public boolean controlloEmailEsistente(String Email){
+        return credenzialiUtente.cercaEmail(Email);
+    }
+    public String getDomandaSicurezzaUtente(String email){
+        return credenzialiUtente.getDomandaSicurezza(email);
+    }
+    public boolean controlloRispostaDomandaSicurezza(String email,String risposta){
+        return credenzialiUtente.confrontoRispostaSicurezza(email,risposta);
+    }
+    public boolean cambiaPassword(String email,String password){
+        return credenzialiUtente.cambiaPassword(email,password);
     }
 }

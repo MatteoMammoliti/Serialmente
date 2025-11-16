@@ -80,6 +80,7 @@
                             <Font name="Arial" size="12.0" />
                         </font>
                     </Label>
+               <Label fx:id="labelRecuperaPW" prefHeight="18.0" prefWidth="330.0" text="Recupera password" />
                     <Button fx:id="loginButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="642.0" text="Accedi">
                         <VBox.margin>
                             <Insets top="30.0" />

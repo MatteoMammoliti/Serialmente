@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 
 public class ControllerLogin implements Initializable {
 
+    public Label labelRecuperaPW;
     @FXML private Button loginButton;
     @FXML private Label labelLoginError;
     @FXML private TextField textEmail;
@@ -29,6 +30,10 @@ public class ControllerLogin implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        labelRecuperaPW.setCursor(javafx.scene.Cursor.HAND);
+        labelRecuperaPW.setOnMouseClicked(mouseEvent -> {
+            passaAlRecupero();
+        });
         sincronizzaPassword();
 
         signupButton.setOnAction(e -> passaAllaRegistrazione());
@@ -99,4 +104,12 @@ public class ControllerLogin implements Initializable {
 
         eyeButton.setText(isVisible ? "🔍" : "🔒");
     }
+
+    private void passaAlRecupero(){
+        Stage stage = (Stage) this.labelRecuperaPW.getScene().getWindow();
+        viewFactory.closeStage(stage);
+        viewFactory.mostraPaginaRecuperaPassword();
+    }
+
+
 }

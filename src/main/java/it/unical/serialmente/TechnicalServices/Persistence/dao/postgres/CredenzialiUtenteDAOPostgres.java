@@ -121,4 +121,57 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
         }
         return null;
     }
+
+    @Override
+    public String getDomandaSicurezza(String email) {
+        String query="SELECT domanda_sicurezza FROM credenzialiutente WHERE email=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            System.out.println(email);
+            st.setString(1,email);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                System.out.println(rs.getString("domanda_sicurezza"));
+                return rs.getString("domanda_sicurezza");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean confrontoRispostaSicurezza(String email, String risposta) {
+        String query="SELECT risposta_domanda_sicurezza FROM credenzialiutente WHERE email=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setString(1,email);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                String cript= rs.getString("risposta_domanda_sicurezza");
+                if(!BCrypt.checkpw(risposta,cript)) {
+                    return  false;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean cambiaPassword(String email, String password) {
+        String query= "UPDATE credenzialiutente SET password=? WHERE email=?";
+        String pwcript=BCrypt.hashpw(password,BCrypt.gensalt(12));
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setString(1,pwcript);
+            st.setString(2,email);
+            if(st.executeUpdate()>0){
+                System.out.println("Password cambiata");
+                return true;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

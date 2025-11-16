@@ -60,6 +60,29 @@ public class ViewFactory {
         stage.show();
     }
 
+    public void mostraPaginaRecuperaPassword(){
+        FXMLLoader finestraRecupero = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/RecuperoPassword/cambioPassword.fxml"));
+        Scene scene = null;
+
+        try {
+            scene = new Scene(finestraRecupero.load());
+        } catch (Exception e) {
+            e.printStackTrace();
+            AlertHelper.nuovoAlert(
+                    "Errore!",
+                    Alert.AlertType.ERROR,
+                    "Errore durante l'apertura della pagina",
+                    "Qualcosa è andato storto durante l'apertura della pagina di recupero Password"
+            );
+        }
+
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Serialmente - Recupero password");
+        stage.setResizable(false);
+        stage.show();
+    }
+
     public void mostraFinestraLogin() {
 
         FXMLLoader finestraLogin = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/login.fxml"));
