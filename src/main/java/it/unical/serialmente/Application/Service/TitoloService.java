@@ -6,7 +6,6 @@ import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
 import javafx.util.Pair;
 import org.json.JSONArray;
@@ -14,6 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
@@ -70,9 +70,7 @@ public class TitoloService {
                 sommaMinuti += episodio.getDurataEpisodio();
             }
         }
-        System.out.println("MI ARRIVATO COME NUMERO PROGRESSIVO " + numProgressivoStagione);
         String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
-        System.out.println(url);
         String risposta = tmdbHttpClient.richiesta(url);
         List<Episodio> episodi = mapper.parseEpisodiDiUnaStagione(risposta);
 
@@ -146,11 +144,43 @@ public class TitoloService {
      }
 
     public List<Titolo> cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione, Integer pagina) throws Exception {
-        String url;
-        if(nomeTitolo != null) url = tmdbRequest.cercaTitoloPerNome(nomeTitolo, tipologia);
-        else url = tmdbRequest.cercaTitoliPerCriteri(tipologia, generi, annoPubblicazione, null, "&page=" + pagina);
-        String risposta = tmdbHttpClient.richiesta(url);
-        return mapper.parseTitoli(risposta, tipologia);
+        if(nomeTitolo != null) {
+            String rispostaRicercaPerTitolo = tmdbHttpClient.richiesta(
+                    tmdbRequest.cercaTitoloPerNome(nomeTitolo, tipologia)
+            );
+
+            return mapper.parseTitoli(rispostaRicercaPerTitolo, tipologia);
+        }
+
+
+        String rispostaRicercaPerCriteriFilm = tmdbHttpClient.richiesta(
+                tmdbRequest.cercaTitoliPerCriteri(
+                        "movie",
+                        generi,
+                        annoPubblicazione,
+                        null,
+                        "&page=" + pagina)
+        );
+
+        List<Titolo> film = mapper.parseTitoli(rispostaRicercaPerCriteriFilm, "movie");
+
+        if(Objects.equals(tipologia, "movie")) return film;
+
+        String rispostaRicercaPerCriteriSerieTV = tmdbHttpClient.richiesta(
+                tmdbRequest.cercaTitoliPerCriteri(
+                        "tv",
+                        generi,
+                        annoPubblicazione,
+                        null,
+                        "&page=" + pagina)
+        );
+
+        List<Titolo> serieTV = mapper.parseTitoli(rispostaRicercaPerCriteriSerieTV, "tv");
+
+        if(Objects.equals(tipologia, "tv")) return serieTV;
+
+        film.addAll(serieTV);
+        return film;
     }
 
     public List<Titolo> getTitoliPiuVisti(String tipologiaTitolo, Integer pagina) throws Exception {
@@ -289,27 +319,31 @@ public class TitoloService {
     }
 
     private List<Titolo> getFilmCasuali() throws Exception {
+
+        int totalPages = mapper.parsePagineTotali(tmdbHttpClient.richiesta(
+                tmdbRequest.getTitoliCasuali("movie", null)
+        ));
+
         String url = tmdbRequest.getTitoliCasuali(
                 "movie",
-                mapper.parsePagineTotali(
-                        tmdbHttpClient.richiesta(
-                                tmdbRequest.getTitoliCasuali("movie", null)
-                        )
-                )
+                new Random().nextInt(totalPages) + 1
         );
+
         String risposta = tmdbHttpClient.richiesta(url);
         return mapper.parseTitoli(risposta, "movie");
     }
 
     private List<Titolo> getSerieTVCasuali() throws Exception {
+
+        int totalPages = mapper.parsePagineTotali(tmdbHttpClient.richiesta(
+                tmdbRequest.getTitoliCasuali("tv", null)
+        ));
+
         String url = tmdbRequest.getTitoliCasuali(
                 "tv",
-                mapper.parsePagineTotali(
-                        tmdbHttpClient.richiesta(
-                                tmdbRequest.getTitoliCasuali("tv", null)
-                        )
-                )
+                new Random().nextInt(totalPages) + 1
         );
+
         String risposta = tmdbHttpClient.richiesta(url);
         return mapper.parseTitoli(risposta, "tv");
     }
