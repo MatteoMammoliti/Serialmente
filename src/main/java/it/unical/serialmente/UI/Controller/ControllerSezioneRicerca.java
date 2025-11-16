@@ -12,6 +12,8 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+
 import java.net.URL;
 import java.util.*;
 
@@ -20,7 +22,7 @@ public class ControllerSezioneRicerca implements Initializable {
     private final ModelPaginaPreferenze modelPaginaPreferenze = new ModelPaginaPreferenze();
     private final ModelSezioneRicerca modelSezione = new ModelSezioneRicerca();
     private final List<Genere> listaGeneriSelezionati =  new ArrayList<>();
-    private final List<CheckMenuItem> listaCheckBoxSelezionati = new ArrayList<>();
+    private final List<CheckBox> listaCheckBoxSelezionati = new ArrayList<>();
 
     @FXML private Button btnIndietro;
     @FXML private TextField campoTitolo;
@@ -76,24 +78,38 @@ public class ControllerSezioneRicerca implements Initializable {
     private void caricaGeneri() {
         List<Genere> generi = modelPaginaPreferenze.getGeneri();
 
+        VBox contenitore = new VBox(6);
+        contenitore.setStyle("-fx-padding: 10;");
+
         menuGenere.getItems().clear();
 
         for (Genere g : generi) {
-            CheckMenuItem cb = new CheckMenuItem(g.getNomeGenere());
-            cb.selectedProperty().addListener((observable, oldValue, isSelected) -> {
-                if(isSelected) {
-                    if(!listaGeneriSelezionati.contains(g)) {
+            CheckBox checkBox = new CheckBox(g.getNomeGenere());
+            checkBox.setStyle("-fx-text-fill: white;");
+
+            checkBox.selectedProperty().addListener((obs, oldVal, isSelected) -> {
+                if (isSelected) {
+                    if (!listaGeneriSelezionati.contains(g))
                         listaGeneriSelezionati.add(g);
-                        listaCheckBoxSelezionati.add(cb);
-                    } else {
-                        listaGeneriSelezionati.remove(g);
-                        listaCheckBoxSelezionati.remove(cb);
-                    }
+                } else {
+                    listaGeneriSelezionati.remove(g);
                 }
             });
 
-            menuGenere.getItems().add(cb);
+            contenitore.getChildren().add(checkBox);
+            listaCheckBoxSelezionati.add(checkBox);
         }
+
+        ScrollPane scroll = new ScrollPane(contenitore);
+        scroll.setPrefViewportHeight(200);
+        scroll.setFitToWidth(true);
+        scroll.setStyle("-fx-background-color: transparent;");
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        CustomMenuItem item = new CustomMenuItem(scroll);
+        item.setHideOnClick(false);
+
+        menuGenere.getItems().add(item);
     }
 
     private void caricaTitoli(List<Titolo> titoli) {
@@ -153,7 +169,7 @@ public class ControllerSezioneRicerca implements Initializable {
         toggleTipo.selectToggle(null);
         this.listaGeneriSelezionati.clear();
 
-        for(CheckMenuItem cb : listaCheckBoxSelezionati) {
+        for(CheckBox cb : listaCheckBoxSelezionati) {
             cb.setSelected(false);
         }
 
