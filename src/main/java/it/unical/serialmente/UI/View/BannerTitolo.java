@@ -4,6 +4,7 @@ import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Controller.ControllerPagineInfoFilm;
 import it.unical.serialmente.UI.Controller.ControllerPagineInfoSerieTv;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -29,8 +30,8 @@ public class BannerTitolo extends VBox {
     private final ImageView immagineTitolo= new ImageView();
     private final Label nomeTitolo = new Label();
     private final Label votoTitolo = new Label();
-    public Integer bannerAltezza=170;
-    public Integer bannerLarghezza=110;
+    public Integer bannerAltezza = 170;
+    public Integer bannerLarghezza = 110;
     private Titolo titolo;
 
     public BannerTitolo() {
@@ -63,6 +64,14 @@ public class BannerTitolo extends VBox {
     }
 
     public void apriPaginaInfo() throws Exception {
+
+        Stage stage = (Stage) this.getScene().getWindow();
+        Parent paginaCorrente = stage.getScene().getRoot();
+
+        ModelContainerView.getInstance()
+                .getViewFactory()
+                .setPaginaPrecedente(paginaCorrente);
+
         if(this.titolo.getTipologia().equals("Film")){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaInfoFilm.fxml"));
             Parent root = loader.load();
@@ -80,9 +89,8 @@ public class BannerTitolo extends VBox {
                 }
             );
 
-            Stage stage = (Stage) this.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage stageLocale = (Stage) this.getScene().getWindow();
+            stageLocale.getScene().setRoot(root);
         }
         else  if(this.titolo.getTipologia().equals("SerieTv")){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaInfoSerie.fxml"));
@@ -101,10 +109,8 @@ public class BannerTitolo extends VBox {
                             }
                     );
 
-            Stage stage = (Stage) this.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage stageLocale = (Stage) this.getScene().getWindow();
+            stageLocale.getScene().setRoot(root);
         }
-
     }
 }

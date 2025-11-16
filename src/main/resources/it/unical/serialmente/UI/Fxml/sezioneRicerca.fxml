@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unical.serialmente.UI.Controller.ControllerSezioneRicerca"
+            stylesheets="@../CSS/ricerca.css">
+
+    <top>
+        <VBox spacing="15" styleClass="ricerca-header">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <Label text="CERCA TITOLI" styleClass="titolo-sezione"/>
+
+            <GridPane hgap="15" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints halignment="LEFT" minWidth="120"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Titolo:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <TextField fx:id="campoTitolo"
+                           promptText="Es. Stranger Things"
+                           GridPane.rowIndex="0"
+                           GridPane.columnIndex="1"
+                           styleClass="input-ricerca"/>
+
+                <Label text="Generi:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <MenuButton fx:id="menuGenere"
+                            text="Scegli generi"
+                            GridPane.rowIndex="1"
+                            GridPane.columnIndex="1"
+                            styleClass="menu-ricerca"/>
+
+                <Label text="Anno:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextField fx:id="campoAnno"
+                           promptText="Es. 2020"
+                           GridPane.rowIndex="2"
+                           GridPane.columnIndex="1"
+                           styleClass="input-ricerca"/>
+
+                <Label text="Tipologia:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <HBox spacing="15" GridPane.rowIndex="3" GridPane.columnIndex="1">
+                    <RadioButton fx:id="radioFilm" text="Film" styleClass="radio-ricerca"/>
+                    <RadioButton fx:id="radioSerie" text="Serie TV" styleClass="radio-ricerca"/>
+                </HBox>
+            </GridPane>
+
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="bottoneCerca" text="CERCA" styleClass="btn-ricerca"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ListView fx:id="listaRisultati" styleClass="lista-risultati"/>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" styleClass="footer-ricerca">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </padding>
+            <Button fx:id="btnIndietro" text="Torna indietro" styleClass="btn-indietro-ricerca"/>
+        </HBox>
+    </bottom>
+</BorderPane>

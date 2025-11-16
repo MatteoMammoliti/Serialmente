@@ -8,6 +8,7 @@ import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelPagineInfoFilm;
 import it.unical.serialmente.UI.View.BannerinoPiattaforme;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -34,9 +35,7 @@ public class ControllerPagineInfoFilm implements Initializable {
     public HBox contenitoreInfoFilm;
     public Label labelPiattaforme;
     private Film titolo;
-    private String dimensionePoster = "https://image.tmdb.org/t/p/original";
     boolean presenteInListe;
-
 
 
     @Override
@@ -60,7 +59,8 @@ public class ControllerPagineInfoFilm implements Initializable {
                 this.titolo.getVotoMedio());
         this.labelTramaFilm.setText(this.titolo.getTrama());
         this.imageViewPoster.setPreserveRatio(true);
-        Image img = new Image(dimensionePoster+this.titolo.getImmagine());
+        String dimensionePoster = "https://image.tmdb.org/t/p/original";
+        Image img = new Image(dimensionePoster +this.titolo.getImmagine());
         this.imageViewPoster.setImage(img);
         caricaGeneri();
         presenteInListe = modelPagineInfoFilm.controlloPresenzaTitoloWatchlist(this.titolo.getIdTitolo());
@@ -107,8 +107,7 @@ public class ControllerPagineInfoFilm implements Initializable {
     }
 
     private void btnTornaIndietro(){
-        ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnIndietro.getScene().getWindow());
-        ModelContainerView.getInstance().getViewFactory().mostraPaginaFilmConMenu();
+        ModelContainerView.getInstance().getViewFactory().tornaAllaPaginaPrecedente();
     }
 
     private void setPiattaforme(){

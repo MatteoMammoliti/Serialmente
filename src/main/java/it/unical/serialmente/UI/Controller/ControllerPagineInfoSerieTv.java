@@ -30,12 +30,11 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     public Label labelGeneriSerie;
     public Label labelTramaSerie;
     public Button btnAggiungi;
-    private String dimensionePoster = "https://image.tmdb.org/t/p/original";
     public Accordion accordionStagioni;
     public Label labelPiattaforme;
 
     private SerieTV serie;
-    private ModelPagineInfoSerieTv modelPagineInfoSerieTv = new ModelPagineInfoSerieTv();
+    private final ModelPagineInfoSerieTv modelPagineInfoSerieTv = new ModelPagineInfoSerieTv();
     private boolean presenteInLista;
 
     @Override
@@ -58,7 +57,8 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         this.labelTitoloSerie.setText(this.serie.getNomeTitolo());
         this.labelVoto.setText(String.valueOf(this.serie.getVotoMedio()));
         this.labelTramaSerie.setText(this.serie.getTrama());
-        this.imageViewPoster.setImage(new Image(dimensionePoster+this.serie.getImmagine()));
+        String dimensionePoster = "https://image.tmdb.org/t/p/original";
+        this.imageViewPoster.setImage(new Image(dimensionePoster +this.serie.getImmagine()));
         presenteInLista = modelPagineInfoSerieTv.controlloSeSerieInListe(this.serie.getIdTitolo());
         aggiornaBottone();
     }
@@ -84,7 +84,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     }
 
     private void calcolaEpisodiTotali(List<Stagione> stagioni){
-        Integer totale=0;
+        int totale=0;
         for(Stagione stagione:stagioni){
             totale+=stagione.getEpisodi().size();
         }
@@ -138,8 +138,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
     }
 
     private void tornaIndietro(){
-        ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnIndietro.getScene().getWindow());
-        ModelContainerView.getInstance().getViewFactory().mostraPaginaFilmConMenu();
+        ModelContainerView.getInstance().getViewFactory().tornaAllaPaginaPrecedente();
     }
 
     private void caricaPiattaforme(List<Piattaforma> piattaforme) {

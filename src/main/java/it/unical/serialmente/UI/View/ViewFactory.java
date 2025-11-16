@@ -1,7 +1,5 @@
 package it.unical.serialmente.UI.View;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
-import it.unical.serialmente.UI.Controller.ControllerSezioneUtente;
-import it.unical.serialmente.UI.Controller.ControllerWatchlist;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -10,8 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.sql.SQLException;
 
 public class ViewFactory {
@@ -25,6 +26,9 @@ public class ViewFactory {
     private ControllerWatchlist controllerWatchlist;
     private ControllerSezioneUtente controllerSezioneUtente;
 
+    private final Deque<Parent> navigazione = new ArrayDeque<>();
+
+
     public ViewFactory() {
         this.finestraAttuale = new SimpleStringProperty("");
     }
@@ -35,6 +39,28 @@ public class ViewFactory {
      */
     public StringProperty getFinestraAttuale() {
         return finestraAttuale;
+    }
+
+    public void setPaginaPrecedente(Parent paginaPrecedente) {
+        navigazione.push(paginaPrecedente);
+    }
+
+    public void tornaAllaPaginaPrecedente() {
+        if (navigazione.isEmpty()) {
+            return;
+        }
+
+        Parent paginaPrecedente = navigazione.pop();
+
+        Stage stageCorrente = (Stage) Stage.getWindows()
+                .stream()
+                .filter(Window::isShowing)
+                .findFirst()
+                .orElse(null);
+
+        if (stageCorrente != null) {
+            stageCorrente.getScene().setRoot(paginaPrecedente);
+        }
     }
 
     public void mostraFinestraRegistrazione() {
@@ -99,11 +125,11 @@ public class ViewFactory {
             );
         }
 
-        Stage stageReale = new Stage();
-        stageReale.setScene(scene);
-        stageReale.setTitle("Serialmente - Login");
-        stageReale.setResizable(false);
-        stageReale.show();
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Serialmente - Login");
+        stage.setResizable(false);
+        stage.show();
     }
 
     public void mostraPaginaPreferenze(Stage stage) {
@@ -275,10 +301,6 @@ public class ViewFactory {
         this.grigliaTitoli = null;
     }
 
-    /**
-     * Funzione per chiudere la pagina che si sta lasciando durante una transizione
-     * @param stage
-     */
     public void closeStage(Stage stage) {
         if (stage != null) {
             stage.close();

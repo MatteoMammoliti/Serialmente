@@ -41,6 +41,7 @@ public class ControllerContainerView implements Initializable {
                     );
                     ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();
                     ThreadPool.shutdown();
+                    ModelContainerView.getInstance().getViewFactory().getFinestraAttuale().set("");
                     yield null;
                 }
                 default -> null;

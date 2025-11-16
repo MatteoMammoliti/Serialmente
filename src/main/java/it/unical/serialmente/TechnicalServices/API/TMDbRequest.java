@@ -26,6 +26,18 @@ public class TMDbRequest {
         return BASE + "/" + tipologia + "/" + idTitolo + "/watch/providers";
     }
 
+    public String getTitoliCasuali(String tipologia, Integer pagina) {
+        String url;
+        url = switch (tipologia) {
+            case "movie" -> BASE + "/discover/" + tipologia + "?sort_by=primary_release_date.asc";
+            case "tv" -> BASE + "/discover/" + tipologia + "?sort_by=first_air_date.asc";
+            default -> throw new IllegalStateException("Unexpected value: " + tipologia);
+        };
+
+        if(pagina == null) return url;
+        return url + "&page=" + pagina;
+    }
+
     public String getEpisodiDaStagione(Integer numeroStagione, Integer idSerieTV) {
         return BASE + "/tv/" + idSerieTV + "/season/" + numeroStagione;
     }
@@ -80,11 +92,21 @@ public class TMDbRequest {
 
         StringBuilder richiesta = new StringBuilder(BASE);
 
-        if (tipologia != null) richiesta.append("/discover/").append(tipologia);
-        else richiesta.append("/discover/multi");
+        richiesta.append("/discover/").append(tipologia);
 
-        boolean hasQuery = generi != null || annoPubblicazione != null || piattaforme != null;
-        if (hasQuery) richiesta.append("?");
+        boolean annoAggiunto = false;
+
+        if(annoPubblicazione != null) {
+            annoAggiunto = true;
+
+            switch (tipologia) {
+                case "movie" -> richiesta.append("?year=").append(annoPubblicazione);
+                case "tv" -> richiesta.append("?first_air_date_year=").append(annoPubblicazione);
+            }
+        }
+
+        if (annoAggiunto) richiesta.append("&");
+        else richiesta.append("?");
 
         boolean generiAggiunti = false;
 
@@ -103,8 +125,8 @@ public class TMDbRequest {
         boolean piattaformeAggiunte = false;
 
         if (piattaforme != null) {
-            piattaformeAggiunte = true;
             richiesta.append("with_watch_providers=");
+            piattaformeAggiunte = true;
 
             for (int i = 0; i < piattaforme.size(); i++) {
                 richiesta.append(piattaforme.get(i).getIdPiattaforma());
@@ -112,11 +134,9 @@ public class TMDbRequest {
             }
         }
 
-        if (piattaformeAggiunte && annoPubblicazione != null)
-            richiesta.append("&year=").append(annoPubblicazione);
+        if(piattaformeAggiunte) richiesta.append("&");
 
-        if (pagina != null)
-            richiesta.append("&page=2");
+        if (pagina != null) richiesta.append("page=2");
 
         return richiesta.toString();
     }
