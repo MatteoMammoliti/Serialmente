@@ -160,4 +160,6 @@ public class ControllerSezioneUtente implements Initializable {
         Stage stage = (Stage) cambioPreferenze.getScene().getWindow();
         stage.getScene().setRoot(root);
     }
+
+
 }
