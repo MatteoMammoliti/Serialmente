@@ -135,18 +135,12 @@ public class PreferenzeService {
     }
 
     public List<Genere> getGeneriPerSerieTV() {
-        List<Genere> g1 = genereDao.restituisciGeneriPresentiNelDB("tv");
-        List<Genere> g2 =  genereDao.restituisciGeneriPresentiNelDB("both");
-        g1.addAll(g2);
-        return g1;
-    };
+        return getGeneriByTipo("tv");
+    }
 
     public List<Genere> getGeneriPerFilm() {
-        List<Genere> g1 = genereDao.restituisciGeneriPresentiNelDB("movie");
-        List<Genere> g2 =  genereDao.restituisciGeneriPresentiNelDB("both");
-        g1.addAll(g2);
-        return g1;
-    };
+        return getGeneriByTipo("movie");
+    }
 
     public List<Piattaforma> getPiattaformeDisponibili() {
         return piattaformaDao.getListaPiattaforma();
@@ -194,5 +188,12 @@ public class PreferenzeService {
             }
         }
         return generi;
+    }
+
+    private List<Genere> getGeneriByTipo(String tipo) {
+        List<Genere> g1 = genereDao.restituisciGeneriPresentiNelDB(tipo);
+        List<Genere> g2 = genereDao.restituisciGeneriPresentiNelDB("both");
+        g1.addAll(g2);
+        return g1;
     }
 }

@@ -134,9 +134,14 @@ public class TMDbRequest {
             }
         }
 
-        if(piattaformeAggiunte) richiesta.append("&");
-
-        if (pagina != null) richiesta.append("page=2");
+        if(piattaformeAggiunte) {
+            if(pagina != null) richiesta.append("&").append(pagina);
+            else {
+                if (!richiesta.isEmpty()) {
+                    richiesta.deleteCharAt(richiesta.length() - 1);
+                }
+            }
+        }
 
         return richiesta.toString();
     }

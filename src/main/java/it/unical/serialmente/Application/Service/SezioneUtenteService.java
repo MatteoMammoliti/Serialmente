@@ -50,7 +50,7 @@ public class SezioneUtenteService {
         for (Integer idserie : listaSerieTvInVisione) {
             Pair<Integer,Integer> minutiEpisodi = progressoSerieService.getStatisticheSerieInVisione(idserie);
             minutiTotali += minutiEpisodi.getKey();
-            episodiTotali = minutiEpisodi.getValue();
+            episodiTotali += minutiEpisodi.getValue();
         }
 
         for(Integer idSerie : listaSerieTvVisionate) {

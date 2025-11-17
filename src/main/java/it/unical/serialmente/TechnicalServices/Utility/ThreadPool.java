@@ -8,7 +8,7 @@ public class ThreadPool {
 
     public static synchronized ExecutorService get() {
         if (executor == null || executor.isShutdown()) {
-            executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+            executor = Executors.newCachedThreadPool();
         }
         return executor;
     }

@@ -66,7 +66,7 @@ public class TitoloService {
     }
 
      public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo, Integer pagina) throws Exception {
-         String url = tmdbRequest.cercaTitoliPerCriteri(tipologiaTitolo, generi, null, piattaforme, "&page=" + pagina);
+         String url = tmdbRequest.cercaTitoliPerCriteri(tipologiaTitolo, generi, null, piattaforme, "page=" + pagina);
          String risposta = tmdbHttpClient.richiesta(url);
          return mapper.parseTitoli(risposta, tipologiaTitolo);
      }
@@ -87,7 +87,7 @@ public class TitoloService {
                         generi,
                         annoPubblicazione,
                         null,
-                        "&page=" + pagina)
+                        "page=" + pagina)
         );
 
         List<Titolo> film = mapper.parseTitoli(rispostaRicercaPerCriteriFilm, "movie");
@@ -100,7 +100,7 @@ public class TitoloService {
                         generi,
                         annoPubblicazione,
                         null,
-                        "&page=" + pagina)
+                        "page=" + pagina)
         );
 
         List<Titolo> serieTV = mapper.parseTitoli(rispostaRicercaPerCriteriSerieTV, "tv");
