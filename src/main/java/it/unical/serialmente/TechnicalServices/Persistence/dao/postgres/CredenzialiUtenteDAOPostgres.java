@@ -147,14 +147,12 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 String cript= rs.getString("risposta_domanda_sicurezza");
-                if(!BCrypt.checkpw(risposta,cript)) {
-                    return  false;
-                }
+                return BCrypt.checkpw(risposta, cript);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     @Override

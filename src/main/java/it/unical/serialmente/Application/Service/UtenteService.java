@@ -24,21 +24,28 @@ public class UtenteService {
             boolean emailtrovata;
             boolean inserimentoRiuscito;
             emailtrovata= credenzialiUtente.cercaEmail(email);
+
             if(emailtrovata){
                 DBManager.getInstance().getConnection().rollback();
+                return false;
             }
+
             int inserisciUtente= utenteDao.inserisciUtente(nome);
+
             if(inserisciUtente==0){
                 DBManager.getInstance().getConnection().rollback();
+                return false;
             }
+
             inserimentoRiuscito=credenzialiUtente.insertCredenzialiUtente(email,password,domandaSicurezza,rispostaDomandaSicurezza,inserisciUtente);
+
             if(!inserimentoRiuscito){
                 DBManager.getInstance().getConnection().rollback();
+                return false;
             }
+
             DBManager.getInstance().getConnection().commit();
             return true;
-
-
         }catch (Exception e){
             DBManager.getInstance().getConnection().rollback();
             throw new RuntimeException(e.getMessage());

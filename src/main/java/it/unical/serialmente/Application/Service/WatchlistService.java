@@ -104,6 +104,7 @@ public class WatchlistService {
             DBManager.getInstance().getConnection().commit();
 
         } catch (Exception e) {
+            DBManager.getInstance().getConnection().rollback();
             e.printStackTrace();
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
@@ -119,52 +120,62 @@ public class WatchlistService {
                     "Watchlist"
             );
 
-            if(!eliminazione) {
+            if (!eliminazione) {
                 DBManager.getInstance().getConnection().rollback();
                 return;
             }
 
-            if(!selezioneTitoloDao.controlloTitoloInListe(titolo.getIdTitolo())) {
+            if (!selezioneTitoloDao.controlloTitoloInListe(titolo.getIdTitolo())) {
                 eliminazione = titoloDao.rimuoviTitolo(titolo);
             }
 
-            if(!eliminazione) {
+            if (!eliminazione) {
                 DBManager.getInstance().getConnection().rollback();
                 return;
             }
 
             DBManager.getInstance().getConnection().commit();
-
+        } catch (Exception e) {
+            DBManager.getInstance().getConnection().rollback();
+            e.printStackTrace();
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
         }
     }
 
     public void rimuoviSerieWatchlist(Titolo titolo) throws SQLException {
+        try {
+            DBManager.getInstance().getConnection().setAutoCommit(false);
 
-        DBManager.getInstance().getConnection().setAutoCommit(false);
+            boolean successo = selezioneTitoloDao.eliminaTitoloInLista(
+                    SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                    titolo.getIdTitolo(),
+                    "Watchlist"
+            );
 
-        boolean successo = selezioneTitoloDao.eliminaTitoloInLista(
-                SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                titolo.getIdTitolo(),
-                "Watchlist"
-        );
+            if(!successo) {
+                DBManager.getInstance().getConnection().rollback();
+                return;
+            }
 
-        if(!successo) {
+            successo= progressoDao.eliminaSerieDaProgressioSerie(
+                    SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                    titolo.getIdTitolo()
+            );
+
+            if (!successo) {
+                DBManager.getInstance().getConnection().rollback();
+                return;
+            }
+            DBManager.getInstance().getConnection().commit();
+
+        } catch (Exception e) {
             DBManager.getInstance().getConnection().rollback();
-            return;
+            e.printStackTrace();
+        } finally {
+            DBManager.getInstance().getConnection().setAutoCommit(true);
         }
 
-        successo= progressoDao.eliminaSerieDaProgressioSerie(
-                SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                titolo.getIdTitolo()
-        );
-
-        if (!successo) {
-            DBManager.getInstance().getConnection().rollback();
-            return;
-        }
-        DBManager.getInstance().getConnection().commit();
     }
 
     public void rendiTitoloVisionato(Titolo titolo) throws Exception {
