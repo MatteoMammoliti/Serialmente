@@ -1,15 +1,22 @@
 package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.UI.Controller.Autenticazione.CambioPW.ControllerInvioRisposta;
 import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneUtente;
 import it.unical.serialmente.UI.View.PosterSezioneUtente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -24,6 +31,7 @@ public class ControllerSezioneUtente implements Initializable {
     public Label giorniTempoFilm;
     public Label oreTempoFilm;
     public Label numeroFilmVisti;
+    public Label cambioPreferenze;
 
     public record TitoloDato(Titolo titolo) {};
     public VBox contenitoreSalutiUtente;
@@ -57,6 +65,13 @@ public class ControllerSezioneUtente implements Initializable {
         try {
             aggiornaListe();
             caricaStatistiche();
+            cambioPreferenze.setOnMouseClicked(e -> {
+                try {
+                    clickCambioPreferenze();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -132,5 +147,13 @@ public class ControllerSezioneUtente implements Initializable {
         this.giorniTempoSerie.setText(statisticheSerieTv.durate().get(1).toString());
         this.oreTempoSerie.setText(statisticheSerieTv.durate().get(2).toString());
         this.numeroEpisodiVisti.setText(statisticheSerieTv.episodiVisti().toString());
+    }
+
+    public void clickCambioPreferenze() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/cambioPreferenze.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) cambioPreferenze.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 }

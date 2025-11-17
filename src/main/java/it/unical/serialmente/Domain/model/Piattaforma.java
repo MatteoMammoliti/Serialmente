@@ -1,5 +1,7 @@
 package it.unical.serialmente.Domain.model;
 
+import java.util.Objects;
+
 public class Piattaforma {
     private String nomePiattaforma;
     private Integer idPiattaforma;
@@ -15,4 +17,16 @@ public class Piattaforma {
     //Setter
     public void setIdPiattaforma(Integer idPiattaforma) {this.idPiattaforma = idPiattaforma;}
     public void setNomePiattaforma(String nomePiattaforma) {this.nomePiattaforma = nomePiattaforma;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Piattaforma that = (Piattaforma) o;
+        return Objects.equals(nomePiattaforma, that.nomePiattaforma) && Objects.equals(idPiattaforma, that.idPiattaforma);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nomePiattaforma, idPiattaforma);
+    }
 }

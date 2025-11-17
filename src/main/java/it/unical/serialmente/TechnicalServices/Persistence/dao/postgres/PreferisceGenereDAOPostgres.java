@@ -51,7 +51,9 @@ public class PreferisceGenereDAOPostgres implements PreferisceGenereDAO {
         try(PreparedStatement st = connection.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setInt(2,idGenere);
-            return  st.executeUpdate()>0;
+            if(st.executeUpdate()>0){
+                return true;
+            }
         }catch (Exception ex){
             ex.printStackTrace();
         }

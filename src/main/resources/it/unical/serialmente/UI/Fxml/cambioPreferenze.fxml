@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="550.0" prefWidth="800.0" styleClass="root" stylesheets="@../../CSS/prefefenze.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerCambioPreferenze">
+
+    <center>
+        <VBox alignment="TOP_CENTER" prefWidth="450.0" spacing="20.0" styleClass="preferences-form-container" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="form-title" text="Fai le tue scelte" textAlignment="CENTER">
+                <font>
+                    <Font name="Arial Bold" size="28.0" />
+                </font>
+                <VBox.margin>
+                    <Insets bottom="10.0" />
+                </VBox.margin>
+            </Text>
+
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="form-subtitle" text="Seleziona i generi e le piattaforme che usi per personalizzare i tuoi consigli." textAlignment="CENTER">
+                <VBox.margin>
+                    <Insets bottom="15.0" />
+                </VBox.margin>
+            </Text>
+
+            <Label styleClass="input-label-header" text="1. Generi Preferiti (Minimo 1)">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Label>
+
+            <MenuButton fx:id="elencoGeneri" mnemonicParsing="false" prefWidth="300.0" styleClass="menu-selection-button" text="Seleziona Generi" />
+
+            <Label styleClass="input-label-header" text="2. Piattaforme Streaming (Facoltativo)">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Label>
+
+            <MenuButton fx:id="elencoPiattaforme" mnemonicParsing="false" prefWidth="300.0" styleClass="menu-selection-button" text="Seleziona Piattaforme" />
+
+            <Label fx:id="labelErrore" styleClass="label-error" text="Seleziona almeno un genere per procedere." visible="false">
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </Label>
+
+            <Button fx:id="btnProcedi" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" styleClass="btn-procedi" text="Procedi e Salva Preferenze">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Button>
+
+        </VBox>
+    </center>
+</BorderPane>

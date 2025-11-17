@@ -9,6 +9,7 @@ import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.Piattafo
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferisceGenereDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferiscePiattaformaDAOPostgres;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class PreferenzeService {
@@ -54,6 +55,26 @@ public class PreferenzeService {
                 }
         }
     }
+    public void aggiornaPreferenzePiattaformeId(HashSet<Integer> piattaforme, String tipologiaAggiornamento) {
+        Integer idUtenteCorrente = SessioneCorrente.getUtenteCorrente().getIdUtente();
+        switch (tipologiaAggiornamento) {
+            case "AGGIUNTA":
+                for(Integer i : piattaforme) {
+                    preferiscePiattaformaDao.aggiungiPiattaformaPreferitaUtente(
+                            idUtenteCorrente,
+                            i
+                    );
+                }
+                return;
+            case "RIMOZIONE":
+                for(Integer i : piattaforme) {
+                    preferiscePiattaformaDao.rimuoviPiattaformaPreferitaUtente(
+                            idUtenteCorrente,
+                            i
+                    );
+                }
+        }
+    }
 
     /**
      * Funzione che aggiorna (aggiuge o rimuove) i generi preferiti dell'utente
@@ -76,6 +97,26 @@ public class PreferenzeService {
                     preferisceGenereDao.rimuoviGenerePreferitoUtente(
                             idUtenteCorrente,
                             i.getIdGenere()
+                    );
+                }
+        }
+    }
+    public void aggiornaPreferenzeGenereId(HashSet<Integer> generi, String tipologiaAggiornamento) {
+        Integer idUtenteCorrente = SessioneCorrente.getUtenteCorrente().getIdUtente();
+        switch (tipologiaAggiornamento) {
+            case "AGGIUNTA":
+                for(Integer i : generi) {
+                    preferisceGenereDao.aggiungiGenerePreferitoUtente(
+                            idUtenteCorrente,
+                            i
+                    );
+                }
+                return;
+            case "RIMOZIONE":
+                for(Integer i : generi) {
+                    preferisceGenereDao.rimuoviGenerePreferitoUtente(
+                            idUtenteCorrente,
+                            i
                     );
                 }
         }
@@ -109,5 +150,15 @@ public class PreferenzeService {
 
     public List<Piattaforma> getPiattaformeDisponibili() {
         return piattaformaDao.getListaPiattaforma();
+    }
+
+    public boolean applicaModificaPreferenze(HashSet<Integer> idGeneriEliminare, HashSet<Integer> idPiattaformeEliminare,
+                                             HashSet<Integer> idGenereAggiuntere, HashSet<Integer> idPiattaformeAggiuntere ) {
+
+        aggiornaPreferenzeGenereId(idGenereAggiuntere,"AGGIUNTA");
+        aggiornaPreferenzeGenereId(idGeneriEliminare,"RIMOZIONE");
+        aggiornaPreferenzePiattaformeId(idPiattaformeAggiuntere,"AGGIUNTA");
+        aggiornaPreferenzePiattaformeId(idPiattaformeEliminare,"RIMOZIONE");
+        return true;
     }
 }
