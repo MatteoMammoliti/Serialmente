@@ -1,7 +1,7 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Titolo;
-import it.unical.serialmente.UI.Model.ModelSezioneUtente;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneUtente;
 import it.unical.serialmente.UI.View.PosterSezioneUtente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,7 +10,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;

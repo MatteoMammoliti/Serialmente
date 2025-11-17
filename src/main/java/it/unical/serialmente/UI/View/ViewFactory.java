@@ -1,7 +1,7 @@
 package it.unical.serialmente.UI.View;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
-import it.unical.serialmente.UI.Controller.ControllerSezioneUtente;
-import it.unical.serialmente.UI.Controller.ControllerWatchlist;
+import it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerSezioneUtente;
+import it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerWatchlist;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,6 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.sql.SQLException;
 
 public class ViewFactory {
 
@@ -154,7 +153,7 @@ public class ViewFactory {
 
     public void mostraPaginaFilmConMenu(){
 
-        FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/mainView.fxml"));
+        FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/ContainerView.fxml"));
         Scene scene = null;
 
         try {
@@ -186,7 +185,7 @@ public class ViewFactory {
 
         if (paginaFilm == null) {
             try {
-                paginaFilm = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaFilm.fxml")).load();
+                paginaFilm = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/PagineNavigazione/paginaFilm.fxml")).load();
             } catch (IOException e) {
                 AlertHelper.nuovoAlert(
                         "Errore!",
@@ -207,7 +206,7 @@ public class ViewFactory {
 
         if (paginaSerieTV == null) {
             try {
-                paginaSerieTV = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaSerieTV.fxml")).load();
+                paginaSerieTV = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/PagineNavigazione/paginaSerieTV.fxml")).load();
             } catch (IOException e) {
                 AlertHelper.nuovoAlert(
                         "Errore!",
@@ -230,7 +229,7 @@ public class ViewFactory {
         if (watchlist == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/it/unical/serialmente/UI/Fxml/Watchlist.fxml")
+                        getClass().getResource("/it/unical/serialmente/UI/Fxml/PagineNavigazione/Watchlist.fxml")
                 );
                 watchlist = loader.load();
 
@@ -263,7 +262,7 @@ public class ViewFactory {
         if (paginaProfiloUtente == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(
-                        getClass().getResource("/it/unical/serialmente/UI/Fxml/profiloUtente.fxml")
+                        getClass().getResource("/it/unical/serialmente/UI/Fxml/PagineNavigazione/profiloUtente.fxml")
                 );
                 paginaProfiloUtente = loader.load();
 

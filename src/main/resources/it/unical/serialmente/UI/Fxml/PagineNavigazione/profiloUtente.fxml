@@ -10,8 +10,8 @@
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.unical.serialmente.UI.Controller.ControllerSezioneUtente"
-            stylesheets="@../CSS/profiloUtente.css">
+            fx:controller="it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerSezioneUtente"
+            stylesheets="@../../CSS/profiloUtente.css">
 
     <center>
         <ScrollPane fitToWidth="true"

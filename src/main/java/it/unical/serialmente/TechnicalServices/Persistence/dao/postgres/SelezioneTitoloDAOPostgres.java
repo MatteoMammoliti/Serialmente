@@ -215,25 +215,6 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         return 0;
     }
 
-//    @Override
-//    public Integer getMinutiVisioneFilm(Integer idUtente) {
-//        String query= "SELECT SUM(t.durata_minuti) AS totale_minuti FROM selezionetitolo s JOIN titolo t" +
-//                " on s.id_titolo=t.id_titolo WHERE s.id_utente=? AND t.tipologia=? AND s.tipo_lista=?";
-//        try(PreparedStatement st = connection.prepareStatement(query)){
-//            st.setInt(1, idUtente);
-//            st.setString(2,"Film");
-//            st.setString(3,"Visionati");
-//            ResultSet rs = st.executeQuery();
-//            if(rs.next()){
-//                return rs.getInt(1);
-//            }
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return 0;
-//    }
-
     public Integer getMinutiVisioneFilm(Integer idUtente) {
         String query= "SELECT SUM(minuti_visti) FROM selezionetitolo WHERE id_utente = ? AND tipo_lista = 'Visionati' AND numero_episodi_visti = 0";
         try(PreparedStatement st = connection.prepareStatement(query)){
@@ -307,5 +288,4 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return false;
     }
-
 }

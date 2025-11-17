@@ -1,24 +1,21 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Film;
-import it.unical.serialmente.Domain.model.Stagione;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelContainerView;
-import it.unical.serialmente.UI.Model.ModelWatchlist;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelWatchlist;
 import it.unical.serialmente.UI.View.BannerWatchlistFilm;
 import it.unical.serialmente.UI.View.BannerWatchlistSerieTv;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -67,7 +64,7 @@ public class ControllerWatchlist implements Initializable {
                     bannerFilm.update(titolo.getNomeTitolo(),titolo.getDurataMinuti(),titolo.getImmagine());
                     bannerFilm.setVisionato(()->{
                         try {
-                            model.rendiTitoloVisionato(titolo);
+                            model.rendiFilmVisionato(titolo);
                             popolaLista();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -75,7 +72,7 @@ public class ControllerWatchlist implements Initializable {
                     });
                     bannerFilm.setRimuovi(()->{
                         try {
-                            model.rimuoviTitoloWatchlist(titolo);
+                            model.rimuoviFilmWatchlist(titolo);
                             popolaLista();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
@@ -95,7 +92,7 @@ public class ControllerWatchlist implements Initializable {
                     });
                     bannerSerie.setVisionatoSerie(()->{
                         try {
-                            model.rendiTitoloVisionato(t);
+                            model.rendiFilmVisionato(t);
                             popolaLista();
                         } catch (Exception e) {
                             throw new RuntimeException(e);
@@ -126,7 +123,7 @@ public class ControllerWatchlist implements Initializable {
                     .getViewFactory()
                     .setPaginaPrecedente(paginaCorrente);
 
-            FXMLLoader paginaRicerca = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/sezioneRicerca.fxml"));
+            FXMLLoader paginaRicerca = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/PagineNavigazione/sezioneRicerca.fxml"));
             Parent root = paginaRicerca.load();
             Stage stage = (Stage) listTitoli.getScene().getWindow();
             stage.getScene().setRoot(root);

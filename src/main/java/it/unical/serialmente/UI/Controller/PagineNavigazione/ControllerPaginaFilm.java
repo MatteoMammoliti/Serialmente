@@ -1,11 +1,10 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Genere;
-import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
-import it.unical.serialmente.UI.Model.ModelSezioneFilm;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneFilm;
 import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
 import javafx.collections.FXCollections;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ControllerPaginaFilm implements Initializable {
 

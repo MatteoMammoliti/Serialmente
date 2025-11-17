@@ -2,7 +2,7 @@ package it.unical.serialmente.UI.View;
 
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
-import it.unical.serialmente.UI.Model.ModelGrigliaTitoli;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelGrigliaTitoli;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;

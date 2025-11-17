@@ -10,7 +10,7 @@
     </top>
 
     <center>
-        <fx:include source="paginaFilm.fxml"/>
+        <fx:include source="PagineNavigazione/paginaFilm.fxml"/>
     </center>
 
 </BorderPane>

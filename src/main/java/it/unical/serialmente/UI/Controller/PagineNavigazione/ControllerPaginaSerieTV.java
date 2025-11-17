@@ -1,9 +1,9 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
-import it.unical.serialmente.UI.Model.ModelSezioneSerieTv;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneSerieTv;
 import it.unical.serialmente.UI.View.BannerGeneri;
 import it.unical.serialmente.UI.View.BannerTitolo;
 import javafx.collections.FXCollections;

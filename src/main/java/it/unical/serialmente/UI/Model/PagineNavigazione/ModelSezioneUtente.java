@@ -1,15 +1,9 @@
-package it.unical.serialmente.UI.Model;
+package it.unical.serialmente.UI.Model.PagineNavigazione;
 
-import it.unical.serialmente.Application.Service.ProgressoSerieService;
 import it.unical.serialmente.Application.Service.SezioneUtenteService;
-import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Titolo;
-import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
-import javafx.util.Pair;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ModelSezioneUtente {
@@ -23,6 +17,7 @@ public class ModelSezioneUtente {
     public Integer getNmeroFilmVisionati(){
         return sezioneUtenteService.getNumeroFilmVisionati();
     }
+
     public List<Integer> getOreGiorniMesiVisionatiFilm(){
         return sezioneUtenteService.getOreGiorniMesiVisionatiFilm();
     }

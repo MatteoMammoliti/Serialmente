@@ -3,7 +3,7 @@ package it.unical.serialmente.Application.Service;
 import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
-import it.unical.serialmente.UI.Model.ModelSezioneUtente;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneUtente;
 import javafx.util.Pair;
 
 import java.sql.SQLException;
@@ -15,13 +15,7 @@ public class SezioneUtenteService {
             DBManager.getInstance().getConnection()
     );
 
-//    private final TitoloService titoloService = new TitoloService();
-//    private final TMDbHttpClient  tmDbHttpClient = new TMDbHttpClient();
-//    private final TMDbRequest   tmDbRequest = new TMDbRequest();
-//    private final Mapper mapper = new Mapper();
-
     private final ProgressoSerieService progressoSerieService = new ProgressoSerieService();
-    private final SelezioneTitoloDAOPostgres selezioneTitolo = new SelezioneTitoloDAOPostgres(DBManager.getInstance().getConnection());
 
     public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo) throws SQLException {
         return selezioneTitoloDAOPostgres.restituisciTitoliInLista(
@@ -60,7 +54,10 @@ public class SezioneUtenteService {
         }
 
         for(Integer idSerie : listaSerieTvVisionate) {
-            Pair<Integer,Integer> p = getStatisticheSerieVisionate(idSerie);
+            Pair<Integer,Integer> p = selezioneTitoloDAOPostgres.getStatistcheSerieTV(
+                    SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                    idSerie
+            );
             episodiTotali += p.getKey();
             minutiTotali += p.getValue();
         }
@@ -88,30 +85,6 @@ public class SezioneUtenteService {
 
     }
 
-//    private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) throws Exception {
-//        String url = tmDbRequest.getTitolo(idSerie, "tv");
-//        String risposta = tmDbHttpClient.richiesta(url);
-//        Pair<Integer, Integer> p = mapper.parseStatistiche(risposta);
-//
-//        if(p.getValue() != 0) return p;
-//        int minutiSpesi = titoloService.sommaMinutiEpisodiVisti(
-//                idSerie,
-//                titoloService.getStagioni(idSerie).size() - 1 == 0 ? titoloService.getStagioni(idSerie).size() : titoloService.getStagioni(idSerie).size() - 1,
-//                titoloService.getEpisodi(
-//                        idSerie,
-//                        titoloService.getStagioni(idSerie).size() - 1 == 0 ? titoloService.getStagioni(idSerie).size() : titoloService.getStagioni(idSerie).size() - 1
-//                ).size()
-//        );
-//        return new Pair<>(p.getKey(), minutiSpesi);
-//    }
-
-    private Pair<Integer, Integer> getStatisticheSerieVisionate(Integer idSerie) {
-        return selezioneTitolo.getStatistcheSerieTV(
-                SessioneCorrente.getUtenteCorrente().getIdUtente(),
-                idSerie
-        );
-    }
-
     public void rendiTitoloPreferito(Titolo titolo) {
         selezioneTitoloDAOPostgres.aggiungiTitoloInLista(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
@@ -122,6 +95,10 @@ public class SezioneUtenteService {
     }
 
     public void togliTitoloPreferito(Titolo titolo) {
-        selezioneTitolo.eliminaTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Preferiti");
+        selezioneTitoloDAOPostgres.eliminaTitoloInLista(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                titolo.getIdTitolo(),
+                "Preferiti"
+        );
     }
 }

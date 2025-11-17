@@ -1,8 +1,7 @@
-package it.unical.serialmente.UI.Model;
+package it.unical.serialmente.UI.Model.PagineNavigazione;
 
 import it.unical.serialmente.Application.Service.WatchlistService;
 import it.unical.serialmente.Domain.model.Titolo;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,17 +14,14 @@ public class ModelWatchlist {
     public Integer getNumeroEpisodio(Integer idSerie){
         return watchlistService.getNumeroEpisodio(idSerie);
     }
-//    public String getNomeEpisodio(Integer idSerie){
-//        return watchlistService.getNomeEpisodio(idSerie);
-//    }
 
     public List<Titolo> getTitoliInWatchlist() throws Exception {
         return watchlistService.restituisciTitoliInWatchlist();
     }
-    public void rendiTitoloVisionato(Titolo titolo) throws SQLException {
-        watchlistService.rendiFilmVisionato(titolo);
+    public void rendiFilmVisionato(Titolo titolo) throws Exception {
+        watchlistService.rendiTitoloVisionato(titolo);
     }
-    public void rimuoviTitoloWatchlist(Titolo titolo) throws SQLException {
+    public void rimuoviFilmWatchlist(Titolo titolo) throws SQLException {
         watchlistService.rimuoviFilmDallaWatchlist(titolo);
     }
     public void rimuoviSerieWatchlist(Titolo titolo) throws SQLException {

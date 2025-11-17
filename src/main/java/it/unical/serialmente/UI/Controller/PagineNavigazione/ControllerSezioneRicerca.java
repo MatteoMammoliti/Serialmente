@@ -1,10 +1,10 @@
-package it.unical.serialmente.UI.Controller;
+package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelPaginaPreferenze;
 import it.unical.serialmente.UI.Model.ModelContainerView;
-import it.unical.serialmente.UI.Model.ModelSezioneRicerca;
+import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneRicerca;
 import it.unical.serialmente.UI.View.BannerTitolo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

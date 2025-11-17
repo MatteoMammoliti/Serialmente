@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.ControllerPaginaSerieTV">
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerPaginaSerieTV">
     <center>
         <ScrollPane fx:id="scrollPrincipale" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
             <VBox>

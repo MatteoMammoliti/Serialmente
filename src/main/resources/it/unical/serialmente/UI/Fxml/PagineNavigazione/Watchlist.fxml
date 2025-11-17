@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@../Css/watchlist.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.ControllerWatchlist" styleClass="root-watchlist">
+<BorderPane stylesheets="@../../CSS/watchlist.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerWatchlist" styleClass="root-watchlist">
     <center>
         <VBox alignment="CENTER" BorderPane.alignment="CENTER" styleClass="contenitore-lista">
             <ListView fx:id="listTitoli" focusTraversable="false" styleClass="lista-titoli"/>
