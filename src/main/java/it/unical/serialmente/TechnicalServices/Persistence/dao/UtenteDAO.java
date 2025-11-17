@@ -7,4 +7,5 @@ public interface UtenteDAO {
     boolean modificaNomeUtente(Integer idUtente,String nuovoNome);
     boolean isPrimoAccesso(Integer idUtente);
     boolean impostaPrimoAccesso(Integer idUtente);
+    String getNomeUtente(Integer idUtente);
 }

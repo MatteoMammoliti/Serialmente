@@ -105,4 +105,5 @@ public class SezioneUtenteService {
     public void rimuoviTitoloDaVisionati(Titolo titolo) {
         selezioneTitoloDAOPostgres.eliminaTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Visionati");
     }
+
 }

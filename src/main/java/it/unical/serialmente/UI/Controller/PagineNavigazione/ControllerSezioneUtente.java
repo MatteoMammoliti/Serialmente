@@ -56,6 +56,7 @@ public class ControllerSezioneUtente implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.labelSalutiUtente.setText("Benvenuto "+modelSezioneUtente.getNomeUtente());
         this.contenitoreSalutiUtente.setPrefHeight(300);
         int dimensioneBannerini = 250;
         this.listSeriePreferite.setPrefHeight(dimensioneBannerini);

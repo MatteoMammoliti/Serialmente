@@ -97,4 +97,19 @@ public class UtenteDAOPostgres implements UtenteDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public String getNomeUtente(Integer idUtente) {
+        String query="SELECT nome FROM utente WHERE id_utente=?";
+        try(PreparedStatement st = connection.prepareStatement(query)){
+            st.setInt(1, idUtente);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return rs.getString("nome");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

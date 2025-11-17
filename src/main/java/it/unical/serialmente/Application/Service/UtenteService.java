@@ -12,6 +12,10 @@ public class UtenteService {
     private UtenteDAO utenteDao = DBManager.getInstance().getUtenteDAO();
     private CredenzialiUtenteDAO credenzialiUtente = DBManager.getInstance().getCredenzialiUtenteDAO();
 
+
+    public String getNomeUtente(){
+        return utenteDao.getNomeUtente(SessioneCorrente.getUtenteCorrente().getIdUtente());
+    }
     /**
      * Registra l'utente all'interno dell'applicazione, prendendo tutte le informazioni necessarie all'interno
      * dell'oggetto Utente.
