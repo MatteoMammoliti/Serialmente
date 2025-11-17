@@ -17,5 +17,7 @@ public interface SelezioneTitoloDAO {
     Integer getMinutiVisioneFilm(Integer idUtente);
     List<Integer> getIdSerieVisionate(Integer idUtente);
     boolean controlloTitoloInListeUtente(Integer idUtente,Integer idTitolo);
-    public Pair<Integer, Integer> getStatistcheSerieTV(Integer idUtente, Integer idSerie);
+    Pair<Integer, Integer> getStatistcheSerieTV(Integer idUtente, Integer idSerie);
+    List<Integer> getIdGeneriFilm(Integer idUtente);
+    List<Integer> getIdGeneriSerieTV(Integer idUtente);
 }

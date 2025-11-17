@@ -153,7 +153,7 @@ public class ControllerSezioneUtente implements Initializable {
     public void clickCambioPreferenze() throws IOException {
         Parent paginaCorrente = this.listFilmPreferiti.getScene().getRoot();
         ModelContainerView.getInstance().getViewFactory().setPaginaPrecedente(
-                paginaCorrente
+                paginaCorrente, null
         );
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/cambioPreferenze.fxml"));
         Parent root = fxmlLoader.load();

@@ -106,3 +106,8 @@
     -fx-background-color: rgba(255, 0, 0, 0.2);
     -fx-text-fill: RED;
 }
+
+.messaggio-vuoto {
+    -fx-font-size: 16px;
+    -fx-text-fill: #aaa;
+}

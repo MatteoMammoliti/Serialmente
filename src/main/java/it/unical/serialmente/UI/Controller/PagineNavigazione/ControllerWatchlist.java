@@ -7,10 +7,12 @@ import it.unical.serialmente.UI.Model.PagineNavigazione.ModelWatchlist;
 import it.unical.serialmente.UI.View.BannerWatchlistFilm;
 import it.unical.serialmente.UI.View.BannerWatchlistSerieTv;
 import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -20,9 +22,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ControllerWatchlist implements Initializable {
-    public ListView<Titolo> listTitoli;
-    public Button btnSfigliaTitoli;
     private final ModelWatchlist model = new ModelWatchlist();
+
+    @FXML
+    private Label labelVuoto;
+    @FXML private ListView<Titolo> listTitoli;
+    @FXML private Button btnSfigliaTitoli;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,6 +51,14 @@ public class ControllerWatchlist implements Initializable {
 
     public void popolaLista() throws Exception {
         List<Titolo> titoli = model.getTitoliInWatchlist();
+
+        if(titoli.isEmpty()) {
+            labelVuoto.setVisible(true);
+            listTitoli.setItems(FXCollections.observableArrayList());
+            return;
+        }
+
+        labelVuoto.setVisible(false);
 
         listTitoli.setCellFactory(lv -> new ListCell<>() {
             private final BannerWatchlistFilm bannerFilm = new BannerWatchlistFilm();
@@ -118,10 +131,10 @@ public class ControllerWatchlist implements Initializable {
 
     private void apriRicerca() {
         try {
-            Parent paginaCorrente = listTitoli.getScene().getRoot();
+            Parent parent = this.listTitoli.getScene().getRoot();
             ModelContainerView.getInstance()
                     .getViewFactory()
-                    .setPaginaPrecedente(paginaCorrente);
+                    .setPaginaPrecedente(parent, this);
 
             FXMLLoader paginaRicerca = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/PagineNavigazione/sezioneRicerca.fxml"));
             Parent root = paginaRicerca.load();

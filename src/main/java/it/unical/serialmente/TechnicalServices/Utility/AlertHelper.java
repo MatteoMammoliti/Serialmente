@@ -1,7 +1,10 @@
 package it.unical.serialmente.TechnicalServices.Utility;
 import javafx.scene.control.Alert;
+import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.util.Objects;
 
 public class AlertHelper {
     /**
@@ -25,6 +28,12 @@ public class AlertHelper {
             case CONFIRMATION -> "/it/unical/serialmente/UI/Images/IconeAlert/confirmation.png";
             case ERROR -> "/it/unical/serialmente/UI/Images/IconeAlert/error.png";
         };
+
+        DialogPane pane = alert.getDialogPane();
+        pane.getStylesheets().add(
+                Objects.requireNonNull(AlertHelper.class.getResource("/it/unical/serialmente/UI/CSS/alert.css")).toExternalForm()
+        );
+        pane.getStyleClass().add("custom-dialog");
 
         ImageView icona = new ImageView(new Image(AlertHelper.class.getResourceAsStream(percorsoIcona)));
         alert.setGraphic(icona);

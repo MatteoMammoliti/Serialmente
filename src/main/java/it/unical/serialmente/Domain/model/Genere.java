@@ -21,11 +21,11 @@ public class Genere {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Genere genere = (Genere) o;
-        return Objects.equals(nomeGenere, genere.nomeGenere) && Objects.equals(idGenere, genere.idGenere);
+        return Objects.equals(idGenere, genere.idGenere);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nomeGenere, idGenere);
+        return Objects.hash(idGenere);
     }
 }

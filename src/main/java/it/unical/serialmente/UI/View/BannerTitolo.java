@@ -70,7 +70,7 @@ public class BannerTitolo extends VBox {
 
         ModelContainerView.getInstance()
                 .getViewFactory()
-                .setPaginaPrecedente(paginaCorrente);
+                .setPaginaPrecedente(paginaCorrente, null);
 
         if(this.titolo.getTipologia().equals("Film")){
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/paginaInfoFilm.fxml"));

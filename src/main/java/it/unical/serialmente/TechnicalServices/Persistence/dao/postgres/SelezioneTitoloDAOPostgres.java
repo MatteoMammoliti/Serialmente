@@ -247,6 +247,41 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
     }
 
     @Override
+    public List<Integer> getIdGeneriFilm(Integer idUtente) {
+        List<Integer> idGeneri=new ArrayList<>();
+        String query = "SELECT g.id_genere FROM selezionetitolo s JOIN appartiene g ON s.id_titolo = g.id_titolo WHERE s.id_utente = ? AND s.tipo_lista= 'Visionati' AND s.numero_episodi_visti = 0";
+        try(PreparedStatement st = connection.prepareStatement(query)) {
+            st.setInt(1, idUtente);
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+                idGeneri.add(rs.getInt("id_genere"));
+            }
+            return idGeneri;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Integer> getIdGeneriSerieTV(Integer idUtente) {
+        List<Integer> idGeneri=new ArrayList<>();
+        String query = "SELECT g.id_genere FROM selezionetitolo s JOIN appartiene g ON s.id_titolo = g.id_titolo WHERE s.id_utente = ? AND s.tipo_lista= 'Visionati' AND s.numero_episodi_visti != 0";
+        try(PreparedStatement st = connection.prepareStatement(query)) {
+            st.setInt(1, idUtente);
+            ResultSet rs = st.executeQuery();
+
+            while(rs.next()){
+                idGeneri.add(rs.getInt("id_genere"));
+            }
+            return idGeneri;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
     public List<Integer> getIdSerieVisionate(Integer idUtente) {
         List<Integer> lista=new ArrayList<>();
         String query="SELECT s.id_titolo FROM selezionetitolo s JOIN titolo t ON t.id_titolo=s.id_titolo" +
@@ -288,4 +323,6 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return false;
     }
+
+
 }
