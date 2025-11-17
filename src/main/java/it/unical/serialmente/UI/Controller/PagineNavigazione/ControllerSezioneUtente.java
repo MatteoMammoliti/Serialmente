@@ -2,6 +2,7 @@ package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Controller.Autenticazione.CambioPW.ControllerInvioRisposta;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneUtente;
 import it.unical.serialmente.UI.View.PosterSezioneUtente;
 import javafx.collections.FXCollections;
@@ -150,10 +151,13 @@ public class ControllerSezioneUtente implements Initializable {
     }
 
     public void clickCambioPreferenze() throws IOException {
+        Parent paginaCorrente = this.listFilmPreferiti.getScene().getRoot();
+        ModelContainerView.getInstance().getViewFactory().setPaginaPrecedente(
+                paginaCorrente
+        );
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/cambioPreferenze.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) cambioPreferenze.getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+        stage.getScene().setRoot(root);
     }
 }

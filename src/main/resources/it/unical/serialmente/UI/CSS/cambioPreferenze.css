@@ -1,0 +1,124 @@
+.root {
+    -fx-background-color: #202020;
+}
+
+.right-pane {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 0;
+}
+
+.preferences-form-container {
+    -fx-background-color: #303030;
+    -fx-padding: 30px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);
+    -fx-spacing: 15px;
+    -fx-max-width: 450px;
+}
+
+.form-title {
+    -fx-fill: WHITE;
+    -fx-font-family: 'Arial Bold';
+    -fx-font-size: 28px;
+}
+
+.form-subtitle {
+    -fx-fill: #cccccc;
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+}
+
+.input-label-header {
+    -fx-text-fill: #e50914;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-alignment: center-left;
+}
+
+.label-error {
+    -fx-text-fill: #ff3333;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.menu-selection-button {
+    -fx-background-color: #444444;
+    -fx-text-fill: WHITE;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 4px;
+    -fx-border-color: #555555;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.menu-selection-button:hover {
+    -fx-background-color: #555555;
+}
+
+.menu-selection-button > .arrow-button {
+    -fx-background-color: #555555;
+    -fx-background-radius: 0 4px 4px 0;
+}
+
+.context-menu {
+    -fx-background-color: #383838;
+    -fx-border-color: #555555;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+}
+
+.context-menu .menu-item {
+    -fx-padding: 5px;
+    -fx-background-color: #383838;
+    -fx-border-color: #444444;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.context-menu .menu-item:hover {
+    -fx-background-color: #4c4c4c;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: WHITE;
+}
+
+.context-menu .check-box {
+    -fx-text-fill: WHITE;
+    -fx-padding: 5px 8px;
+}
+.context-menu .check-box:selected {
+    -fx-font-weight: bold;
+    -fx-text-fill: #e50914;
+}
+
+.button {
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-min-width: 135px;
+}
+
+.btn-procedi {
+    -fx-background-color: #e50914;
+    -fx-text-fill: WHITE;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-min-width: 180px;
+}
+
+.btn-procedi:hover {
+    -fx-background-color: #ff3344;
+}
+
+.btn-annulla-secondario {
+    -fx-background-color: #555555;
+    -fx-text-fill: WHITE;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+}
+
+.btn-annulla-secondario:hover {
+    -fx-background-color: #777777;
+}

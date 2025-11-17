@@ -3,6 +3,8 @@ package it.unical.serialmente.UI.Controller.Autenticazione;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelCambioPreferenze;
+import it.unical.serialmente.UI.Model.ModelContainerView;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
@@ -16,6 +18,7 @@ public class ControllerCambioPreferenze implements Initializable {
     public Label labelErrore;
     public Button btnProcedi;
     private final ModelCambioPreferenze modelCambioPreferenze = new  ModelCambioPreferenze();
+    public Button btnTornaIndietro;
     boolean cambiamenti= false;
     List<Genere> generiUtente= modelCambioPreferenze.getGeneriPreferiti();
     List<Piattaforma> piattaformeUtente= modelCambioPreferenze.getPiattaformePreferite();
@@ -27,6 +30,7 @@ public class ControllerCambioPreferenze implements Initializable {
         btnProcedi.setOnAction(e -> {
             clickSalva();
         });
+        btnTornaIndietro.setOnAction(e -> {clickIndietro();});
     }
 
     private void caricaGeneri(){
@@ -58,6 +62,7 @@ public class ControllerCambioPreferenze implements Initializable {
         modelCambioPreferenze.riempiPiattformePrecedenti(piattaformeUtente);
         for(Piattaforma g:tuttePiattaforme){
             CheckMenuItem cb = new CheckMenuItem(g.getNomePiattaforma());
+            cb.setStyle("fx-text-fill: white;");
             if (piattaformeUtente.contains(g)){
                 cb.setSelected(true);
                 elencoPiattaforme.getItems().add(cb);
@@ -79,7 +84,6 @@ public class ControllerCambioPreferenze implements Initializable {
     }
     private void clickSalva(){
         if(!cambiamenti){
-            System.out.println("nessun cambiamento");
             return;
         }
         if(modelCambioPreferenze.idGeneri.isEmpty()){
@@ -89,5 +93,8 @@ public class ControllerCambioPreferenze implements Initializable {
         modelCambioPreferenze.applicaModifiche(generiUtente,piattaformeUtente);
         generiUtente=modelCambioPreferenze.getGeneriPreferiti();
         piattaformeUtente=modelCambioPreferenze.getPiattaformePreferite();
+    }
+    private void clickIndietro(){
+        ModelContainerView.getInstance().getViewFactory().tornaAllaPaginaPrecedente();
     }
 }

@@ -5,11 +5,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="550.0" prefWidth="800.0" styleClass="root" stylesheets="@../../CSS/prefefenze.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerCambioPreferenze">
+<BorderPane prefHeight="550.0" prefWidth="800.0" styleClass="root" stylesheets="@../Css/cambioPreferenze.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerCambioPreferenze">
 
     <center>
         <VBox alignment="TOP_CENTER" prefWidth="450.0" spacing="20.0" styleClass="preferences-form-container" BorderPane.alignment="CENTER">
@@ -53,12 +54,13 @@
                     <Insets top="20.0" />
                 </VBox.margin>
             </Label>
-
-            <Button fx:id="btnProcedi" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" styleClass="btn-procedi" text="Procedi e Salva Preferenze">
-                <VBox.margin>
-                    <Insets top="10.0" />
-                </VBox.margin>
-            </Button>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+            <children>
+               <Button fx:id="btnTornaIndietro" mnemonicParsing="false" prefHeight="35.0" prefWidth="135.0" styleClass="btn-procedi" text="Annulla" />
+      
+                  <Button fx:id="btnProcedi" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" styleClass="btn-procedi" text="Procedi e Salva Preferenze" />
+            </children>
+         </HBox>
 
         </VBox>
     </center>
