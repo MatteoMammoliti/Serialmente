@@ -6,17 +6,13 @@ import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.Titolo;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelPagineInfoFilm;
-import it.unical.serialmente.UI.View.BannerinoPiattaforme;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
-import java.awt.*;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;

@@ -34,7 +34,7 @@ public class TitoloService {
         return genereDao.getGenereDaNome(nome);
     }
 
-    public CompletableFuture<List<Titolo>> loadPage(Integer idGenere, String tipologia, Integer pagina) {
+    public CompletableFuture<List<Titolo>> getTitoliPerGenerePaginaSingola(Integer idGenere, String tipologia, Integer pagina) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 String url = tmdbRequest.getTitoliPerGenere(idGenere, tipologia, "&page=" + pagina);
@@ -63,10 +63,6 @@ public class TitoloService {
                 throw new RuntimeException(e);
             }
         }, executor);
-    }
-
-    public CompletableFuture<List<Titolo>> getTitoliPerGenerePaginaSingola(Integer idGenere, String tipologia, Integer pagina) {
-        return loadPage(idGenere, tipologia, pagina);
     }
 
      public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo, Integer pagina) throws Exception {
@@ -208,13 +204,6 @@ public class TitoloService {
     }
 
     public List<Titolo> getTitoliCasuali() throws Exception {
-        List<Titolo> film = getFilmCasuali();
-        List<Titolo> tv = getSerieTVCasuali();
-        film.addAll(tv);
-        return film;
-    }
-
-    private List<Titolo> getFilmCasuali() throws Exception {
 
         String url = tmdbRequest.getTitoliCasuali(
                 "movie",
@@ -222,18 +211,18 @@ public class TitoloService {
         );
 
         String risposta = tmdbHttpClient.richiesta(url);
-        return mapper.parseTitoli(risposta, "movie");
-    }
+        List<Titolo> film = mapper.parseTitoli(risposta, "movie");
 
-    private List<Titolo> getSerieTVCasuali() throws Exception {
-
-        String url = tmdbRequest.getTitoliCasuali(
+        url = tmdbRequest.getTitoliCasuali(
                 "tv",
                 1
         );
 
-        String risposta = tmdbHttpClient.richiesta(url);
-        return mapper.parseTitoli(risposta, "tv");
+        risposta = tmdbHttpClient.richiesta(url);
+        List<Titolo> tv = mapper.parseTitoli(risposta, "tv");
+
+        film.addAll(tv);
+        return film;
     }
 
     private List<Stagione> getStagioni(Integer idSerieTV) throws Exception {

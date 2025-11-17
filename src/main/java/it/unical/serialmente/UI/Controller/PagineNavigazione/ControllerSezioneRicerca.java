@@ -24,6 +24,7 @@ public class ControllerSezioneRicerca implements Initializable {
     private final List<Genere> listaGeneriSelezionati =  new ArrayList<>();
     private final List<CheckBox> listaCheckBoxSelezionati = new ArrayList<>();
 
+    @FXML private Label labelVuoto;
     @FXML private Button btnIndietro;
     @FXML private TextField campoTitolo;
     @FXML private MenuButton menuGenere;
@@ -132,6 +133,8 @@ public class ControllerSezioneRicerca implements Initializable {
 
     private void iniziaRicerca() throws Exception {
 
+        this.labelVuoto.setVisible(false);
+
         if(!radioFilm.isSelected() &&
             !radioSerie.isSelected() &&
             this.listaGeneriSelezionati.isEmpty() &&
@@ -159,7 +162,10 @@ public class ControllerSezioneRicerca implements Initializable {
                 !this.campoAnno.getText().isBlank() ? Integer.parseInt(this.campoAnno.getText()) : null
         );
 
-        caricaTitoli(t);
+        if(t.isEmpty()) {
+            listaRisultati.setItems(FXCollections.observableArrayList());
+            this.labelVuoto.setVisible(true);
+        } else caricaTitoli(t);
         azzeraCampi();
     }
 

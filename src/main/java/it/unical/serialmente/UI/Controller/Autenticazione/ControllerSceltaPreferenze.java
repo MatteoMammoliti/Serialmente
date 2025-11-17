@@ -25,8 +25,6 @@ public class ControllerSceltaPreferenze implements Initializable {
     private final ModelPaginaPreferenze modelPaginaPreferenze = new ModelPaginaPreferenze();
     private final ViewFactory viewFactory = new ViewFactory();
 
-    private final HashMap<String, Genere> mappaGeneri = new HashMap<>();
-    private final HashMap<String, Piattaforma> mappaPiattaforma = new HashMap<>();
     private final List<Genere> listaGeneriSelezionati =  new ArrayList<>();
     private final List<Piattaforma> listaPiattaformeSelezionate = new ArrayList<>();
 
@@ -45,7 +43,6 @@ public class ControllerSceltaPreferenze implements Initializable {
         contenitore.setStyle("-fx-padding: 10;");
 
         elencoGeneri.getItems().clear();
-        mappaGeneri.clear();
         listaGeneriSelezionati.clear();
 
         for (Genere g : generi) {
@@ -62,7 +59,6 @@ public class ControllerSceltaPreferenze implements Initializable {
             });
 
             contenitore.getChildren().add(checkBox);
-            mappaGeneri.put(g.getNomeGenere(), g);
         }
 
         ScrollPane scroll = new ScrollPane(contenitore);
@@ -83,7 +79,6 @@ public class ControllerSceltaPreferenze implements Initializable {
         contenitore.setStyle("-fx-padding: 10;");
 
         elencoPiattaforme.getItems().clear();
-        mappaPiattaforma.clear();
         listaPiattaformeSelezionate.clear();
 
         for (Piattaforma p : piattaforme) {
@@ -100,7 +95,6 @@ public class ControllerSceltaPreferenze implements Initializable {
             });
 
             contenitore.getChildren().add(checkBox);
-            mappaPiattaforma.put(p.getNomePiattaforma(), p);
         }
 
         ScrollPane scroll = new ScrollPane(contenitore);

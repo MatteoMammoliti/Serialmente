@@ -1,9 +1,7 @@
-/* Sfondi generali */
 BorderPane {
     -fx-background-color: #141414;
 }
 
-/* Titolo sezione */
 .titolo-sezione {
     -fx-text-fill: #ffffff;
     -fx-font-size: 22px;
@@ -11,14 +9,11 @@ BorderPane {
     -fx-padding: 5 0 10 0;
 }
 
-/* Label */
 Label {
     -fx-text-fill: #e5e5e5;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
-
-/* ========================= INPUT ========================= */
 
 .input-ricerca {
     -fx-background-color: #1f1f1f;
@@ -34,8 +29,6 @@ Label {
 .input-ricerca:focused {
     -fx-border-color: #e50914;
 }
-
-/* ========================= MENU GENERI ========================= */
 
 .menu-ricerca {
     -fx-background-color: #1f1f1f;
@@ -65,8 +58,6 @@ Label {
     -fx-background-color: #333;
 }
 
-/* ========================= RADIO ========================= */
-
 .radio-ricerca .text {
     -fx-fill: #ffffff;
 }
@@ -75,8 +66,6 @@ Label {
 .radio-ricerca:focused .radio {
     -fx-mark-color: #e50914;
 }
-
-/* ========================= BOTTONE CERCA ========================= */
 
 .btn-ricerca {
     -fx-background-color: #e50914;
@@ -91,8 +80,6 @@ Label {
     -fx-background-color: #f6121d;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 2);
 }
-
-/* ========================= LISTA RISULTATI ========================= */
 
 .lista-risultati {
     -fx-background-color: transparent;
@@ -111,8 +98,6 @@ Label {
     -fx-cursor: hand;
 }
 
-/* ========================= FOOTER ========================= */
-
 .footer-ricerca {
     -fx-background-color: #141414;
 }
@@ -126,4 +111,9 @@ Label {
 .btn-indietro-ricerca:hover {
     -fx-background-color: #333333;
     -fx-text-fill: white;
+}
+
+.messaggio-vuoto {
+    -fx-font-size: 16px;
+    -fx-text-fill: #888;
 }

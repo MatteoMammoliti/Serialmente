@@ -4,13 +4,9 @@ import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PiattaformaDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferisceGenereDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.PreferiscePiattaformaDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.*;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class PreferenzeService {
 
@@ -27,6 +23,10 @@ public class PreferenzeService {
     );
 
     private final PiattaformaDAOPostgres  piattaformaDao = new PiattaformaDAOPostgres(
+            DBManager.getInstance().getConnection()
+    );
+
+    private final SelezioneTitoloDAOPostgres selezioneTitoloDao = new  SelezioneTitoloDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
@@ -152,13 +152,47 @@ public class PreferenzeService {
         return piattaformaDao.getListaPiattaforma();
     }
 
-    public boolean applicaModificaPreferenze(HashSet<Integer> idGeneriEliminare, HashSet<Integer> idPiattaformeEliminare,
-                                             HashSet<Integer> idGenereAggiuntere, HashSet<Integer> idPiattaformeAggiuntere ) {
+    public void applicaModificaPreferenze(HashSet<Integer> idGeneriEliminare, HashSet<Integer> idPiattaformeEliminare,
+                                          HashSet<Integer> idGenereAggiuntere, HashSet<Integer> idPiattaformeAggiuntere ) {
 
         aggiornaPreferenzeGenereId(idGenereAggiuntere,"AGGIUNTA");
         aggiornaPreferenzeGenereId(idGeneriEliminare,"RIMOZIONE");
         aggiornaPreferenzePiattaformeId(idPiattaformeAggiuntere,"AGGIUNTA");
         aggiornaPreferenzePiattaformeId(idPiattaformeEliminare,"RIMOZIONE");
-        return true;
+    }
+
+    public List<Genere> getGeneriStoricoFilm() {
+        List<Integer> idGeneri = selezioneTitoloDao.getIdGeneriFilm(
+                SessioneCorrente.getUtenteCorrente().getIdUtente()
+        );
+
+        return getGeneriStorico(idGeneri);
+    }
+
+    public List<Genere> getGeneriStoricosSerieTV() {
+        List<Integer> idGeneri = selezioneTitoloDao.getIdGeneriSerieTV(
+                SessioneCorrente.getUtenteCorrente().getIdUtente()
+        );
+
+        return getGeneriStorico(idGeneri);
+    }
+
+    private List<Genere> getGeneriStorico(List<Integer> idGeneri) {
+        List<Genere> generi = new ArrayList<>();
+
+        Map<Integer, Integer> freq = new HashMap<>();
+
+        for (Integer id : idGeneri) {
+            freq.put(id, freq.getOrDefault(id, 0) + 1);
+        }
+
+        for (var entry : freq.entrySet()) {
+            if (entry.getValue() > 3) {
+                Genere g = new Genere();
+                g.setIdGenere(entry.getKey());
+                generi.add(g);
+            }
+        }
+        return generi;
     }
 }

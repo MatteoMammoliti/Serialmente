@@ -30,6 +30,7 @@ public class ControllerLogin implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         labelRecuperaPW.setCursor(javafx.scene.Cursor.HAND);
         labelRecuperaPW.setOnMouseClicked(mouseEvent -> {
             passaAlRecupero();

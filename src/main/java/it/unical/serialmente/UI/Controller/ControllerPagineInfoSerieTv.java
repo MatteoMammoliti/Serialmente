@@ -3,7 +3,6 @@ package it.unical.serialmente.UI.Controller;
 import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelPagineInfoSerieTv;
-import it.unical.serialmente.UI.View.BannerinoPiattaforme;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
@@ -13,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;

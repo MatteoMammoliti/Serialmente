@@ -17,7 +17,7 @@
 
                 <VBox fx:id="contenitoreSalutiUtente">
                     <Label fx:id="labelSalutiUtente" text="Benvenuto utente" />
-                    <Label fx:id="cambioPreferenze" text="Cambia preferenze" />
+                    <Label fx:id="cambioPreferenze" text="Cambia preferenze" styleClass="label-button"/>
                 </VBox>
                 <VBox fx:id="contenitoreStatistiche">
                     <HBox spacing="10">

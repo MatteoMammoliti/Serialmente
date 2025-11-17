@@ -57,7 +57,14 @@
     </top>
 
     <center>
-        <ListView fx:id="listaRisultati" styleClass="lista-risultati"/>
+        <StackPane>
+            <ListView fx:id="listaRisultati" styleClass="lista-risultati"/>
+
+            <Label fx:id="labelVuoto"
+                   text="Nessun risultato trovato"
+                   visible="false"
+                   styleClass="messaggio-vuoto"/>
+        </StackPane>
     </center>
 
     <bottom>

@@ -42,8 +42,12 @@ public class ViewFactory {
         return finestraAttuale;
     }
 
-    public void setPaginaPrecedente(Parent paginaPrecedente) {
+    public void setPaginaPrecedente(Parent paginaPrecedente, ControllerWatchlist controller) {
         navigazione.push(paginaPrecedente);
+
+        if(controller != null && this.controllerSezioneUtente != null) {
+            this.controllerWatchlist = controller;
+        }
     }
 
     public void tornaAllaPaginaPrecedente() {
@@ -61,6 +65,10 @@ public class ViewFactory {
 
         if (stageCorrente != null) {
             stageCorrente.getScene().setRoot(paginaPrecedente);
+
+            if(this.controllerWatchlist != null) {
+                controllerWatchlist.refresh();
+            }
         }
     }
 
