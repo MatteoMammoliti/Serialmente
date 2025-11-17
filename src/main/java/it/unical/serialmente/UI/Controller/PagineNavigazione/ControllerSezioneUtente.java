@@ -123,6 +123,15 @@ public class ControllerSezioneUtente implements Initializable {
                             throw new RuntimeException(e);
                         }
                     });
+                    bannerTitolo.clickEliminaDaVisionati(()->{
+                        try {
+                            modelSezioneUtente.rimuoviTitoloDaVisionati(data.titolo);
+                            aggiornaListe();
+                            caricaStatistiche();
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                     setGraphic(bannerTitolo);
                 }
             }
@@ -160,4 +169,6 @@ public class ControllerSezioneUtente implements Initializable {
         Stage stage = (Stage) cambioPreferenze.getScene().getWindow();
         stage.getScene().setRoot(root);
     }
+
+
 }

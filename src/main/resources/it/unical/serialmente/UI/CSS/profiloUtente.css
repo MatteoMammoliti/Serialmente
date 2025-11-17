@@ -9,22 +9,35 @@ ScrollPane {
 }
 
 
-
 #contenitoreSalutiUtente {
-    -fx-padding: 20 0 10 20;
+    -fx-padding: 30px;
+    -fx-background-color: #1b1b1b;
+    -fx-background-radius: 10px;
+    -fx-border-color: #333333;
+    -fx-border-width: 0 0 1px 0;
+    -fx-spacing: 5px;
 }
 
 #labelSalutiUtente {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 26px;
+    -fx-font-size: 38px;
     -fx-font-weight: bold;
+    -fx-padding: 0;
 }
 
-#contenitoreSalutiUtente Label {
-    -fx-text-fill: #cccccc;
-    -fx-font-size: 14px;
+#cambioPreferenze {
+    -fx-text-fill: #e50914;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-padding: 5px 0 0 0;
 }
 
+#cambioPreferenze:hover {
+    -fx-text-fill: #ff3344;
+    -fx-underline: false;
+}
 #contenitoreSalutiUtente .label-button {
     -fx-text-fill: white;
     -fx-font-size: 16px;
@@ -55,7 +68,6 @@ ScrollPane {
 }
 
 
-
 #contenitoreCardStatistiche .card {
     -fx-background-color: linear-gradient(to bottom, #262626, #1b1b1b);
     -fx-border-color: #e50914;
@@ -67,8 +79,6 @@ ScrollPane {
     -fx-max-width: 330;
     -fx-min-height: 150;
     -fx-spacing: 10;
-
-
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 20, 0.4, 0, 5);
 }
 
@@ -104,7 +114,6 @@ ScrollPane {
     -fx-cursor: hand;
 }
 
-
 ListView {
     -fx-background-color: transparent;
 }
@@ -127,7 +136,6 @@ ListView {
     -fx-max-width: 0;
     -fx-min-width: 0;
 }
-
 
 
 #btnMostraSerieVisionate,
@@ -179,7 +187,7 @@ ListView {
 
 
 .btn-rimuovi-poster:hover {
-    -fx-background-color: rgba(150, 150, 150, 0.9); /* Grigio per un'azione distruttiva ma meno enfatica del preferito */
+    -fx-background-color: rgba(150, 150, 150, 0.9);
     -fx-text-fill: BLACK;
     -fx-opacity: 1.0;
 }

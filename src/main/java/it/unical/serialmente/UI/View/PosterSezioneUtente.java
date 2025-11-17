@@ -20,6 +20,7 @@ public class PosterSezioneUtente extends VBox {
     private final Button btnPreferiti = new Button("♥");
     private Runnable rendiPreferito;
     private Runnable rimuovi;
+    private Runnable rimuoviDaVisionati;
     private final Button btnRimuovi = new Button("✕");
     private Titolo titolo;
 
@@ -36,9 +37,6 @@ public class PosterSezioneUtente extends VBox {
         btnRimuovi.getStyleClass().add("btn-rimuovi-poster");
         StackPane.setAlignment(btnRimuovi, Pos.TOP_LEFT);
         StackPane.setMargin(btnRimuovi, new Insets(5));
-        btnRimuovi.setOnAction(e -> {
-            if(rimuovi!=null){rimuovi.run();}
-        });
 
         if (!preferito) {
             btnPreferiti.getStyleClass().add("btn-preferiti");
@@ -47,11 +45,13 @@ public class PosterSezioneUtente extends VBox {
             btnPreferiti.setOnAction(e -> {
                 if(rendiPreferito!=null){rendiPreferito.run();}
             });
+            btnRimuovi.setOnAction(e -> {rimuoviDaVisionati.run();});
         }else {
             btnPreferiti.setText("★");
             btnPreferiti.setDisable(true);
             StackPane.setAlignment(btnPreferiti, Pos.TOP_RIGHT);
             StackPane.setMargin(btnPreferiti, new Insets(5));
+            btnRimuovi.setOnAction(e -> {rimuovi.run();});
         }
 
 
@@ -86,6 +86,9 @@ public class PosterSezioneUtente extends VBox {
     }
     public void clickElimina(Runnable r) {
         this.rimuovi = r;
+    }
+    public void clickEliminaDaVisionati(Runnable r) {
+        this.rimuoviDaVisionati = r;
     }
 
 }
