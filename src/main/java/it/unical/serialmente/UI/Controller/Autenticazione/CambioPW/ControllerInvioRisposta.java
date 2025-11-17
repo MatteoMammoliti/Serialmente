@@ -59,6 +59,5 @@ public class ControllerInvioRisposta implements Initializable {
         Stage stage = (Stage) btnInviaRisposta.getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();
-
     }
 }

@@ -133,6 +133,14 @@ public class ControllerRegistrazione implements Initializable {
         } else  labelErroreRispostaSicurezza.setVisible(false);
 
         if(modelRegistrazione.registraUtente(nome,email,password,domandaSicurezza,rispostaDomandaSicurezza)){
+
+            AlertHelper.nuovoAlert(
+                    "Registrazione completata",
+                    Alert.AlertType.INFORMATION,
+                    "Registrazione avvenuta con successo!",
+                    "Ora puoi effettuare il login."
+            );
+
             Stage stage = (Stage) this.loginButton.getScene().getWindow();
             viewFactory.closeStage(stage);
             viewFactory.mostraFinestraLogin();
@@ -142,7 +150,6 @@ public class ControllerRegistrazione implements Initializable {
                     "Qualcosa è andato storto!",
                     "Qualcosa è andato storto durante la registrazione."
             );
-            return;
         }
     }
 

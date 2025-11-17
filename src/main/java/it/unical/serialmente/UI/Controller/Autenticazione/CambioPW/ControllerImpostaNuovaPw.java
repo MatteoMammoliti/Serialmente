@@ -1,14 +1,12 @@
 package it.unical.serialmente.UI.Controller.Autenticazione.CambioPW;
 
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelCambioPassword;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -76,6 +74,14 @@ public class ControllerImpostaNuovaPw implements Initializable {
             return;
         }
         if(modelCambioPassword.cambiaPassword(this.email,passwordField.getText())){
+
+            AlertHelper.nuovoAlert(
+                    "Registrazione completata",
+                    Alert.AlertType.INFORMATION,
+                    "Registrazione avvenuta con successo!",
+                    "Ora puoi effettuare il login."
+            );
+
             ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnInviaRisposta.getScene().getWindow());
             ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();
         }

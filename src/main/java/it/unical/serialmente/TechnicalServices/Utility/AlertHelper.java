@@ -23,7 +23,7 @@ public class AlertHelper {
 
         String percorsoIcona = switch (tipologia) {
             case NONE -> null;
-            case INFORMATION -> "/it/unical/serialmente/UI/IconeAlert/information.png";
+            case INFORMATION -> "/it/unical/serialmente/UI/Images/IconeAlert/information.png";
             case WARNING -> "/it/unical/serialmente/UI/Images/IconeAlert/warning.png";
             case CONFIRMATION -> "/it/unical/serialmente/UI/Images/IconeAlert/confirmation.png";
             case ERROR -> "/it/unical/serialmente/UI/Images/IconeAlert/error.png";

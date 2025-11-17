@@ -30,6 +30,7 @@ public class ControllerSceltaPreferenze implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         caricaGeneri();
         caricaPiattaforme();
 

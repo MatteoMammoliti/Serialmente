@@ -111,6 +111,4 @@ public class ControllerLogin implements Initializable {
         viewFactory.closeStage(stage);
         viewFactory.mostraPaginaRecuperaPassword();
     }
-
-
 }
