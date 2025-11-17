@@ -33,4 +33,7 @@ public class ModelSezioneUtente {
     public void togliTitoloDaiPreferiti(Titolo titolo) throws Exception {
         sezioneUtenteService.togliTitoloPreferito(titolo);
     }
+    public void rimuoviTitoloDaVisionati(Titolo titolo) throws Exception {
+        sezioneUtenteService.rimuoviTitoloDaVisionati(titolo);
+    }
 }

@@ -38,10 +38,10 @@ public class BannerWatchlistSerieTv extends HBox {
         imageViewPoster.setPreserveRatio(true);
         imageViewPoster.getStyleClass().add("poster-card");
 
-        labelNome = new Label("Nome della Serie TV");
+        labelNome = new Label();
         labelNome.getStyleClass().add("titolo-card");
 
-        labelStagioneEpisodio = new Label("S00 E00 - Nome Episodio");
+        labelStagioneEpisodio = new Label();
         labelStagioneEpisodio.getStyleClass().add("metadati-card-serie");
 
         VBox dettagliVBox = new VBox(labelNome, labelStagioneEpisodio);
