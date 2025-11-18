@@ -73,7 +73,7 @@ public class TMDbRequest {
             case "first_air_date.desc":
                 LocalDate ora = LocalDate.now();
                 LocalDate dataInizio = ora.minusMonths(3);
-                LocalDate dataFine = ora.plusDays(7);
+                LocalDate dataFine = ora.plusDays(1);
 
                 return BASE + "/discover/" + tipologia
                         + "?sort_by=" + tipologiaSort

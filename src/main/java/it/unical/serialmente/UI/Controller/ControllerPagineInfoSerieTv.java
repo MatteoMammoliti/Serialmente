@@ -37,6 +37,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.btnAggiungi.setDisable(true);
         btnAggiungi.setOnAction(e -> {
             try {
                 aggiungiSerieTvInWatchlist(this.serie);
@@ -58,7 +59,6 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         String dimensionePoster = "https://image.tmdb.org/t/p/original";
         this.imageViewPoster.setImage(new Image(dimensionePoster +this.serie.getImmagine()));
         presenteInLista = modelPagineInfoSerieTv.controlloSeSerieInListe(this.serie.getIdTitolo());
-        aggiornaBottone();
     }
 
 
@@ -68,6 +68,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         caricaPiattaforme(this.serie.getPiattaforme());
         caricaStagioni(this.serie.getStagioni());
         calcolaEpisodiTotali(this.serie.getStagioni());
+        aggiornaBottone();
     }
 
     public void caricaGeneri() {

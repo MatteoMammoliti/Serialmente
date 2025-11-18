@@ -56,7 +56,7 @@ public class ControllerSezioneUtente implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.labelSalutiUtente.setText("Benvenuto "+modelSezioneUtente.getNomeUtente());
+
         this.contenitoreSalutiUtente.setPrefHeight(300);
         int dimensioneBannerini = 250;
         this.listSeriePreferite.setPrefHeight(dimensioneBannerini);
@@ -85,7 +85,9 @@ public class ControllerSezioneUtente implements Initializable {
     public void refresh() throws Exception {
         aggiornaListe();
         caricaStatistiche();
+        this.labelSalutiUtente.setText("Benvenuto "+modelSezioneUtente.getNomeUtente());
     }
+    
     private void aggiornaListe() throws SQLException {
         caricaSezione(listSerieVisionate,"Visionati","SerieTv");
         caricaSezione(listSeriePreferite,"Preferiti","SerieTv");
