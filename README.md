@@ -18,7 +18,7 @@ Ha costruito l’ossatura dell’applicazione e tutto ciò che riguarda:
 - pagine per preferenze e ricerca nel catalogo  
 - gestione centralizzata delle eccezioni
 
-### [@Angelo Vivacqua]([https://github.com/username](https://github.com/AngeloVivacqua))
+### [@Angelo Vivacqua](https://github.com/AngeloVivacqua)
 Ha curato:
 - HomePage Film e Serie TV con logica applicativa
 - Watchlist, Area Utente, Login e SignUp con logica applicativa
