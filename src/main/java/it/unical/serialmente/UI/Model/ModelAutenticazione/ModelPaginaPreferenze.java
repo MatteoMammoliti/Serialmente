@@ -31,7 +31,7 @@ public class ModelPaginaPreferenze {
         );
     }
 
-    public void aggiornaPreferenzePiattaforme(List<Piattaforma> p) {
+    public void aggiornaPreferenzePiattaforme(List<Piattaforma> p) throws Exception {
         preferenzeService.aggiornaPreferenzePiattaforme(
                 p,
                 "AGGIUNTA"

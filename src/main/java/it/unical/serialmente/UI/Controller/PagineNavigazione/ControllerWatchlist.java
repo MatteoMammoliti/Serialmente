@@ -2,6 +2,7 @@ package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Film;
 import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.PagineNavigazione.ModelWatchlist;
 import it.unical.serialmente.UI.View.BannerWatchlistFilm;
@@ -11,10 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -34,6 +32,12 @@ public class ControllerWatchlist implements Initializable {
         try {
             popolaLista();
         } catch (Exception e) {
+            AlertHelper.nuovoAlert(
+                    "Errore",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Errore durante il recupero dei titoli in Watchlist. Riprovare!"
+            );
             throw new RuntimeException(e);
         }
 
@@ -45,7 +49,13 @@ public class ControllerWatchlist implements Initializable {
         try {
             popolaLista();
         } catch (Exception e) {
-            e.printStackTrace();
+            AlertHelper.nuovoAlert(
+                    "Errore",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Errore durante il recupero dei titoli in Watchlist. Riprovare!"
+            );
+            throw new RuntimeException(e);
         }
     }
 
@@ -71,8 +81,11 @@ public class ControllerWatchlist implements Initializable {
                     setGraphic(null);
                     return;
                 }
+
                 String tipo = t.getTipologia();
+
                 if ("Film".equalsIgnoreCase(tipo)) {
+
                     Film titolo = (Film)t;
                     bannerFilm.update(titolo.getNomeTitolo(),titolo.getDurataMinuti(),titolo.getImmagine());
                     bannerFilm.setVisionato(()->{
@@ -80,46 +93,83 @@ public class ControllerWatchlist implements Initializable {
                             model.rendiFilmVisionato(titolo);
                             popolaLista();
                         } catch (Exception e) {
+                            AlertHelper.nuovoAlert(
+                                    "Errore",
+                                    Alert.AlertType.ERROR,
+                                    "Qualcosa è andato storto!",
+                                    "Errore durante l'aggiunta del Film nella lista Visionati. Riprovare!"
+                            );
                             e.printStackTrace();
                         }
                     });
+
                     bannerFilm.setRimuovi(()->{
                         try {
                             model.rimuoviFilmWatchlist(titolo);
                             popolaLista();
                         } catch (Exception e) {
+                            AlertHelper.nuovoAlert(
+                                    "Errore",
+                                    Alert.AlertType.ERROR,
+                                    "Qualcosa è andato storto!",
+                                    "Errore durante l'eliminazione del Film. Riprovare!"
+                            );
                             throw new RuntimeException(e);
                         }
                     });
                     setGraphic(bannerFilm);
+
                 } else if ("SerieTv".equalsIgnoreCase(tipo)) {
+
                     bannerSerie.update(t.getNomeTitolo(),model.getNumeroStagione(t.getIdTitolo()),model.getNumeroEpisodio(t.getIdTitolo()),
                             "",t.getImmagine());
+
                     bannerSerie.setRimuovi(()->{
                         try {
                             model.rimuoviSerieWatchlist(t);
                             popolaLista();
                         } catch (Exception e) {
+                            AlertHelper.nuovoAlert(
+                                    "Errore",
+                                    Alert.AlertType.ERROR,
+                                    "Qualcosa è andato storto!",
+                                    "Errore durante l'eliminazione della Serie TV. Riprovare!"
+                            );
                             throw new RuntimeException(e);
                         }
                     });
+
                     bannerSerie.setVisionatoSerie(()->{
                         try {
                             model.rendiFilmVisionato(t);
                             popolaLista();
                         } catch (Exception e) {
+                            AlertHelper.nuovoAlert(
+                                    "Errore",
+                                    Alert.AlertType.ERROR,
+                                    "Qualcosa è andato storto!",
+                                    "Errore durante l'aggiunta della Serie TV nella lista Visionati. Riprovare!"
+                            );
                             throw new RuntimeException(e);
                         }
                     });
+
                     bannerSerie.setSegnaEpisodio(()->{
                         try {
                             model.episodioSuccessivo(t);
                             popolaLista();
                         } catch (Exception e) {
+                            AlertHelper.nuovoAlert(
+                                    "Errore",
+                                    Alert.AlertType.ERROR,
+                                    "Qualcosa è andato storto!",
+                                    "Errore durante il reperimento del prossimo episodip. Riprovare!"
+                            );
                             throw new RuntimeException(e);
                         }
                     });
                     setGraphic(bannerSerie);
+
                 } else {
                     setGraphic(null);
                 }
@@ -141,6 +191,12 @@ public class ControllerWatchlist implements Initializable {
             Stage stage = (Stage) listTitoli.getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (Exception e) {
+            AlertHelper.nuovoAlert(
+                    "Errore",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Errore durante l'apertura dell'area di ricerca'. Riprovare!"
+            );
             throw new RuntimeException(e);
         }
     }

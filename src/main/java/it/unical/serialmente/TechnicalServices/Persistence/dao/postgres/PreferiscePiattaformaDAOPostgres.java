@@ -15,7 +15,7 @@ public class PreferiscePiattaformaDAOPostgres implements PreferiscePiattaformaDA
         this.conn = conn;
     }
     @Override
-    public List<Piattaforma> getPiattaformePreferiteUtente(Integer idUtente) {
+    public List<Piattaforma> getPiattaformePreferiteUtente(Integer idUtente) throws Exception {
         List<Piattaforma> piattaformePreferiteUtente = new ArrayList<>();
         String query="SELECT * FROM preferiscepiattaforma p JOIN piattaforma pi ON p.id_piattaforma=pi.id_piattaforma WHERE p.id_utente=?";
         try(PreparedStatement st = conn.prepareStatement(query)){
@@ -26,34 +26,32 @@ public class PreferiscePiattaformaDAOPostgres implements PreferiscePiattaformaDA
                 piattaformePreferiteUtente.add(piattaforma);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            throw new Exception("Errore durante il recupero delle piattaforme preferite dell'utente",e);
         }
         return piattaformePreferiteUtente;
     }
 
     @Override
-    public boolean aggiungiPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) {
+    public boolean aggiungiPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception {
         String query="INSERT INTO preferiscepiattaforma (id_utente,id_piattaforma) VALUES (?,?)";
         try(PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setInt(2,idPiattaforma);
             return st.executeUpdate()>0;
         }catch (Exception e){
-            e.printStackTrace();
+            throw new Exception("Errore durante l'aggiunta della piattaforma preferita all'utente",e);
         }
-        return false;
     }
 
     @Override
-    public boolean rimuoviPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) {
+    public boolean rimuoviPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception {
         String query="DELETE FROM preferiscepiattaforma WHERE id_utente=? AND id_piattaforma=?";
         try(PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setInt(2,idPiattaforma);
             return st.executeUpdate()>0;
         }catch (Exception e){
-            e.printStackTrace();
+            throw new Exception("Errore durante la rimozione della piattaforma preferita all'utente", e);
         }
-        return false;
     }
 }

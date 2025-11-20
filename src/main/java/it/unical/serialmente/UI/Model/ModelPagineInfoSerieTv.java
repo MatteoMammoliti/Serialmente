@@ -16,7 +16,7 @@ public class ModelPagineInfoSerieTv {
     public boolean controlloSeSerieInListe(Integer idSerie){
         return watchlistService.controlloPresenzaSerieTvInListe(idSerie);
     }
-    public void aggiungiSerieTvInWatchlist(Titolo serie) throws SQLException {
+    public void aggiungiSerieTvInWatchlist(Titolo serie) throws Exception {
         watchlistService.inserisciTitoloInWatchlist(serie);
     }
 }

@@ -33,7 +33,7 @@ public class WatchlistService {
             DBManager.getInstance().getConnection()
     );
 
-    public void inserisciTitoloInWatchlist(Titolo titolo) throws SQLException {
+    public void inserisciTitoloInWatchlist(Titolo titolo) throws Exception {
         try {
 
             DBManager.getInstance().getConnection().setAutoCommit(false);
@@ -105,13 +105,13 @@ public class WatchlistService {
 
         } catch (Exception e) {
             DBManager.getInstance().getConnection().rollback();
-            e.printStackTrace();
+            throw new Exception("Errore durante l'inserimento della serie nella watchlist. Riprovare!");
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
         }
     }
 
-    public void rimuoviFilmDallaWatchlist(Titolo titolo) throws SQLException {
+    public void rimuoviFilmDallaWatchlist(Titolo titolo) throws Exception {
 
         try {
             DBManager.getInstance().getConnection().setAutoCommit(false);
@@ -137,7 +137,7 @@ public class WatchlistService {
             DBManager.getInstance().getConnection().commit();
         } catch (Exception e) {
             DBManager.getInstance().getConnection().rollback();
-            e.printStackTrace();
+            throw new Exception("Errore durante la rimozione della Serie TV dalla watchlist. Riprovare!");
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
         }

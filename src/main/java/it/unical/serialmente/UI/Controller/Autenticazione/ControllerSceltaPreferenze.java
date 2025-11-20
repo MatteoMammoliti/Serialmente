@@ -2,6 +2,7 @@ package it.unical.serialmente.UI.Controller.Autenticazione;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelPaginaPreferenze;
 import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.fxml.FXML;
@@ -34,7 +35,19 @@ public class ControllerSceltaPreferenze implements Initializable {
         caricaGeneri();
         caricaPiattaforme();
 
-        this.procediButton.setOnAction(_ -> onProcediButtonClick());
+        this.procediButton.setOnAction(_ -> {
+            try {
+                onProcediButtonClick();
+            } catch (Exception e) {
+                AlertHelper.nuovoAlert(
+                        "Errore",
+                        Alert.AlertType.ERROR,
+                        "Qualcosa è andato storto!",
+                        "Errore durante il salvataggio delle preferenze. Riprovare!"
+                );
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private void caricaGeneri() {
@@ -109,7 +122,7 @@ public class ControllerSceltaPreferenze implements Initializable {
         elencoPiattaforme.getItems().add(item);
     }
 
-    private void onProcediButtonClick() {
+    private void onProcediButtonClick() throws Exception {
         if(this.listaGeneriSelezionati.isEmpty()) {
             this.labelErrore.setVisible(true);
             return;

@@ -35,7 +35,7 @@ public class PreferenzeService {
      * @param piattaforme
      * @param tipologiaAggiornamento accetta: AGGIUNTA o RIMOZIONE
      */
-    public void aggiornaPreferenzePiattaforme(List<Piattaforma> piattaforme, String tipologiaAggiornamento) {
+    public void aggiornaPreferenzePiattaforme(List<Piattaforma> piattaforme, String tipologiaAggiornamento) throws Exception {
         Integer idUtenteCorrente = SessioneCorrente.getUtenteCorrente().getIdUtente();
         switch (tipologiaAggiornamento) {
             case "AGGIUNTA":
@@ -55,7 +55,7 @@ public class PreferenzeService {
                 }
         }
     }
-    public void aggiornaPreferenzePiattaformeId(HashSet<Integer> piattaforme, String tipologiaAggiornamento) {
+    public void aggiornaPreferenzePiattaformeId(HashSet<Integer> piattaforme, String tipologiaAggiornamento) throws Exception {
         Integer idUtenteCorrente = SessioneCorrente.getUtenteCorrente().getIdUtente();
         switch (tipologiaAggiornamento) {
             case "AGGIUNTA":
@@ -122,7 +122,7 @@ public class PreferenzeService {
         }
     }
 
-    public List<Piattaforma> visualizzaPreferenzePiattaformeUtente() {
+    public List<Piattaforma> visualizzaPreferenzePiattaformeUtente() throws Exception {
         return preferiscePiattaformaDao.getPiattaformePreferiteUtente(
                 SessioneCorrente.getUtenteCorrente().getIdUtente()
         );
@@ -147,7 +147,7 @@ public class PreferenzeService {
     }
 
     public void applicaModificaPreferenze(HashSet<Integer> idGeneriEliminare, HashSet<Integer> idPiattaformeEliminare,
-                                          HashSet<Integer> idGenereAggiuntere, HashSet<Integer> idPiattaformeAggiuntere ) {
+                                          HashSet<Integer> idGenereAggiuntere, HashSet<Integer> idPiattaformeAggiuntere ) throws Exception {
 
         aggiornaPreferenzeGenereId(idGenereAggiuntere,"AGGIUNTA");
         aggiornaPreferenzeGenereId(idGeneriEliminare,"RIMOZIONE");

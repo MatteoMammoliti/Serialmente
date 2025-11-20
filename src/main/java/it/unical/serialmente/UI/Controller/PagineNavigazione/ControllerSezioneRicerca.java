@@ -2,6 +2,7 @@ package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelPaginaPreferenze;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneRicerca;
@@ -60,6 +61,12 @@ public class ControllerSezioneRicerca implements Initializable {
                 }
             });
         } catch (Exception e) {
+            AlertHelper.nuovoAlert(
+                    "Errore",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Errore durante il caricamento dei titoli. Riprovare!"
+            );
             throw new RuntimeException(e);
         }
 
@@ -71,6 +78,12 @@ public class ControllerSezioneRicerca implements Initializable {
             try {
                 iniziaRicerca();
             } catch (Exception e) {
+                AlertHelper.nuovoAlert(
+                        "Errore",
+                        Alert.AlertType.ERROR,
+                        "Qualcosa è andato storto!",
+                        "Errore durante la ricerca. Riprovare!"
+                );
                 throw new RuntimeException(e);
             }
         });
@@ -126,6 +139,12 @@ public class ControllerSezioneRicerca implements Initializable {
         });
 
         task.setOnFailed(event -> {
+            AlertHelper.nuovoAlert(
+                    "Errore",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Errore durante il caricamento dei titoli. Riprovare!"
+            );
             task.getException().printStackTrace();
         });
         new Thread(task).start();

@@ -1,13 +1,11 @@
 package it.unical.serialmente.UI.Controller;
 
 import it.unical.serialmente.Domain.model.*;
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelPagineInfoSerieTv;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -42,7 +40,13 @@ public class ControllerPagineInfoSerieTv implements Initializable {
             try {
                 aggiungiSerieTvInWatchlist(this.serie);
             } catch (Exception ex) {
-                ex.printStackTrace();
+                AlertHelper.nuovoAlert(
+                        "Errore",
+                        Alert.AlertType.ERROR,
+                        "Qualcosa è andato storto!",
+                        "Errore durante l'aggiunta della Serie TV. Riprovare!"
+                );
+                throw new RuntimeException(ex);
             }
         });
 
@@ -130,7 +134,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         }
 
     }
-    private void aggiungiSerieTvInWatchlist(SerieTV serie) throws SQLException {
+    private void aggiungiSerieTvInWatchlist(SerieTV serie) throws Exception {
         modelPagineInfoSerieTv.aggiungiSerieTvInWatchlist(serie);
         this.presenteInLista=true;
         aggiornaBottone();

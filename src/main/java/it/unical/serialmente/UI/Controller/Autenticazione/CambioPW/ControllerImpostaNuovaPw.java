@@ -78,8 +78,8 @@ public class ControllerImpostaNuovaPw implements Initializable {
             AlertHelper.nuovoAlert(
                     "Registrazione completata",
                     Alert.AlertType.INFORMATION,
-                    "Registrazione avvenuta con successo!",
-                    "Ora puoi effettuare il login."
+                    "Cambio password avvenuto con successo!",
+                    "Ora puoi effettuare il login con le nuove credenziali."
             );
 
             ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnInviaRisposta.getScene().getWindow());

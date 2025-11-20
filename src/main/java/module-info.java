@@ -11,6 +11,7 @@ module it.unical.serialmente.UI {
     requires javafx.base;
     requires javafx.graphics;
     requires java.desktop;
+    requires it.unical.serialmente.UI;
 
     opens it.unical.serialmente.UI to javafx.fxml;
     opens it.unical.serialmente.UI.Controller to javafx.fxml;

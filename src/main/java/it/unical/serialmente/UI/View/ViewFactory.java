@@ -181,7 +181,7 @@ public class ViewFactory {
                     "Errore!",
                     Alert.AlertType.ERROR,
                     "Errore durante l'apertura della pagina",
-                    "Qualcosa è andato storto durante l'apertura della HomePage"
+                    "Qualcosa è andato storto durante l'apertura della HomePage Film"
             );
         }
 
