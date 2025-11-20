@@ -12,6 +12,7 @@ module it.unical.serialmente.UI {
     requires javafx.graphics;
     requires java.desktop;
     requires it.unical.serialmente.UI;
+    requires jakarta.mail;
 
     opens it.unical.serialmente.UI to javafx.fxml;
     opens it.unical.serialmente.UI.Controller to javafx.fxml;
