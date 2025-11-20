@@ -1,0 +1,119 @@
+BorderPane {
+    -fx-background-color: #141414;
+}
+
+.titolo-sezione {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0 10 0;
+}
+
+Label {
+    -fx-text-fill: #e5e5e5;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.input-ricerca {
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #333;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-padding: 8;
+    -fx-font-size: 13px;
+    -fx-prompt-text-fill: #777;
+}
+
+.input-ricerca:focused {
+    -fx-border-color: #e50914;
+}
+
+.menu-ricerca {
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #333;
+    -fx-text-fill: white;
+    -fx-padding: 6 12;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-size: 13px;
+}
+
+.menu-ricerca:hover {
+    -fx-background-color: #292929;
+}
+
+.context-menu {
+    -fx-background-color: #101010;
+    -fx-border-color: #e50914;
+    -fx-border-width: 1.5;
+}
+
+.menu-item .label {
+    -fx-text-fill: #e5e5e5;
+}
+
+.menu-item:hover {
+    -fx-background-color: #333;
+}
+
+.radio-ricerca .text {
+    -fx-fill: #ffffff;
+}
+
+.radio-ricerca:selected .radio,
+.radio-ricerca:focused .radio {
+    -fx-mark-color: #e50914;
+}
+
+.btn-ricerca {
+    -fx-background-color: #e50914;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 4;
+    -fx-font-size: 14px;
+}
+
+.btn-ricerca:hover {
+    -fx-background-color: #f6121d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.2, 0, 2);
+}
+
+.lista-risultati {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10 0;
+}
+
+.list-cell:filled:hover {
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 16, 0.2, 0, 4);
+    -fx-cursor: hand;
+}
+
+.footer-ricerca {
+    -fx-background-color: #141414;
+}
+
+.btn-indietro-ricerca {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 13px;
+}
+
+.btn-indietro-ricerca:hover {
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+}
+
+.messaggio-vuoto {
+    -fx-font-size: 16px;
+    -fx-text-fill: #888;
+}

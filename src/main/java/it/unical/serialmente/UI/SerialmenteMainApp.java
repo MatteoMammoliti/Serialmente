@@ -1,19 +1,25 @@
 package it.unical.serialmente.UI;
 
+import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
+import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
+import it.unical.serialmente.UI.Model.ModelContainerView;
+import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.application.Platform;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class SerialmenteMainApp extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SerialmenteMainApp.class.getResource(""));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+    public void start(Stage stage) {
+        ViewFactory viewFactory = ModelContainerView.getInstance().getViewFactory();
+        viewFactory.mostraFinestraLogin();
+    }
+
+    @Override
+    public void stop() {
+        ThreadPool.shutdown();
+        DBManager.getInstance().closeConnection();
+        Platform.exit();
+        System.exit(0);
     }
 }

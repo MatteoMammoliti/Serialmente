@@ -1,0 +1,113 @@
+
+.root-watchlist {
+    -fx-background-color: #202020;
+}
+
+.contenitore-lista {
+    -fx-padding: 20px;
+}
+
+
+.lista-titoli {
+    -fx-background-color: #202020;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.lista-titoli .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5px 0;
+}
+
+.card-film, .card-serie {
+    -fx-background-color: #303030;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 1);
+}
+
+.card-film:hover, .card-serie:hover {
+    -fx-background-color: #383838;
+}
+
+.poster-card {
+    -fx-background-color: #555555;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+}
+
+.titolo-card {
+    -fx-text-fill: WHITE;
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+}
+
+.metadati-card, .metadati-card-serie {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 10pt;
+}
+
+
+.btn-sfoglia {
+    -fx-background-color: #404040;
+    -fx-text-fill: WHITE;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+    -fx-margin: 15px 0 0 0;
+}
+
+.btn-visionato-card {
+    -fx-background-color: #e50914;
+    -fx-text-fill: WHITE;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+}
+
+.btn-visionato-card-alt {
+    -fx-background-color: #e50914;
+    -fx-text-fill: WHITE;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+}
+
+
+.btn-episodio-card {
+    -fx-background-color: #404040;
+    -fx-text-fill: WHITE;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 15px;
+}
+
+
+.btn-rimuovi-card {
+    -fx-background-color: transparent;
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 14pt;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 5px;
+    -fx-opacity: 0.3;
+}
+
+
+.card-film:hover .btn-rimuovi-card,
+.card-serie:hover .btn-rimuovi-card {
+    -fx-opacity: 1.0;
+    -fx-background-color: rgba(255, 0, 0, 0.2);
+    -fx-text-fill: RED;
+}
+
+.messaggio-vuoto {
+    -fx-font-size: 16px;
+    -fx-text-fill: #aaa;
+}

@@ -1,0 +1,189 @@
+#sfondo_login {
+    -fx-background-color: linear-gradient(to bottom, #141414, #0d0d0d);
+}
+
+#sfondo_login Text {
+    -fx-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+#sfondo_login Label {
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+}
+
+#labelLoginError {
+    -fx-text-fill: #ff3333;
+}
+
+TextField,
+PasswordField {
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #333;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-padding: 8;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #777777;
+}
+
+TextField:focused,
+PasswordField:focused {
+    -fx-border-color: #e50914;
+}
+
+#showPassword {
+    -fx-background-color: #1f1f1f;
+}
+
+#loginButton {
+    -fx-background-color: #e50914;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
+#loginButton:hover {
+    -fx-background-color: #f6121d;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 15, 0.2, 0, 3);
+}
+
+#signupButton {
+    -fx-background-color: transparent;
+    -fx-border-color: #e50914;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+    -fx-text-fill: #e50914;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 8 14;
+}
+
+#signupButton:hover {
+    -fx-background-color: #e50914;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+
+#eyeButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 16px;
+}
+
+#eyeButton:hover {
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.right-pane {
+    -fx-background-image: url("../Images/DecorazioniApp/login_bg.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.image-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 30, 0.4, 0, 0);
+}
+
+.right-pane .title-right {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-text-alignment: center;
+    -fx-font-weight: bold;
+}
+
+.right-pane .subtitle-right {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-text-alignment: center;
+    -fx-font-weight: bold;
+}
+
+
+#signupButton {
+    -fx-background-color: #e50914;
+    -fx-border-color: #e50914;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18;
+}
+
+#signupButton:hover {
+    -fx-background-color: #e50914;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.2, 0, 2);
+}
+
+.choice-box {
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #333333;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 6 10;
+}
+
+
+.choice-box:focused {
+    -fx-border-color: #e50914;
+}
+
+.choice-box .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+
+.choice-box .arrow {
+    -fx-background-color: white;
+}
+
+.choice-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.choice-box .arrow-button:hover {
+    -fx-background-color: #333333;
+}
+
+
+
+.choice-box .context-menu {
+    -fx-background-color: #101010;
+    -fx-border-color: #e50914;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+
+.choice-box .menu-item .label {
+    -fx-text-fill: #e5e5e5;
+    -fx-padding: 6 10;
+}
+
+.choice-box .menu-item:hover {
+    -fx-background-color: #333333;
+}
+
+
+.choice-box .menu-item:focused {
+    -fx-background-color: #e50914;
+}
+
+.choice-box .menu-item:focused .label {
+    -fx-text-fill: white;
+}

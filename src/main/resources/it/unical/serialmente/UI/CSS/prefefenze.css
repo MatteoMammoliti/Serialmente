@@ -1,0 +1,111 @@
+/* ====================== SFONDO ====================== */
+
+#sfondo_login {
+    -fx-background-color: linear-gradient(to bottom, #141414, #0d0d0d);
+}
+
+#sfondo_login Text {
+    -fx-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+#sfondo_login Label {
+    -fx-text-fill: #e5e5e5;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+#labelErrore {
+    -fx-text-fill: #ff3333;
+}
+
+.menu-button {
+    -fx-background-color: #1f1f1f;
+    -fx-border-color: #333;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-pref-width: 260;
+}
+
+.menu-button:hover {
+    -fx-background-color: #333333;
+    -fx-cursor: hand;
+}
+
+.menu-button:focused {
+    -fx-border-color: #e50914;
+}
+
+.menu-button > .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.menu-button .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.context-menu {
+    -fx-background-color: #101010;
+    -fx-border-width: 1.5;
+}
+
+.menu-item .label {
+    -fx-text-fill: #e5e5e5;
+    -fx-padding: 6 10;
+}
+
+.menu-item:hover {
+    -fx-background-color: #333333;
+}
+
+.menu-item:focused {
+    -fx-background-color: #e50914;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: white;
+}
+
+#procediButton {
+    -fx-background-color: #e50914;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-pref-width: 260;
+}
+
+#procediButton:hover {
+    -fx-background-color: #f6121d;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 15, 0.2, 0, 3);
+}
+
+.right-pane {
+    -fx-background-image: url("../Images/DecorazioniApp/login_bg.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.image-overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.6), 30, 0.4, 0, 0);
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.vbox .check-box .text {
+    -fx-fill: white;
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../../CSS/prefefenze.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerSceltaPreferenze">
+    <right>
+        <HBox alignment="CENTER" prefHeight="500.0" prefWidth="330.0" styleClass="right-pane">
+            <Pane styleClass="image-overlay" />
+        </HBox>
+    </right>
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane id="sfondo_login" prefHeight="500.0" prefWidth="670.0">
+                <Text fill="black" layoutX="5.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prima di procedere, fai la tua scelta" textAlignment="CENTER" wrappingWidth="464.4013671875">
+                    <font>
+                        <Font name="Arial Bold" size="25.0" />
+                    </font>
+                </Text>
+                <VBox alignment="TOP_CENTER" layoutX="18.0" layoutY="82.0" prefHeight="357.0" prefWidth="439.0">
+                    <padding>
+                        <Insets top="20.0" />
+                    </padding>
+                    <Label alignment="CENTER" prefHeight="20.0" prefWidth="219.0" text="Seleziona almeno un genere:">
+                        <font>
+                            <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <VBox.margin>
+                            <Insets top="5.0" />
+                        </VBox.margin>
+                    </Label>
+               <MenuButton fx:id="elencoGeneri" mnemonicParsing="false" text="Generi:" />
+                    <Label alignment="CENTER" prefHeight="20.0" prefWidth="456.0" text="Seleziona le tue piattaforme di riferimento (facoltativo)">
+                        <font>
+                            <Font name="Arial Bold" size="14.0" />
+                        </font>
+                        <VBox.margin>
+                            <Insets top="15.0" />
+                        </VBox.margin>
+                    </Label>
+                    <VBox prefHeight="0.0" prefWidth="330.0">
+                        <VBox.margin>
+                            <Insets top="3.0" />
+                        </VBox.margin>
+                    </VBox>
+               <MenuButton fx:id="elencoPiattaforme" mnemonicParsing="false" text="Piattaforme:" />
+                    <Label fx:id="labelErrore" prefHeight="18.0" prefWidth="332.0" text="Effettua almeno una scelta per il genere" textFill="#ff0000" visible="false">
+                        <font>
+                            <Font name="Arial" size="12.0" />
+                        </font>
+                    </Label>
+                    <Button fx:id="procediButton" mnemonicParsing="false" prefHeight="23.0" prefWidth="642.0" text="Procedi">
+                        <VBox.margin>
+                            <Insets top="30.0" />
+                        </VBox.margin>
+                    </Button>
+                </VBox>
+            </AnchorPane>
+        </HBox>
+    </center>
+</BorderPane>

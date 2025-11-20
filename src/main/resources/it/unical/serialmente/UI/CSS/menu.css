@@ -1,0 +1,46 @@
+.menu-bar {
+    -fx-background-color: #141414;
+    -fx-padding: 10 20;
+    -fx-spacing: 25;
+    -fx-alignment: center-left;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e5e5e5;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 10;
+    -fx-background-radius: 0;
+    -fx-cursor: hand;
+    -fx-transition: 0.2s;
+}
+
+.menu-button:hover {
+    -fx-text-fill: #ffffff;
+    -fx-scale-x: 1.08;
+    -fx-scale-y: 1.08;
+}
+.menu-button:selected,
+.menu-button:focused {
+    -fx-text-fill: #e50914;
+}
+.logout-button {
+    -fx-background-color: #e50914;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding: 6 14 6 14;
+    -fx-background-radius: 3;
+    -fx-border-color: transparent;
+}
+
+.logout-button:hover {
+    -fx-background-color: #f6121d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 12, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+.logout-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}

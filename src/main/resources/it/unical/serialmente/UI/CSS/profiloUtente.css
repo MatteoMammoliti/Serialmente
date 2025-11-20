@@ -1,0 +1,220 @@
+#scrollPaneStatistiche,
+ScrollPane {
+    -fx-background: #141414;
+    -fx-background-color: #141414;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #141414;
+}
+
+
+#contenitoreSalutiUtente {
+    -fx-padding: 30px;
+    -fx-background-color: #1b1b1b;
+    -fx-background-radius: 10px;
+    -fx-border-color: #333333;
+    -fx-border-width: 0 0 1px 0;
+    -fx-spacing: 5px;
+}
+
+#labelSalutiUtente {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 38px;
+    -fx-font-weight: bold;
+    -fx-padding: 0;
+}
+
+#cambioPreferenze {
+    -fx-text-fill: #e50914;
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-padding: 5px 0 0 0;
+}
+
+#cambioPreferenze:hover {
+    -fx-text-fill: #ff3344;
+    -fx-underline: false;
+}
+#contenitoreSalutiUtente .label-button {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 4 0 4 0;
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+}
+
+#contenitoreSalutiUtente .label-button:hover {
+    -fx-text-fill: #E50914;
+}
+
+#contenitoreSalutiUtente .label-button:pressed {
+    -fx-text-fill: #ff4f5e;
+}
+
+
+
+#contenitoreStatistiche Label,
+#contenitoreSerieTvVisionate Label,
+#contenitoreSerieTvPreferite Label,
+#contenitoreFilmVisionati Label,
+#contenitoreFimPreferiti Label {
+    -fx-text-fill: #e5e5e5;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+
+#contenitoreCardStatistiche .card {
+    -fx-background-color: linear-gradient(to bottom, #262626, #1b1b1b);
+    -fx-border-color: #e50914;
+    -fx-border-width: 2;
+    -fx-padding: 8;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-min-width: 330;
+    -fx-max-width: 330;
+    -fx-min-height: 150;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 20, 0.4, 0, 5);
+}
+
+
+#contenitoreCardStatistiche .card-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+
+#contenitoreCardStatistiche Separator {
+    -fx-background-color: #333333;
+}
+
+
+#contenitoreCardStatistiche .value-big {
+    -fx-text-fill: #e50914;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+#contenitoreCardStatistiche .value-label {
+    -fx-text-fill: #bbbbbb;
+    -fx-font-size: 14px;
+}
+
+
+#contenitoreCardStatistiche .card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(229,9,20,0.6), 30, 0.5, 0, 8);
+    -fx-cursor: hand;
+}
+
+ListView {
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 0 8 0 0;
+}
+
+.list-view .list-cell:filled:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 20, 0.2, 0, 5);
+    -fx-cursor: hand;
+}
+
+
+.list-view .scroll-bar:vertical {
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+    -fx-min-width: 0;
+}
+
+
+#btnMostraSerieVisionate,
+#btnMostraSeriePreferite,
+#btnMostraFilmVisionati,
+#btnMostraFilmPreferiti {
+    -fx-background-color: #e50914;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 4;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+
+#btnMostraSerieVisionate:hover,
+#btnMostraSeriePreferite:hover,
+#btnMostraFilmVisionati:hover,
+#btnMostraFilmPreferiti:hover {
+    -fx-background-color: #f6121d;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 12, 0.2, 0, 2);
+    -fx-cursor: hand;
+}
+
+
+.poster-utente-card {
+    -fx-background-color: #303030;
+    -fx-background-radius: 5px;
+    -fx-padding: 0;
+}
+
+.poster-utente-card:hover {
+    -fx-effect: dropshadow(gaussian, #e50914, 10, 0.5, 0, 0);
+}
+
+
+.poster-utente-immagine {
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+.btn-rimuovi-poster {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: WHITE;
+    -fx-font-size: 10pt;
+    -fx-padding: 3px 7px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.8;
+}
+
+
+.btn-rimuovi-poster:hover {
+    -fx-background-color: rgba(150, 150, 150, 0.9);
+    -fx-text-fill: BLACK;
+    -fx-opacity: 1.0;
+}
+
+
+
+.btn-preferiti {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: WHITE;
+    -fx-font-size: 14pt;
+    -fx-padding: 3px 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-opacity: 0.8;
+}
+
+
+.btn-preferiti:hover {
+    -fx-background-color: rgba(229, 9, 20, 0.9);
+    -fx-text-fill: WHITE;
+    -fx-opacity: 1.0;
+}
+
+
+.btn-preferiti.preferito-attivo {
+    -fx-background-color: #e50914;
+    -fx-text-fill: WHITE;
+    -fx-opacity: 1.0;
+}
