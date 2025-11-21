@@ -15,9 +15,7 @@ public class SessioneCorrente {
     }
 
     public static void resetSessioneCorrente() {
-
         SessioneCorrente.utenteCorrente = null;
-
     }
 
 }

@@ -14,10 +14,10 @@ public class ModelCambioPreferenze {
 
     PreferenzeService preferenzeService = new  PreferenzeService();
     public HashSet<Integer> idGeneri = new HashSet<>();
-    private HashSet<Integer> idPiattaforme=new HashSet<>();
+    private final HashSet<Integer> idPiattaforme=new HashSet<>();
 
     public List<Genere> getGeneriPreferiti(){return preferenzeService.visualizzaPreferenzeGenereUtente();}
-    public List<Piattaforma> getPiattaformePreferite(){return preferenzeService.visualizzaPreferenzePiattaformeUtente();}
+    public List<Piattaforma> getPiattaformePreferite() throws Exception {return preferenzeService.visualizzaPreferenzePiattaformeUtente();}
     public List<Genere>getTuttiGeneri(){
         List<Genere>serie= preferenzeService.getGeneriPerSerieTV();
         List<Genere> film = preferenzeService.getGeneriPerFilm();
@@ -41,7 +41,7 @@ public class ModelCambioPreferenze {
     }
     public void addPiattaforma(Integer id){idPiattaforme.add(id);}
     public void rimuoviPiattaforma(Integer id){idPiattaforme.remove(id);}
-    public void applicaModifiche(List<Genere> generiPrecedenti,List<Piattaforma> piattaformePrecedenti){
+    public void applicaModifiche(List<Genere> generiPrecedenti,List<Piattaforma> piattaformePrecedenti) throws Exception {
         HashSet<Integer> generiPrecedentiId=new HashSet<>();
         for(Genere g: generiPrecedenti){
             generiPrecedentiId.add(g.getIdGenere());

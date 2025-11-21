@@ -13,16 +13,12 @@ import javafx.scene.layout.VBox;
 public class PosterSezioneUtente extends VBox {
     private static Image PLACEHOLDER = loadPlaceholder();
     private final CacheImmagini cache = CacheImmagini.getInstance();
-    private final StackPane posterContainer = new StackPane();
     private final ImageView immagineTitolo= new ImageView();
     public Integer bannerAltezza=170;
     public Integer bannerLarghezza=110;
-    private final Button btnPreferiti = new Button("♥");
     private Runnable rendiPreferito;
     private Runnable rimuovi;
     private Runnable rimuoviDaVisionati;
-    private final Button btnRimuovi = new Button("✕");
-    private Titolo titolo;
 
 
     public PosterSezioneUtente(boolean preferito) {
@@ -34,10 +30,12 @@ public class PosterSezioneUtente extends VBox {
         this.immagineTitolo.getStyleClass().add("poster-utente-immagine");
         VBox.setVgrow(this.immagineTitolo, Priority.ALWAYS);
 
+        Button btnRimuovi = new Button("✕");
         btnRimuovi.getStyleClass().add("btn-rimuovi-poster");
         StackPane.setAlignment(btnRimuovi, Pos.TOP_LEFT);
         StackPane.setMargin(btnRimuovi, new Insets(5));
 
+        Button btnPreferiti = new Button("♥");
         if (!preferito) {
             btnPreferiti.getStyleClass().add("btn-preferiti");
             StackPane.setAlignment(btnPreferiti, Pos.TOP_RIGHT);
@@ -55,14 +53,14 @@ public class PosterSezioneUtente extends VBox {
         }
 
 
-        posterContainer.getChildren().addAll(this.immagineTitolo, btnRimuovi,btnPreferiti);
+        StackPane posterContainer = new StackPane();
+        posterContainer.getChildren().addAll(this.immagineTitolo, btnRimuovi, btnPreferiti);
         VBox.setVgrow(posterContainer, Priority.ALWAYS);
         this.getChildren().add(posterContainer);
     }
 
     public void update(Titolo titolo) {
         this.immagineTitolo.setImage(PLACEHOLDER);
-        this.titolo = titolo;
         if(titolo.getImmagine()!=null && !titolo.getImmagine().isEmpty()){
             Image img = cache.getImg(titolo.getImmagine());
             this.immagineTitolo.setImage(img);

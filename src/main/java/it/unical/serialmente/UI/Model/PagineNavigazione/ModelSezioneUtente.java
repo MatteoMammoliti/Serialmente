@@ -31,14 +31,14 @@ public class ModelSezioneUtente {
         return sezioneUtenteService.getStatisticheSerieTv();
     }
 
-    public void rendiTitoloPreferito(Titolo titolo) throws Exception {
+    public void rendiTitoloPreferito(Titolo titolo) {
         sezioneUtenteService.rendiTitoloPreferito(titolo);
     }
 
-    public void togliTitoloDaiPreferiti(Titolo titolo) throws Exception {
+    public void togliTitoloDaiPreferiti(Titolo titolo) {
         sezioneUtenteService.togliTitoloPreferito(titolo);
     }
-    public void rimuoviTitoloDaVisionati(Titolo titolo) throws Exception {
+    public void rimuoviTitoloDaVisionati(Titolo titolo) {
         sezioneUtenteService.rimuoviTitoloDaVisionati(titolo);
     }
 }

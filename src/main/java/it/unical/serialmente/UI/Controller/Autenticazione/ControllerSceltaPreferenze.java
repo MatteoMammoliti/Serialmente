@@ -4,6 +4,7 @@ import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelPaginaPreferenze;
+import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.View.ViewFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,13 +25,15 @@ public class ControllerSceltaPreferenze implements Initializable {
     @FXML private MenuButton elencoGeneri;
 
     private final ModelPaginaPreferenze modelPaginaPreferenze = new ModelPaginaPreferenze();
-    private final ViewFactory viewFactory = new ViewFactory();
+    private ViewFactory viewFactory;
 
     private final List<Genere> listaGeneriSelezionati =  new ArrayList<>();
     private final List<Piattaforma> listaPiattaformeSelezionate = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        this.viewFactory = ModelContainerView.getInstance().getViewFactory();
 
         caricaGeneri();
         caricaPiattaforme();

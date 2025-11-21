@@ -2,7 +2,7 @@ package it.unical.serialmente.Domain.model;
 
 public class Film extends Titolo{
     private Integer durataMinuti;
-    private String tipologia;
+    private final String tipologia;
 
     public Film(Integer idTitolo, String nomeTitolo, String trama, String immagine, double votoMedio, Integer durataMinuti, Integer annoPubblicazione) {
         super(idTitolo, nomeTitolo, trama, immagine, votoMedio,annoPubblicazione);

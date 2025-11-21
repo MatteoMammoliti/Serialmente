@@ -9,8 +9,8 @@ import it.unical.serialmente.Domain.model.Utente;
 import java.sql.SQLException;
 
 public class UtenteService {
-    private UtenteDAO utenteDao = DBManager.getInstance().getUtenteDAO();
-    private CredenzialiUtenteDAO credenzialiUtente = DBManager.getInstance().getCredenzialiUtenteDAO();
+    private final UtenteDAO utenteDao = DBManager.getInstance().getUtenteDAO();
+    private final CredenzialiUtenteDAO credenzialiUtente = DBManager.getInstance().getCredenzialiUtenteDAO();
 
 
     public String getNomeUtente(){
@@ -71,7 +71,6 @@ public class UtenteService {
             SessioneCorrente.setUtenteCorrente(utente);
             return utente;
         }
-        System.out.println("CredenzialiUtente non validata");
         return null;
     }
 

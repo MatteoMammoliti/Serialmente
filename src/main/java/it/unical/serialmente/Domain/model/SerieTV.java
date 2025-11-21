@@ -6,7 +6,7 @@ public class SerieTV extends Titolo{
     private Integer numeroEpisodiTotali;
     private Integer numeroStagioniTotali;
     private List<Stagione> stagioni;
-    private String tipologia;
+    private final String tipologia;
 
     @Override
     public String getTipologia() {

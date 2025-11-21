@@ -2,9 +2,9 @@ package it.unical.serialmente.UI.Controller.Autenticazione;
 
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
+import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelAutenticazione.ModelCambioPreferenze;
 import it.unical.serialmente.UI.Model.ModelContainerView;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -22,14 +22,34 @@ public class ControllerCambioPreferenze implements Initializable {
     public Button btnTornaIndietro;
     boolean cambiamenti= false;
     List<Genere> generiUtente= modelCambioPreferenze.getGeneriPreferiti();
-    List<Piattaforma> piattaformeUtente= modelCambioPreferenze.getPiattaformePreferite();
+    List<Piattaforma> piattaformeUtente;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try {
+            this.piattaformeUtente = modelCambioPreferenze.getPiattaformePreferite();
+        } catch (Exception e) {
+            AlertHelper.nuovoAlert(
+                    "Errore",
+                    Alert.AlertType.ERROR,
+                    "Qualcosa è andato storto!",
+                    "Errore durante il reperimento delle piattaforme già preferite. Riprovare!");
+            throw new RuntimeException(e);
+        }
         caricaGeneri();
         caricaPiattaforme();
         btnProcedi.setOnAction(e -> {
-            clickSalva();
+            try {
+                clickSalva();
+            } catch (Exception ex) {
+                AlertHelper.nuovoAlert(
+                        "Errore",
+                        Alert.AlertType.ERROR,
+                        "Qualcosa è andato storto!",
+                        "Errore durante il salvataggio delle preferenze. Riprovare!");
+                throw new RuntimeException(ex);
+            }
         });
         btnTornaIndietro.setOnAction(e -> {clickIndietro();});
     }
@@ -46,7 +66,6 @@ public class ControllerCambioPreferenze implements Initializable {
         for (Genere g : tuttiGeneri) {
             CheckBox cb = new CheckBox(g.getNomeGenere());
             cb.setSelected(generiUtente.contains(g));
-            // cb.setStyle("-fx-text-fill: white;");
 
             cb.selectedProperty().addListener((obs, old, sel) -> {
                 if (sel) modelCambioPreferenze.addGenere(g.getIdGenere());
@@ -105,7 +124,7 @@ public class ControllerCambioPreferenze implements Initializable {
         elencoPiattaforme.getItems().add(custom);
     }
 
-    private void clickSalva(){
+    private void clickSalva() throws Exception {
         if(!cambiamenti){
             return;
         }

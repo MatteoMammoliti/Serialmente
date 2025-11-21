@@ -29,6 +29,10 @@ public class ViewFactory {
     private ControllerWatchlist controllerWatchlist;
     private ControllerSezioneUtente controllerSezioneUtente;
 
+    private Stage stageLogin;
+    private Stage stageRegistrazione;
+    private Stage stageHomePages;
+
     private final Deque<Parent> navigazione = new ArrayDeque<>();
 
 
@@ -42,6 +46,18 @@ public class ViewFactory {
      */
     public StringProperty getFinestraAttuale() {
         return finestraAttuale;
+    }
+
+    public Stage getStageHomePages() {
+        return stageHomePages;
+    }
+
+    public Stage getStageRegistrazione() {
+        return stageRegistrazione;
+    }
+
+    public Stage getStageLogin() {
+        return stageLogin;
     }
 
     public void setPaginaPrecedente(Parent paginaPrecedente, ControllerWatchlist controller) {
@@ -80,6 +96,10 @@ public class ViewFactory {
         FXMLLoader finestraRegistrazione = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/registrazione.fxml"));
         Scene scene = null;
 
+        if(stageRegistrazione != null){
+            stageRegistrazione.close();
+        }
+
         try {
             scene = new Scene(finestraRegistrazione.load());
         } catch (Exception e) {
@@ -91,12 +111,12 @@ public class ViewFactory {
             );
         }
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Serialmente - Registrazione");
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/unical/serialmente/UI/Images/DecorazioniApp/favicon.png"))));
-        stage.setResizable(false);
-        stage.show();
+        stageRegistrazione = new Stage();
+        stageRegistrazione.setScene(scene);
+        stageRegistrazione.setTitle("Serialmente - Registrazione");
+        stageRegistrazione.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/unical/serialmente/UI/Images/DecorazioniApp/favicon.png"))));
+        stageRegistrazione.setResizable(false);
+        stageRegistrazione.show();
     }
 
     public void mostraPaginaRecuperaPassword(){
@@ -128,6 +148,10 @@ public class ViewFactory {
         FXMLLoader finestraLogin = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/Autenticazione/login.fxml"));
         Scene scene = null;
 
+        if(stageLogin != null){
+            stageLogin.close();
+        }
+
         try {
             scene = new Scene(finestraLogin.load());
         } catch (Exception e) {
@@ -139,12 +163,12 @@ public class ViewFactory {
             );
         }
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Serialmente - Login");
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/unical/serialmente/UI/Images/DecorazioniApp/favicon.png"))));
-        stage.setResizable(false);
-        stage.show();
+        stageLogin = new Stage();
+        stageLogin.setScene(scene);
+        stageLogin.setTitle("Serialmente - Login");
+        stageLogin.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/unical/serialmente/UI/Images/DecorazioniApp/favicon.png"))));
+        stageLogin.setResizable(false);
+        stageLogin.show();
     }
 
     public void mostraPaginaPreferenze(Stage stage) {
@@ -171,6 +195,10 @@ public class ViewFactory {
         FXMLLoader homePage = new FXMLLoader(getClass().getResource("/it/unical/serialmente/UI/Fxml/ContainerView.fxml"));
         Scene scene = null;
 
+        if(stageHomePages != null){
+            stageHomePages.close();
+        }
+
         try {
             scene = new Scene(homePage.load());
             scene.getStylesheets().add(
@@ -185,16 +213,16 @@ public class ViewFactory {
             );
         }
 
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setTitle("Serialmente - HomePage");
-        stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/unical/serialmente/UI/Images/DecorazioniApp/favicon.png"))));
+        stageHomePages = new Stage();
+        stageHomePages.setScene(scene);
+        stageHomePages.setTitle("Serialmente - HomePage");
+        stageHomePages.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/it/unical/serialmente/UI/Images/DecorazioniApp/favicon.png"))));
 
-        stage.setWidth(1280);
-        stage.setHeight(720);
-        stage.centerOnScreen();
+        stageHomePages.setWidth(1280);
+        stageHomePages.setHeight(720);
+        stageHomePages.centerOnScreen();
 
-        stage.show();
+        stageHomePages.show();
     }
 
     public BorderPane getPaginaFilm() {
@@ -324,6 +352,9 @@ public class ViewFactory {
         this.paginaSerieTV = null;
         this.watchlist = null;
         this.paginaProfiloUtente = null;
+        this.stageHomePages = null;
+        this.stageLogin = null;
+        this.stageRegistrazione = null;
     }
 
     public void closeStage(Stage stage) {

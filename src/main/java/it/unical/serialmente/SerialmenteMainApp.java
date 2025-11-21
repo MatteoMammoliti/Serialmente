@@ -1,4 +1,4 @@
-package it.unical.serialmente.UI;
+package it.unical.serialmente;
 
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;

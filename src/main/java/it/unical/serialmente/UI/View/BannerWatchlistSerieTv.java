@@ -16,9 +16,6 @@ public class BannerWatchlistSerieTv extends HBox {
     private final ImageView imageViewPoster;
     private final Label labelNome;
     private final Label labelStagioneEpisodio;
-    private final Button btnRimuovi;
-    private final Button btnSegnaEpisodio;
-    private final Button btnVisionatoSerie;
     private Runnable rimuovi;
     private Runnable segnaEpisodio;
     private Runnable visionatoSerie;
@@ -51,18 +48,18 @@ public class BannerWatchlistSerieTv extends HBox {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        btnRimuovi = new Button("✕");
+        Button btnRimuovi = new Button("✕");
         btnRimuovi.getStyleClass().add("btn-rimuovi-card");
         HBox.setMargin(btnRimuovi, new Insets(0, 5.0, 0, 0));
         btnRimuovi.setOnAction(e -> {if(rimuovi!=null){rimuovi.run();}});
 
 
-        btnSegnaEpisodio = new Button("▶ Episodio Visto");
+        Button btnSegnaEpisodio = new Button("▶ Episodio Visto");
         btnSegnaEpisodio.getStyleClass().add("btn-episodio-card");
         HBox.setMargin(btnSegnaEpisodio, new Insets(0, 10.0, 0, 0));
         btnSegnaEpisodio.setOnAction(event->{if(segnaEpisodio!=null){segnaEpisodio.run();}});
 
-        btnVisionatoSerie = new Button("✓ Serie Vista");
+        Button btnVisionatoSerie = new Button("✓ Serie Vista");
         btnVisionatoSerie.getStyleClass().add("btn-visionato-card-alt");
         HBox.setMargin(btnVisionatoSerie, new Insets(0, 10.0, 0, 0));
         btnVisionatoSerie.setOnAction(event -> {if(visionatoSerie!=null){visionatoSerie.run();}});

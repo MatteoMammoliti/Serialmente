@@ -6,8 +6,7 @@ import java.util.HashMap;
 
 public class CacheImmagini {
     static CacheImmagini istanza;
-    private HashMap<String, Image> cache = new HashMap<>();
-    private String dimensionePoster = "https://image.tmdb.org/t/p/original";
+    private final HashMap<String, Image> cache = new HashMap<>();
 
     private CacheImmagini() {}
 
@@ -22,7 +21,8 @@ public class CacheImmagini {
         if(cache.containsKey(url)){
             return cache.get(url);
         }
-        Image img = new Image(dimensionePoster+url,0,0,true,true,true);
+        String dimensionePoster = "https://image.tmdb.org/t/p/original";
+        Image img = new Image(dimensionePoster +url,0,0,true,true,true);
         cache.put(url,img);
         return img;
     }

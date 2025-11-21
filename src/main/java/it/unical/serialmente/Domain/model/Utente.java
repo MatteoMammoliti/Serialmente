@@ -12,9 +12,7 @@ public class  Utente {
     private List<Titolo> titoliVisionati;
     private List<Titolo> titoliPreferiti;
 
-
     //Getter
-
     public Integer getIdUtente() {
         return idUtente;
     }
@@ -33,7 +31,4 @@ public class  Utente {
     }
     public void setNomeUtente(String nomeUtente) {this.nomeUtente = nomeUtente;}
     public void setCredenzialiUtente(CredenzialiUtente credenzialiUtente) {this.credenzialiUtente = credenzialiUtente;}
-
-
-
 }

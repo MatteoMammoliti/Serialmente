@@ -11,12 +11,10 @@ module it.unical.serialmente.UI {
     requires javafx.base;
     requires javafx.graphics;
     requires java.desktop;
-    requires it.unical.serialmente.UI;
     requires jakarta.mail;
 
-    opens it.unical.serialmente.UI to javafx.fxml;
+    exports it.unical.serialmente;
     opens it.unical.serialmente.UI.Controller to javafx.fxml;
-    exports it.unical.serialmente.UI;
     opens it.unical.serialmente.UI.Controller.Autenticazione to javafx.fxml;
     opens it.unical.serialmente.UI.Controller.Autenticazione.CambioPW to javafx.fxml;
     opens it.unical.serialmente.UI.Controller.PagineNavigazione to javafx.fxml;

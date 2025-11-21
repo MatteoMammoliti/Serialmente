@@ -38,9 +38,20 @@ public class ControllerContainerView implements Initializable {
                 }
                 case "Logout" -> {
                     SessioneCorrente.resetSessioneCorrente();
-                    ModelContainerView.getInstance().getViewFactory().closeStage(
-                            (Stage) contenitoreView.getScene().getWindow()
-                    );
+
+                    Stage stageHomePage = ModelContainerView.getInstance().getViewFactory().getStageHomePages();
+                    Stage registrazioneStage = ModelContainerView.getInstance().getViewFactory().getStageRegistrazione();
+                    Stage loginStage = ModelContainerView.getInstance().getViewFactory().getStageLogin();
+
+                    if(stageHomePage != null)
+                        ModelContainerView.getInstance().getViewFactory().closeStage(stageHomePage);
+
+                    if(registrazioneStage != null)
+                        ModelContainerView.getInstance().getViewFactory().closeStage(registrazioneStage);
+
+                    if(loginStage != null)
+                        ModelContainerView.getInstance().getViewFactory().closeStage(loginStage);
+
                     ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();
                     ModelContainerView.getInstance().getViewFactory().invalidaFinestre();
                     ThreadPool.shutdown();
