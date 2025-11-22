@@ -16,7 +16,7 @@ Ha costruito l’ossatura dell’applicazione e tutto ciò che riguarda:
 - navigazione, menu e cambio delle view  
 - classi che si interfacciano con TMDb (richieste HTTP, parsing, gestione e visualizzazione dei risultati)  
 - pagine per preferenze e ricerca nel catalogo  
-- gestione centralizzata delle eccezioni
+- gestione centralizzata delle eccezioni e dei pool di threads
 
 ### [@Angelo Vivacqua](https://github.com/AngeloVivacqua)
 Ha curato:
