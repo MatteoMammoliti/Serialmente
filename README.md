@@ -1,32 +1,3 @@
-# Serialmente - traccia quello che guardi! [IT]
-
-Serialmente è un’applicazione desktop che consente all’Utente di tenere traccia delle Serie TV e/o Film che ha visto sulle principali piattaforme di streaming online. 
-L'intera applicazione è stata realizzata in JavaFX e sfrutta l'API di The Movie Database (TMDb) per reperire i titoli e le loro informazioni. 
-
-Serialmente ti permette di:
-- Tracciare le serie e i film che hai già visto.
-- Cercare nuovi titoli sfruttando il catalogo TMDb.
-- Personalizzare le tue preferenze.
-- Gestire il tuo profilo, la tua Watchlist e le liste di titoli Preferiti e Visonati.
-
-Realizzato come progetto finale del corso di Ingegneria del Software (Università della Calabria - CdS in Informatica) dagli studenti:
-
-### Matteo Mammolti
-Ha costruito l’ossatura dell’applicazione e tutto ciò che riguarda:
-- navigazione, menu e cambio delle view  
-- classi che si interfacciano con TMDb (richieste HTTP, parsing, gestione e visualizzazione dei risultati)  
-- pagine per preferenze e ricerca nel catalogo  
-- gestione centralizzata delle eccezioni e dei pool di threads
-
-### [@Angelo Vivacqua](https://github.com/AngeloVivacqua)
-Ha curato:
-- HomePage Film e Serie TV con logica applicativa
-- Watchlist, Area Utente, Login e SignUp con logica applicativa
-- gestione del database PostgreSQL  
-- Persistence DAO ed entità di dominio applicativo
-
-### [EN]
-
 Serialmente is a desktop application that allows UserS to keep track of the TV Series and Films they've watched on the main online streaming platforms.  
 The entire application was developed using **JavaFX** and relies on the **The Movie Database (TMDb)** API to retrieve titles and their information.
 
@@ -45,7 +16,7 @@ Responsible for:
 - preference selection pages and catalog search pages  
 - centralized exception handling
 
-### Angelo Vivacqua
+### [@Angelo Vivacqua](https://github.com/AngeloVivacqua)
 Responsible for:
 - Film and TV Series HomePages with related business logic  
 - Watchlist, User Area, Login and SignUp with related business logic  
