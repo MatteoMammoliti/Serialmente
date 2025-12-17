@@ -1,7 +1,6 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
-import it.unical.serialmente.Domain.model.Utente;
 
 import java.sql.*;
 
@@ -40,37 +39,6 @@ public class UtenteDAOPostgres implements UtenteDAO {
     }
 
     @Override
-    public boolean cancellaUtente(Integer idUtente) {
-        String query="DELETE FROM Utente WHERE id_utente=?";
-        try(PreparedStatement st=connection.prepareStatement(query)){
-            st.setInt(1,idUtente);
-            int righe=st.executeUpdate();
-            if(righe>0){
-                return true;
-            }
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return false;
-
-    }
-
-    @Override
-    public boolean modificaNomeUtente(Integer idUtente, String nuovoNome) {
-        String query="UPDATE utente Set nome=? WHERE id_utente=?";
-        try(PreparedStatement st=connection.prepareStatement(query)){
-            st.setString(1,nuovoNome);
-            st.setInt(2,idUtente);
-            int righe=st.executeUpdate();
-            return righe>0;
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
     public boolean isPrimoAccesso(Integer idUtente) {
         String query = "SELECT primo_accesso FROM Utente WHERE id_utente=?";
 
@@ -85,14 +53,13 @@ public class UtenteDAOPostgres implements UtenteDAO {
     }
 
     @Override
-    public boolean impostaPrimoAccesso(Integer idUtente) {
+    public void impostaPrimoAccesso(Integer idUtente) {
         String query = "UPDATE utente SET primo_accesso=? WHERE id_utente=?";
 
         try(PreparedStatement st = connection.prepareStatement(query)) {
             st.setBoolean(1, false);
             st.setInt(2, idUtente);
             int check = st.executeUpdate();
-            return check > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

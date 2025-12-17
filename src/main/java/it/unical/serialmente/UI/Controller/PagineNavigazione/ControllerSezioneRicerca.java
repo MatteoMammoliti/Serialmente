@@ -145,7 +145,6 @@ public class ControllerSezioneRicerca implements Initializable {
                     "Qualcosa è andato storto!",
                     "Errore durante il caricamento dei titoli. Riprovare!"
             );
-            task.getException().printStackTrace();
         });
         new Thread(task).start();
     }

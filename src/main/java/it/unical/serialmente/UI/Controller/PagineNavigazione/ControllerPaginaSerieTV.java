@@ -97,11 +97,6 @@ public class ControllerPaginaSerieTV implements Initializable {
         };
 
         task.setOnSucceeded(e -> lista.setItems(task.getValue()));
-        task.setOnFailed(e -> {
-                    task.getException().printStackTrace();
-            System.out.println("Errore durante caricamento titoli serie TV");
-                });
-
         return task;
     }
 
@@ -146,8 +141,6 @@ public class ControllerPaginaSerieTV implements Initializable {
         };
 
         task.setOnSucceeded(e -> lista.setItems(task.getValue()));
-        task.setOnFailed(e -> System.out.println("Errore durante caricamento generi serie TV"));
-
         return task;
     }
 }

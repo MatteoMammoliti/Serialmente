@@ -5,6 +5,7 @@ import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtente
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Utente;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.SQLException;
 
@@ -22,7 +23,12 @@ public class UtenteService {
      * @param "nome,email,password,domanda sicurezza e risposta domnda sicurezza"
      * @return valore booleano per confermare o meno l'operazione.
      */
-    public boolean registraUtente(String nome,String email,String password,String domandaSicurezza,String rispostaDomandaSicurezza) throws SQLException {
+    public boolean registraUtente(String nome,
+                                  String email,
+                                  String password,
+                                  String domandaSicurezza,
+                                  String rispostaDomandaSicurezza) throws SQLException {
+
         try{
             DBManager.getInstance().getConnection().setAutoCommit(false);
             boolean emailtrovata;
@@ -41,7 +47,16 @@ public class UtenteService {
                 return false;
             }
 
-            inserimentoRiuscito=credenzialiUtente.insertCredenzialiUtente(email,password,domandaSicurezza,rispostaDomandaSicurezza,inserisciUtente);
+            String pwcriptata = BCrypt.hashpw(password,BCrypt.gensalt(12));
+            String rispostaCriptata = BCrypt.hashpw(rispostaDomandaSicurezza,BCrypt.gensalt(12));
+
+            inserimentoRiuscito=credenzialiUtente.insertCredenzialiUtente(
+                    email,
+                    pwcriptata,
+                    domandaSicurezza,
+                    rispostaCriptata,
+                    inserisciUtente
+            );
 
             if(!inserimentoRiuscito){
                 DBManager.getInstance().getConnection().rollback();
@@ -85,13 +100,16 @@ public class UtenteService {
     public boolean controlloEmailEsistente(String Email){
         return credenzialiUtente.cercaEmail(Email);
     }
+
     public String getDomandaSicurezzaUtente(String email){
         return credenzialiUtente.getDomandaSicurezza(email);
     }
-    public boolean controlloRispostaDomandaSicurezza(String email,String risposta){
+
+    public boolean controlloRispostaDomandaSicurezza(String email, String risposta){
         return credenzialiUtente.confrontoRispostaSicurezza(email,risposta);
     }
-    public boolean cambiaPassword(String email,String password){
+
+    public boolean cambiaPassword(String email, String password){
         return credenzialiUtente.cambiaPassword(email,password);
     }
 }

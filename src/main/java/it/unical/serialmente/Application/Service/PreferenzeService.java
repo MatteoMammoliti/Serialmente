@@ -101,6 +101,7 @@ public class PreferenzeService {
                 }
         }
     }
+
     public void aggiornaPreferenzeGenereId(HashSet<Integer> generi, String tipologiaAggiornamento) {
         Integer idUtenteCorrente = SessioneCorrente.getUtenteCorrente().getIdUtente();
         switch (tipologiaAggiornamento) {
@@ -146,8 +147,10 @@ public class PreferenzeService {
         return piattaformaDao.getListaPiattaforma();
     }
 
-    public void applicaModificaPreferenze(HashSet<Integer> idGeneriEliminare, HashSet<Integer> idPiattaformeEliminare,
-                                          HashSet<Integer> idGenereAggiuntere, HashSet<Integer> idPiattaformeAggiuntere ) throws Exception {
+    public void applicaModificaPreferenze(HashSet<Integer> idGeneriEliminare,
+                                          HashSet<Integer> idPiattaformeEliminare,
+                                          HashSet<Integer> idGenereAggiuntere,
+                                          HashSet<Integer> idPiattaformeAggiuntere ) throws Exception {
 
         aggiornaPreferenzeGenereId(idGenereAggiuntere,"AGGIUNTA");
         aggiornaPreferenzeGenereId(idGeneriEliminare,"RIMOZIONE");

@@ -14,19 +14,12 @@ public class Stagione {
         this.episodi = episodio;
     }
 
-    //Getter
     public String getNomeStagione() {
         return nomeStagione;
     }
-    public Integer getIdStagione() {return idStagione;}
     public List<Episodio> getEpisodi() {return episodi;}
     public Integer getNumeroStagioneProgressivo() { return numeroStagioneProgressivo; }
 
-    //Setter
-    public void setNomeStagione(String nomeStagione) {
-        this.nomeStagione = nomeStagione;
-    }
-    public void setIdStagione(Integer idStagione) {this.idStagione = idStagione;}
     public void setEpisodi(List<Episodio> episodio) {this.episodi = episodio;}
     public void setNumeroStagioneProgressivo(Integer numeroStagioneProgressivo) {this.numeroStagioneProgressivo = numeroStagioneProgressivo;}
 }

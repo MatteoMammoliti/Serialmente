@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SezioneUtenteService {
+
     private final SelezioneTitoloDAOPostgres selezioneTitoloDAOPostgres = new SelezioneTitoloDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
     private final ProgressoSerieService progressoSerieService = new ProgressoSerieService();
 
-    public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo) throws SQLException {
+    public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo) {
         return selezioneTitoloDAOPostgres.restituisciTitoliInLista(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
                 tipoLista,
@@ -37,7 +38,7 @@ public class SezioneUtenteService {
         );
     }
 
-    public ModelSezioneUtente.StatisticheSerieTv getStatisticheSerieTv() throws Exception{
+    public ModelSezioneUtente.StatisticheSerieTv getStatisticheSerieTv() {
         List<Integer> listaSerieTvVisionate = selezioneTitoloDAOPostgres.getIdSerieVisionate(
                 SessioneCorrente.getUtenteCorrente().getIdUtente()
         );
@@ -91,7 +92,8 @@ public class SezioneUtenteService {
                 titolo.getIdTitolo(),
                 "Preferiti",
                 0,
-                0);
+                0
+        );
     }
 
     public void togliTitoloPreferito(Titolo titolo) {
@@ -103,7 +105,10 @@ public class SezioneUtenteService {
     }
 
     public void rimuoviTitoloDaVisionati(Titolo titolo) {
-        selezioneTitoloDAOPostgres.eliminaTitoloInLista(SessioneCorrente.getUtenteCorrente().getIdUtente(),titolo.getIdTitolo(),"Visionati");
+        selezioneTitoloDAOPostgres.eliminaTitoloInLista(
+                SessioneCorrente.getUtenteCorrente().getIdUtente(),
+                titolo.getIdTitolo(),
+                "Visionati"
+        );
     }
-
 }

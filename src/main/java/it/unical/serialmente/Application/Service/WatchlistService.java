@@ -232,7 +232,7 @@ public class WatchlistService {
         int idProssimoEpisodio = p.getKey();
         int durataProssimoEpisodio = p.getValue();
 
-        int idProssimaStagione = 0;
+        int idProssimaStagione;
 
         if(idProssimoEpisodio == 0) {
             idProssimaStagione = getIdProssimaStagione(titolo);

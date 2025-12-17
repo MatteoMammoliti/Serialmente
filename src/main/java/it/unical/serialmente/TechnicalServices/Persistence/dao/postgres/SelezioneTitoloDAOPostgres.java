@@ -151,34 +151,6 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         return false;
     }
 
-    /**
-     * Ritorna,senza duplicati, i generi dei film presenti nelle liste dell'utente, serviranno
-     * per decretare i titoli consigliati da mostrare nella pagina iniziale dell'applicazione.
-     * @return
-     */
-    @Override
-    public HashSet<Genere> restituisciGeneriVisionati(Integer idUtente) {
-        TitoloDAO titoloDao=DBManager.getInstance().getTitoloDAO();
-        HashSet<Genere> generi=new HashSet<>();
-        String query="SELECT * FROM selezionetitolo WHERE id_utente=?";
-        try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1,idUtente);
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                List<Genere> generiTitolo = new ArrayList<>();
-                generiTitolo=titoloDao.restituisciGeneriTitolo(rs.getInt("id_titolo"));
-                for(Genere genere:generiTitolo){
-                    generi.add(genere);
-
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return generi;
-
-    }
-
     public boolean controlloTitoloInListe(Integer idTitolo) {
         String query = "SELECT 1 FROM selezionetitolo WHERE id_titolo = ?";
 
@@ -323,6 +295,4 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
         }
         return false;
     }
-
-
 }

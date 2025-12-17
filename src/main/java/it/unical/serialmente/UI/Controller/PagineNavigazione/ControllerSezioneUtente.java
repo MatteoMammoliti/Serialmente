@@ -74,12 +74,9 @@ public class ControllerSezioneUtente implements Initializable {
                     throw new RuntimeException(ex);
                 }
             });
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
 
     }
     public void refresh() throws Exception {
@@ -98,9 +95,8 @@ public class ControllerSezioneUtente implements Initializable {
     public void caricaSezione(ListView<TitoloDato> lista, String tipoLista,String tipoTitolo) throws SQLException {
         List<Titolo> titoli = modelSezioneUtente.getTitoliInLista(tipoLista,tipoTitolo);
         boolean preferito;
-        if(tipoLista.equals("Preferiti")) {preferito = true;} else {
-            preferito = false;
-        }
+        preferito = tipoLista.equals("Preferiti");
+
         lista.setCellFactory(lv ->new ListCell<>(){
             private final PosterSezioneUtente bannerTitolo = new PosterSezioneUtente(preferito);
             @Override
@@ -118,6 +114,7 @@ public class ControllerSezioneUtente implements Initializable {
                             throw new RuntimeException(e);
                         }
                     });
+
                     bannerTitolo.clickElimina(()->{
                         try {
                             modelSezioneUtente.togliTitoloDaiPreferiti(data.titolo);
@@ -126,6 +123,7 @@ public class ControllerSezioneUtente implements Initializable {
                             throw new RuntimeException(e);
                         }
                     });
+
                     bannerTitolo.clickEliminaDaVisionati(()->{
                         try {
                             modelSezioneUtente.rimuoviTitoloDaVisionati(data.titolo);
@@ -172,6 +170,4 @@ public class ControllerSezioneUtente implements Initializable {
         Stage stage = (Stage) cambioPreferenze.getScene().getWindow();
         stage.getScene().setRoot(root);
     }
-
-
 }

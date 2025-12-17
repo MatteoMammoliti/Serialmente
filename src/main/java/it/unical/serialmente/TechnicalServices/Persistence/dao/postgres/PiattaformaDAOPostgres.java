@@ -2,7 +2,6 @@ package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.PiattaformaDAO;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,42 +13,20 @@ public class PiattaformaDAOPostgres implements PiattaformaDAO {
     public PiattaformaDAOPostgres(Connection connection) {
         this.connection = connection;
     }
-    @Override
-    public boolean aggiungiPiattaforma(Integer idPiattaforma, String nomePiattaforma) {
-        String query="INSERT INTO piattaforma (id_piattaforma,nome_piattaforma) VALUES (?,?)";
-        try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1,idPiattaforma);
-            st.setString(2,nomePiattaforma);
-            return st.executeUpdate()>0;
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean rimuoviPiattaforma(Integer idPiattaforma) {
-        String query="DELETE FROM piattaforma WHERE id_piattaforma=?";
-        try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setInt(1,idPiattaforma);
-            return st.executeUpdate()>0;
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public List<Piattaforma> getListaPiattaforma() {
         List<Piattaforma> piattaforma = new ArrayList<>();
         String query="SELECT * FROM piattaforma";
+
         try(PreparedStatement st = connection.prepareStatement(query)){
+
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Piattaforma p = new Piattaforma(rs.getString("nome_piattaforma"),rs.getInt("id_piattaforma"));
                 piattaforma.add(p);
             }
+
         }catch (Exception ex){
             ex.printStackTrace();
         }

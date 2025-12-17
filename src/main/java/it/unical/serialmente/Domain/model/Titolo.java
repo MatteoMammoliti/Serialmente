@@ -15,7 +15,13 @@ public abstract class  Titolo {
     private List<Piattaforma> piattaforme;
 
     public Titolo() {}
-    public Titolo(Integer idTitolo, String nomeTitolo, String trama, String immagine, double votoMedio,Integer annoPubblicazione) {
+    public Titolo(Integer idTitolo,
+                  String nomeTitolo,
+                  String trama,
+                  String immagine,
+                  double votoMedio,
+                  Integer annoPubblicazione) {
+
         this.idTitolo = idTitolo;
         this.nomeTitolo = nomeTitolo;
         this.trama = trama;
@@ -27,7 +33,6 @@ public abstract class  Titolo {
     }
 
 
-    //Getter
     public abstract String getTipologia();
     public Integer getIdTitolo() {
         return idTitolo;
@@ -48,24 +53,12 @@ public abstract class  Titolo {
     public List<Genere> getGeneriPresenti() {return this.generiPresenti;}
     public List<Piattaforma> getPiattaforme() {return this.piattaforme;}
 
-    //Setter
     public void setIdTitolo(Integer idTitolo) {
         this.idTitolo = idTitolo;
     }
     public void setNomeTitolo(String nomeTitolo) {
         this.nomeTitolo = nomeTitolo;
     }
-    public void setTrama(String trama) {
-        this.trama = trama;
-    }
-    public void setImmagine(String immagine) {
-        this.immagine = immagine;
-    }
-    public void setVotoMedio(double votoMedio) {
-        this.votoMedio = votoMedio;
-    }
-
-    public void setAnnoPubblicazione(Integer annoPubblicazione) {this.annoPubblicazione = annoPubblicazione;}
     public void aggiungiGenere(Genere genere) {
         this.generiPresenti.add(genere);
     }

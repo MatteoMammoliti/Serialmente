@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PreferisceGenereDAO {
     List<Genere>  getGeneriPreferitiUtente(Integer idUtente);
-    boolean aggiungiGenerePreferitoUtente(Integer idUtente,Integer idGenere);
-    boolean rimuoviGenerePreferitoUtente(Integer idUtente,Integer idGenere);
+    void aggiungiGenerePreferitoUtente(Integer idUtente, Integer idGenere);
+    void rimuoviGenerePreferitoUtente(Integer idUtente, Integer idGenere);
 
 }

@@ -9,8 +9,6 @@ public class Genere {
     public Genere(){}
     public Genere(String nomeGenere, Integer idGenere) {this.nomeGenere = nomeGenere;this.idGenere = idGenere;}
 
-    //Setter
-    public void setNomeGenere(String nomeGenere) {this.nomeGenere = nomeGenere;}
     public void setIdGenere(Integer idGenere) {this.idGenere = idGenere;}
 
     //Getter

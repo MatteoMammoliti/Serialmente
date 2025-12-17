@@ -32,24 +32,24 @@ public class PreferiscePiattaformaDAOPostgres implements PreferiscePiattaformaDA
     }
 
     @Override
-    public boolean aggiungiPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception {
+    public void aggiungiPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception {
         String query="INSERT INTO preferiscepiattaforma (id_utente,id_piattaforma) VALUES (?,?)";
         try(PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setInt(2,idPiattaforma);
-            return st.executeUpdate()>0;
+            st.executeUpdate();
         }catch (Exception e){
             throw new Exception("Errore durante l'aggiunta della piattaforma preferita all'utente",e);
         }
     }
 
     @Override
-    public boolean rimuoviPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception {
+    public void rimuoviPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception {
         String query="DELETE FROM preferiscepiattaforma WHERE id_utente=? AND id_piattaforma=?";
         try(PreparedStatement st = conn.prepareStatement(query)){
             st.setInt(1,idUtente);
             st.setInt(2,idPiattaforma);
-            return st.executeUpdate()>0;
+            st.executeUpdate();
         }catch (Exception e){
             throw new Exception("Errore durante la rimozione della piattaforma preferita all'utente", e);
         }

@@ -120,7 +120,6 @@ public class TitoloDAOPostgres implements TitoloDAO {
         } catch (Exception e){
             con.rollback();
             e.printStackTrace();
-            System.out.println("Errore inserimento titolo nel DB");
             return false;
 
         }
@@ -133,77 +132,12 @@ public class TitoloDAOPostgres implements TitoloDAO {
             st.setInt(1,titolo.getIdTitolo());
             int riga=st.executeUpdate();
             if (riga>0){
-                System.out.println("Titolo rimosso dal DB");
                 return true;
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("Errore rimuovi titolo DB");
         return false;
-    }
-
-    /**
-     * Funzione per cercare, all'interno del DB interno, uno o più titoli per nome.
-     *
-     * @param nomeTitolo
-     * @return La funzione ritorna una lista di titoli, se non è presente alcun titolo con il nome indicato restituisce null.
-     */
-    @Override
-    public List<Titolo> restituisciTitoloPerNome(String nomeTitolo) {
-        List<Titolo> titoli = new ArrayList<>();
-        List<Integer> genereAggiunti = new ArrayList<>();
-        List<Integer> piattaformeAggiunte = new ArrayList<>();
-        Map<Integer,Titolo> titoliMap=new HashMap<>();
-        String query="SELECT * FROM titolo t LEFT JOIN trasmessosu tr on t.id_titolo=tr.id_titolo LEFT JOIN appartiene a on a.id_titolo=t.id_titolo" +
-                " LEFT JOIN genere g on g.id_genere=a.id_genere LEFT JOIN piattaforma p on p.id_piattaforma=tr.id_piattaforma  WHERE nome_titolo=? ORDER BY t.id_titolo";
-        try(PreparedStatement st = con.prepareStatement(query)){
-            st.setString(1,nomeTitolo.toLowerCase());
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                int idTitolo=rs.getInt("id_titolo");
-                Titolo titolo=titoliMap.get(idTitolo);
-                if(titolo==null){
-                    if(rs.getString("tipologia").equals("SerieTv")){
-                        titolo=new SerieTV(rs.getInt("id_titolo"),rs.getString("nome_titolo"),
-                                rs.getString("trama"), rs.getString("immagine"),
-                                rs.getDouble("voto_medio"),rs.getInt("anno_pubblicazione"));
-                    }
-                    else {
-                        titolo=new Film(rs.getInt("id_titolo"),rs.getString("nome_titolo"),
-                                rs.getString("trama"), rs.getString("immagine"),
-                                rs.getDouble("voto_medio"),rs.getInt("durata_minuti"),
-                                rs.getInt("anno_pubblicazione"));
-                    }
-                    genereAggiunti.clear();
-                    piattaformeAggiunte.clear();
-                    titoliMap.put(idTitolo,titolo);
-                }
-                int idGenere=rs.getInt("id_genere");
-                boolean genereNull=rs.wasNull();
-                String nomeGenere=rs.getString("nome_genere");
-                if(!genereNull && !genereAggiunti.contains(idGenere)){
-                    Genere genere=new Genere(nomeGenere,idGenere);
-                    titolo.aggiungiGenere(genere);
-                    genereAggiunti.add(idGenere);
-                }
-                int idPiattaforma=rs.getInt("id_piattaforma");
-                boolean piattaformaNull=rs.wasNull();
-                String nomePiattaforma=rs.getString("nome_piattaforma");
-                if(!piattaformaNull && !piattaformeAggiunte.contains(idPiattaforma)){
-                    Piattaforma piattaforma = new Piattaforma(nomePiattaforma,idPiattaforma);
-                    titolo.aggiungiPiattaforme(piattaforma);
-                    piattaformeAggiunte.add(idPiattaforma);
-                }
-            }
-            titoli.addAll(titoliMap.values());
-            System.out.println("Titoli trovati " + nomeTitolo);
-            return titoli;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        System.out.println("nessun titolo trovato "+nomeTitolo);
-        return null;
     }
 
     @Override

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PreferiscePiattaformaDAO {
     List<Piattaforma> getPiattaformePreferiteUtente(Integer idUtente) throws Exception;
-    boolean aggiungiPiattaformaPreferitaUtente(Integer idUtente,Integer idPiattaforma) throws Exception;
-    boolean rimuoviPiattaformaPreferitaUtente(Integer idUtente,Integer idPiattaforma) throws Exception;
+    void aggiungiPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception;
+    void rimuoviPiattaformaPreferitaUtente(Integer idUtente, Integer idPiattaforma) throws Exception;
 }

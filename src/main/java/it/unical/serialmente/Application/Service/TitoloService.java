@@ -65,13 +65,29 @@ public class TitoloService {
         }, executor);
     }
 
-     public List<Titolo> getTitoliConsigliati(List<Genere> generi, List<Piattaforma> piattaforme, String tipologiaTitolo, Integer pagina) throws Exception {
-         String url = tmdbRequest.cercaTitoliPerCriteri(tipologiaTitolo, generi, null, piattaforme, "page=" + pagina);
+     public List<Titolo> getTitoliConsigliati(List<Genere> generi,
+                                              List<Piattaforma> piattaforme,
+                                              String tipologiaTitolo,
+                                              Integer pagina) throws Exception {
+
+         String url = tmdbRequest.cercaTitoliPerCriteri(
+                 tipologiaTitolo,
+                 generi,
+                 null,
+                 piattaforme,
+                 "page=" + pagina
+         );
+
          String risposta = tmdbHttpClient.richiesta(url);
          return mapper.parseTitoli(risposta, tipologiaTitolo);
      }
 
-    public List<Titolo> cercaTitolo(String nomeTitolo, String tipologia, List<Genere> generi, Integer annoPubblicazione, Integer pagina) throws Exception {
+    public List<Titolo> cercaTitolo(String nomeTitolo,
+                                    String tipologia,
+                                    List<Genere> generi,
+                                    Integer annoPubblicazione,
+                                    Integer pagina) throws Exception {
+
         if(nomeTitolo != null) {
             String rispostaRicercaPerTitolo = tmdbHttpClient.richiesta(
                     tmdbRequest.cercaTitoloPerNome(nomeTitolo, tipologia)
@@ -79,7 +95,6 @@ public class TitoloService {
 
             return mapper.parseTitoli(rispostaRicercaPerTitolo, tipologia);
         }
-
 
         String rispostaRicercaPerCriteriFilm = tmdbHttpClient.richiesta(
                 tmdbRequest.cercaTitoliPerCriteri(
@@ -119,10 +134,6 @@ public class TitoloService {
 
     public List<Titolo> getTitoliNovita(String tipologia) throws Exception {
 
-        if(!tipologia.equals("movie") && !tipologia.equals("tv")) {
-            throw new IllegalArgumentException("Tipologia non valida: " + tipologia);
-        }
-
         String url = switch (tipologia) {
             case "movie" -> tmdbRequest.getTitoliConSort(tipologia, "primary_release_date.desc", "");
             case "tv" -> tmdbRequest.getTitoliConSort(tipologia, "first_air_date.desc", "");
@@ -132,7 +143,7 @@ public class TitoloService {
         return mapper.parseTitoli(tmdbHttpClient.richiesta(url), tipologia);
     }
 
-    public Titolo setDati(Titolo titolo) throws Exception {
+    public Titolo setDati(Titolo titolo) {
 
         titolo.getGeneriPresenti().clear();
         titolo.getPiattaforme().clear();
@@ -157,6 +168,7 @@ public class TitoloService {
                 }
             });
             futures.add(durata);
+
         } else if(titolo.getTipologia().equals("SerieTv")) {
             SerieTV s = (SerieTV) titolo;
 

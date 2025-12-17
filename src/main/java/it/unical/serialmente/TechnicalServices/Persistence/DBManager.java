@@ -13,9 +13,9 @@ public class DBManager {
     private static DBManager instance;
     private Connection con;
 
-    private static String DB_URL;
-    private static String DB_USER;
-    private static String DB_PASSWORD;
+    private static final String DB_URL;
+    private static final String DB_USER;
+    private static final String DB_PASSWORD;
 
     static {
         try {
@@ -94,8 +94,4 @@ public class DBManager {
     public UtenteDAO getUtenteDAO() { return new UtenteDAOPostgres(getConnection()); }
     public CredenzialiUtenteDAO getCredenzialiUtenteDAO() { return new CredenzialiUtenteDAOPostgres(getConnection()); }
     public TitoloDAO getTitoloDAO() { return new TitoloDAOPostgres(getConnection()); }
-    public SelezioneTitoloDAO SelezioneTitoloDAO() { return new SelezioneTitoloDAOPostgres(getConnection()); }
-    public ProgressoSerieDAO getProgressoSerieDAO() { return new ProgressoSerieDAOPostgres(getConnection()); }
-    public GenereDAO getGenereDAO() { return new GenereDAOPostgres(getConnection()); }
-    public PiattaformaDAO getPiattaformaDAO() { return new PiattaformaDAOPostgres(getConnection()); }
 }

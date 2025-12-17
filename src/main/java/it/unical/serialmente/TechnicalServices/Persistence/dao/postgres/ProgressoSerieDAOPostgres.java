@@ -130,10 +130,10 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
+
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return rs.getInt("id_episodio");
-            }
+            if (rs.next()) return rs.getInt("id_episodio");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -147,9 +147,8 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id_stagione");
-            }
+
+            if (rs.next()) return rs.getInt("id_stagione");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,9 +162,8 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("numero_progressivo_stagione");
-            }
+
+            if (rs.next()) return rs.getInt("numero_progressivo_stagione");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,13 +177,11 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return true;
-            }
+            return rs.next();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
@@ -194,10 +190,10 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
+
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                return rs.getInt("numero_progressivo_episodio");
-            }
+            if (rs.next()) return rs.getInt("numero_progressivo_episodio");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -209,10 +205,10 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idSerieTV);
+
             int i = st.executeUpdate();
-            if (i > 0) {
-                return true;
-            }
+            return i > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -223,8 +219,10 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
     public List<Integer> getIdSerieTvInVisione(Integer idUtente) {
         List<Integer> p = new ArrayList<>();
         String query = "SELECT id_serie FROM progressoserie WHERE id_utente = ?";
+
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
+
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 p.add(rs.getInt("id_serie"));
@@ -238,14 +236,13 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
 
     public Pair<Integer, Integer> getStatisticheSerieInVisione(Integer idUtente, Integer idSerie) {
         String query = "SELECT minuti_visti, numero_episodi_visti FROM progressoserie WHERE id_utente = ?  AND id_serie = ?";
+
         try (PreparedStatement st = conn.prepareStatement(query)) {
             st.setInt(1, idUtente);
             st.setInt(2, idSerie);
             ResultSet rs = st.executeQuery();
 
-            if(rs.next()) {
-                return new Pair<>(rs.getInt("minuti_visti"), rs.getInt("numero_episodi_visti"));
-            }
+            if(rs.next()) return new Pair<>(rs.getInt("minuti_visti"), rs.getInt("numero_episodi_visti"));
 
         } catch (Exception e) {
             e.printStackTrace();

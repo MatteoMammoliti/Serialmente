@@ -30,8 +30,6 @@ public class ControllerContainerView implements Initializable {
                 case "ProfiloUtente" -> {
                     try {
                         yield ModelContainerView.getInstance().getViewFactory().getPaginaProfiloUtente();
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
