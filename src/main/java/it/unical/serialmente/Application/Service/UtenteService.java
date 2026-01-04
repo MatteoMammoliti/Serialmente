@@ -5,18 +5,25 @@ import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtente
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
 import it.unical.serialmente.Domain.model.SessioneCorrente;
 import it.unical.serialmente.Domain.model.Utente;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.CredenzialiUtenteDAOPostgres;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.UtenteDAOPostgres;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.sql.SQLException;
 
 public class UtenteService {
-    private final UtenteDAO utenteDao = DBManager.getInstance().getUtenteDAO();
-    private final CredenzialiUtenteDAO credenzialiUtente = DBManager.getInstance().getCredenzialiUtenteDAO();
+    private final UtenteDAO utenteDao = new UtenteDAOPostgres(DBManager.getInstance().getConnection());
+    private final CredenzialiUtenteDAO credenzialiUtente = new CredenzialiUtenteDAOPostgres(DBManager.getInstance().getConnection());
 
 
+    /**
+     * Dato l'id, restituisce il nome dell'utente.
+     * @return nome dell'utente associato all'id della sessione corrente.
+     */
     public String getNomeUtente(){
         return utenteDao.getNomeUtente(SessioneCorrente.getUtenteCorrente().getIdUtente());
     }
+
     /**
      * Registra l'utente all'interno dell'applicazione, prendendo tutte le informazioni necessarie all'interno
      * dell'oggetto Utente.
@@ -75,8 +82,8 @@ public class UtenteService {
 
     /**
      * Permette di convalidare o meno l'autenticazione dell'utente nella piattaforma.
-     * @param email
-     * @param password
+     * @param email Email dell'utente
+     * @param password Password dell'utente.
      * @return L'oggetto dell'Utente in questione, in caso di insucesso NULL.
      */
     public Utente loginUtente(String email, String password){
@@ -89,27 +96,61 @@ public class UtenteService {
         return null;
     }
 
+    /**
+     * Dato un utente, ritorna true se è il suo primo accesso, false altrimenti.
+     * @param u Utente
+     * @return valore booleano
+     */
     public boolean isPrimoAcceso(Utente u) {
         return utenteDao.isPrimoAccesso(u.getIdUtente());
     }
 
+    /**
+     * Imposta il primo accesso dell'utente a False.
+     * @param u Utente
+     */
     public void impostaPrimoAccesso(Utente u) {
         utenteDao.impostaPrimoAccesso(u.getIdUtente());
     }
 
+    /**
+     * Controlla se l'email sia stata già utilizzata da qualche altro utente registrato.
+     * @param Email Email dell'utente.
+     * @return
+     */
     public boolean controlloEmailEsistente(String Email){
         return credenzialiUtente.cercaEmail(Email);
     }
 
+
+    /**
+     * Data un email, ritorna la domanda di sicurezza ad essa associata.
+     * @param email Email dell'utente.
+     * @return Stringa contentente la domanda di sicurezza.
+     */
     public String getDomandaSicurezzaUtente(String email){
         return credenzialiUtente.getDomandaSicurezza(email);
     }
 
-    public boolean controlloRispostaDomandaSicurezza(String email, String risposta){
+    /**
+     * data un'email e una risposta alla domanda di sicurezza, la funzione ha il compito di verificare che la risposta
+     * sia corretta.
+     * @param email Email dell'utente.
+     * @param risposta Risposta alla domanda di sicurezza.
+     * @return
+     */
+    public boolean controlloRispostaDomandaSicurezza(String email,String risposta){
         return credenzialiUtente.confrontoRispostaSicurezza(email,risposta);
     }
 
-    public boolean cambiaPassword(String email, String password){
-        return credenzialiUtente.cambiaPassword(email,password);
+    /**
+     * Cambia la password associata all'email selezionata.
+     * @param email Email dell'utente.
+     * @param password Nuova password da aggiornare.
+     * @return
+     */
+    public boolean cambiaPassword(String email,String password){
+        String pwcript=BCrypt.hashpw(password,BCrypt.gensalt(12));
+        return credenzialiUtente.cambiaPassword(email,pwcript);
     }
 }

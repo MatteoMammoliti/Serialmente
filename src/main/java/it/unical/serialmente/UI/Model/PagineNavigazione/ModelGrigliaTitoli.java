@@ -2,7 +2,6 @@ package it.unical.serialmente.UI.Model.PagineNavigazione;
 
 import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.Titolo;
-
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 

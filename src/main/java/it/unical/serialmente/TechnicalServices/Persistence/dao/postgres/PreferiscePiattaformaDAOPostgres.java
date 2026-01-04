@@ -14,6 +14,7 @@ public class PreferiscePiattaformaDAOPostgres implements PreferiscePiattaformaDA
     public PreferiscePiattaformaDAOPostgres(Connection conn) {
         this.conn = conn;
     }
+
     @Override
     public List<Piattaforma> getPiattaformePreferiteUtente(Integer idUtente) throws Exception {
         List<Piattaforma> piattaformePreferiteUtente = new ArrayList<>();

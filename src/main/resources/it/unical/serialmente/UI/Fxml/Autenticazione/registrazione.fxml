@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600" prefWidth="1000" styleClass="register-root" stylesheets="@../../CSS/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerRegistrazione">
+<BorderPane prefHeight="600" prefWidth="1000" styleClass="register-root" stylesheets="@../../Css/login.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.Autenticazione.ControllerRegistrazione">
 
     <right>
         <AnchorPane prefWidth="420" styleClass="right-pane">
@@ -35,15 +35,11 @@
                 <Text styleClass="title-left" text="Benvenuto" />
 
                 <HBox alignment="TOP_CENTER" spacing="40">
-
-                    <!-- Nome -->
                     <VBox prefWidth="230" spacing="5">
                         <Label styleClass="form-label" text="Nome" />
                         <TextField fx:id="textNome" styleClass="input-field" />
                         <Label fx:id="labelErroreNome" styleClass="error-label" text="Nome non valido" visible="false" />
                     </VBox>
-
-                    <!-- Email -->
                     <VBox prefWidth="230" spacing="5">
                         <Label styleClass="form-label" text="Email" />
                         <TextField fx:id="textEmail" styleClass="input-field" />
@@ -51,11 +47,8 @@
                     </VBox>
 
                 </HBox>
-
-                <!-- ========================= RIGA 2: PASSWORD & RIPETI ========================= -->
                 <HBox alignment="TOP_CENTER" spacing="40">
 
-                    <!-- Password -->
                     <VBox prefWidth="230" spacing="5">
                         <Label styleClass="form-label" text="Password" />
                         <StackPane styleClass="password-container">
@@ -65,7 +58,6 @@
                         <Label fx:id="labelPasswordNonValida" styleClass="error-label" text="Password non valida" visible="false" />
                     </VBox>
 
-                    <!-- Ripeti Password -->
                     <VBox prefWidth="230" spacing="5">
                         <Label styleClass="form-label" text="Ripeti password" />
                         <StackPane styleClass="password-container">
@@ -76,18 +68,12 @@
                     </VBox>
 
                 </HBox>
-
-                <!-- ========================= RIGA 3: DOMANDA SICUREZZA ========================= -->
                 <HBox alignment="TOP_CENTER" spacing="40">
-
-                    <!-- Domanda sicurezza -->
                     <VBox prefWidth="230" spacing="5">
                         <Label styleClass="form-label" text="Domanda di sicurezza" />
                         <ChoiceBox fx:id="sceltaDomandaSicurezza" prefWidth="230" styleClass="choice-box" />
                         <Label fx:id="labelErroreDomandaSicurezza" styleClass="error-label" text="Seleziona una domanda" visible="false" />
                     </VBox>
-
-                    <!-- Risposta -->
                     <VBox prefWidth="230" spacing="5">
                         <Label styleClass="form-label" text="Risposta" />
                         <TextField fx:id="textRispostaDomandaSicurezza" styleClass="input-field" />
@@ -95,13 +81,9 @@
                     </VBox>
 
                 </HBox>
-
-                <!-- ========================= BOTTONE REGISTRAZIONE ========================= -->
                 <Button id="loginButton" fx:id="signUpButton" prefWidth="260" text="Registrati" />
 
             </VBox>
-
-            <!-- Eye icons -->
             <Button fx:id="eyeButton" layoutX="547.0" layoutY="307.0" prefHeight="35.0" prefWidth="70.0" styleClass="eye-button" text="🔍" AnchorPane.leftAnchor="547.0" AnchorPane.topAnchor="307.0" />
 
         </AnchorPane>

@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -39,6 +38,10 @@ public class ControllerCambioPw implements Initializable {
 
     }
 
+    /**
+     * La funzione verifica che l'email utilizzata esista e sia associata ad un utente.Dopodichè, passa l'email dentro il textEmail
+     * al controller della nuova scena che andrà a caricare (Risposta domanda sicurezza).
+     */
     private void clickInvia() throws IOException {
         if(!modelCambioPassword.controlloEmailEsistente(textEmail.getText())){
             labelErroreEmail.setVisible(true);
@@ -53,6 +56,10 @@ public class ControllerCambioPw implements Initializable {
         stage.show();
 
     }
+
+    /**
+     * Chiudo questo stage e vado nel login.
+     */
     private void clickAnnulla(){
         ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnAnnulla.getScene().getWindow());
         ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();

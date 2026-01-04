@@ -10,5 +10,4 @@ public interface TitoloDAO {
     Titolo restituisciTitoloPerId(Integer idTitolo);
     boolean aggiungiTitolo(Titolo titolo) throws SQLException;
     boolean rimuoviTitolo(Titolo titolo);
-    List<Genere> restituisciGeneriTitolo(Integer idTitolo);
 }

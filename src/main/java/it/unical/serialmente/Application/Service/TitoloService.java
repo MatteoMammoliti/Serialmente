@@ -5,16 +5,14 @@ import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.GenereDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.GenereDAOPostgres;
-import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Utility.ThreadPool;
-import javafx.util.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
@@ -26,14 +24,25 @@ public class TitoloService {
 
     private final ExecutorService executor = ThreadPool.get();
 
-    private final GenereDAOPostgres genereDao = new GenereDAOPostgres(
+    private final GenereDAO genereDao = new GenereDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
+    /**
+     * Dato un nome di un genere, restituisce il suo id.
+     * @param nome nome del genere.
+     * @return id del genere.
+     */
     public Integer getIdGenereDaNome(String nome) {
         return genereDao.getGenereDaNome(nome);
     }
 
+    /**
+     * Dato un genere, una tipologia, e il numero della pagine del risultato del Json restituisce una lista di titoli
+     * @param idGenere id del genere.
+     * @param tipologia Film o SerieTv
+     * @return Lista di titoli.
+     */
     public CompletableFuture<List<Titolo>> getTitoliPerGenerePaginaSingola(Integer idGenere, String tipologia, Integer pagina) {
         return CompletableFuture.supplyAsync(() -> {
             try {
@@ -65,6 +74,9 @@ public class TitoloService {
         }, executor);
     }
 
+    /**
+     * Dati dei generi, delle piattaforme e la tipologia del titolo, restituisce titoli pertinenti.
+     */
      public List<Titolo> getTitoliConsigliati(List<Genere> generi,
                                               List<Piattaforma> piattaforme,
                                               String tipologiaTitolo,
@@ -82,6 +94,12 @@ public class TitoloService {
          return mapper.parseTitoli(risposta, tipologiaTitolo);
      }
 
+    /**
+     * Ricerca un titolo che rispetti le caratteristiche date.
+     * @param nomeTitolo Nome del titolo.
+     * @param tipologia Film o SerieTv
+     * @param generi Generi a cui il titolo deve appartenere.
+     */
     public List<Titolo> cercaTitolo(String nomeTitolo,
                                     String tipologia,
                                     List<Genere> generi,
@@ -126,12 +144,18 @@ public class TitoloService {
         return film;
     }
 
+    /**
+     *Ritorna una lista di titoli con una popolarità maggiore presente nel catalogo esterno.
+     */
     public List<Titolo> getTitoliPiuVisti(String tipologiaTitolo, Integer pagina) throws Exception {
         String url = tmdbRequest.getTitoliConSort(tipologiaTitolo, "popularity.desc", "&page=" + pagina);
         String risposta = tmdbHttpClient.richiesta(url);
         return mapper.parseTitoli(risposta, tipologiaTitolo);
     }
 
+    /**
+     *Ritorna una lista di titoli di recente uscitapresente nel catalogo esterno.
+     */
     public List<Titolo> getTitoliNovita(String tipologia) throws Exception {
 
         String url = switch (tipologia) {
@@ -143,6 +167,10 @@ public class TitoloService {
         return mapper.parseTitoli(tmdbHttpClient.richiesta(url), tipologia);
     }
 
+    /**
+     * Serve a riempire l'oggetto titolo con tutte le sue informazioni
+     * @param titolo Titolo da "riemprie".
+     */
     public Titolo setDati(Titolo titolo) {
 
         titolo.getGeneriPresenti().clear();
@@ -215,6 +243,9 @@ public class TitoloService {
         return titolo;
     }
 
+    /**
+     * Ritorna una lista di titoli del catalogo esterno casuali
+     */
     public List<Titolo> getTitoliCasuali() throws Exception {
 
         String url = tmdbRequest.getTitoliCasuali(
@@ -237,6 +268,9 @@ public class TitoloService {
         return film;
     }
 
+    /**
+     * Ritorna la lista di stagioni appartenenti alla serie Tv
+     */
     private List<Stagione> getStagioni(Integer idSerieTV) throws Exception {
         String url = tmdbRequest.getTitolo(idSerieTV, "tv");
         String risposta = tmdbHttpClient.richiesta(url);
@@ -250,12 +284,18 @@ public class TitoloService {
         return stagioni;
     }
 
+    /**
+     * Ritorna una lista di Episodi appartenente alla stagione corrente di una data serieTv.
+     */
     private List<Episodio> getEpisodi(Integer idSerieTV, Integer numProgressivoStagione) throws Exception {
         String url = tmdbRequest.getEpisodiDaStagione(numProgressivoStagione, idSerieTV);
         String risposta = tmdbHttpClient.richiesta(url);
         return mapper.parseEpisodiDiUnaStagione(risposta);
     }
 
+    /**
+     * Riempie una serie tv con i propri episodi e le proprie stagioni.
+     */
     private void popolaListaSerieTV(SerieTV s) throws Exception {
         List<Stagione> stagioni = getStagioni(s.getIdTitolo());
 

@@ -2,8 +2,8 @@ package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDAO;
 import javafx.util.Pair;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         this.conn = conn;
     }
 
-    private final SelezioneTitoloDAOPostgres selezioneDao =  new SelezioneTitoloDAOPostgres(
+    private final SelezioneTitoloDAO selezioneDao =  new SelezioneTitoloDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
@@ -36,6 +36,17 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         }
     }
 
+    /**
+     * la funzione ha il compito di avanzare all'episodio successivo di un serie Tv non appena quest'ultimo viene visualizzato.
+     * Nel caso in cui l'episodio sia l'ultimo della serie, il titolo in questione viene eliminato da "progresso serie" e viene aggiunto all'interno della lista
+     * "Visionati" dell'utente con annessi minuti visti e episodi visti complessivi dell'intera serie.
+     * @param idUtente Id dell'utente interessato.
+     * @param idSerieTV Id della SerieTv
+     * @param durataEpisodio Durata in minuti dell'episodio appena visionato.
+     * @param idEpisodioProssimo Id dell'episodio successivo a quello appena visionato.
+     * @param idProssimaStagione Id della stagione successiva, qualora ve ne sia una, sarà 0 altrimenti.
+     * @throws SQLException
+     */
     @Override
     public void avanzaEpisodioEstagione(Integer idUtente, Integer idSerieTV, Integer durataEpisodio, Integer idEpisodioProssimo, Integer idProssimaStagione) throws SQLException {
 
@@ -100,7 +111,6 @@ public class ProgressoSerieDAOPostgres implements ProgressoSerieDAO {
         } catch (Exception e) {
             DBManager.getInstance().getConnection().rollback();
             e.printStackTrace();
-            return;
         } finally {
             DBManager.getInstance().getConnection().setAutoCommit(true);
         }

@@ -5,6 +5,9 @@ import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.API.TMDbHttpClient;
 import it.unical.serialmente.TechnicalServices.API.TMDbRequest;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.ProgressoSerieDAO;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDAO;
+import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.ProgressoSerieDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.SelezioneTitoloDAOPostgres;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.postgres.TitoloDAOPostgres;
@@ -19,20 +22,25 @@ public class WatchlistService {
     private final TMDbHttpClient tmdbHttpClient = new TMDbHttpClient();
     private final Mapper mapper = new Mapper();
 
-    private final TitoloDAOPostgres titoloDao = new TitoloDAOPostgres(
+    private final TitoloDAO titoloDao = new TitoloDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
     private final TitoloService titoloService = new TitoloService();
 
-    private final SelezioneTitoloDAOPostgres selezioneTitoloDao = new SelezioneTitoloDAOPostgres(
+    private final SelezioneTitoloDAO selezioneTitoloDao = new SelezioneTitoloDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
-    private final ProgressoSerieDAOPostgres  progressoDao = new ProgressoSerieDAOPostgres(
+    private final ProgressoSerieDAO progressoDao = new ProgressoSerieDAOPostgres(
             DBManager.getInstance().getConnection()
     );
 
+    /**
+     * Dato un titolo, viene inserito all'interno della Watchlist dell'utente.Se il titolo è la prima volta che viene inserito all'interno di una lista
+     * viene inserito anche all'interno del DB locale
+     * @param titolo titolo da inserire all'interno della watchlist.
+     */
     public void inserisciTitoloInWatchlist(Titolo titolo) throws Exception {
         try {
 
@@ -111,6 +119,11 @@ public class WatchlistService {
         }
     }
 
+    /**
+     * Rimuove il titolo dalla watchlist dell'utente.Se, dopo l'eliminazione, il titolo non compare in nessun'altra lista di nessun utente
+     * il titolo viene eliminato dal DB locale.
+     * @param titolo Titolo da eliminare dalla watchlist.
+     */
     public void rimuoviFilmDallaWatchlist(Titolo titolo) throws Exception {
 
         try {
@@ -143,6 +156,10 @@ public class WatchlistService {
         }
     }
 
+    /**
+     * Rimuove la serie Tv dalla watchlist e, quindi, elimina il record di tale serieTv nella tabella progressoSerie.
+     * @param titolo serieTv da eliminare dalla watchlist.
+     */
     public void rimuoviSerieWatchlist(Titolo titolo) throws SQLException {
         try {
             DBManager.getInstance().getConnection().setAutoCommit(false);
@@ -178,6 +195,10 @@ public class WatchlistService {
 
     }
 
+    /**
+     * Contrassegna il titolo come visionato.
+     * @param titolo titolo da contrassegnare come visionato.
+     */
     public void rendiTitoloVisionato(Titolo titolo) throws Exception {
 
         if(titolo.getTipologia().equals("Film")) {
@@ -193,6 +214,9 @@ public class WatchlistService {
         rendiSerieVisionata(((SerieTV) titolo));
     }
 
+    /**
+     * Ritorna l'id della stagione successiva a quella attuale di una SerieTv.
+     */
     public int getIdProssimaStagione(Titolo titolo) throws Exception {
 
         String url = tmdbRequest.getTitolo(
@@ -210,6 +234,9 @@ public class WatchlistService {
         ).getKey();
     }
 
+    /**
+     * Contrassegna l'episodio attuale di una serieTv come visionato.
+     */
     public void rendiEpisodioVisionato(Titolo titolo) throws Exception {
 
         String urlProssimoEpisodio = tmdbRequest.getEpisodiDaStagione(
@@ -255,7 +282,10 @@ public class WatchlistService {
         );
     }
 
-    public List<Titolo> restituisciTitoliInWatchlist() throws Exception {
+    /**
+     * Restituisce tutti i titoli presenti all'interno della watchlist dell'utente.
+     */
+    public List<Titolo> restituisciTitoliInWatchlist() {
 
         List<Titolo> titoliSerie = selezioneTitoloDao.restituisciTitoliInLista(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
@@ -269,18 +299,27 @@ public class WatchlistService {
         return titoliSerie;
     }
 
+    /**
+     * Dato l'id di una serieTv, restituisce il numero di stagioni che la compongono.
+     */
     public Integer getNumeroStagione(Integer idSerie){
         return progressoDao.getNumeroProgressivoStagione(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
                 idSerie);
     }
 
+    /**
+     * Dato l'id di una serieTv, restituisce il numero di episodi totali che la compongono.
+     */
     public Integer getNumeroEpisodio(Integer idSerie){
         return  progressoDao.getNumeroProgressivoEpisodio(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
                 idSerie);
     }
 
+    /**
+     * Controlla se l'id del titolo è presente in qualsiasi lista di qualsiasi utente.
+     */
     public boolean controlloPresenzaTitoloInListe(Integer idTitolo){
         return selezioneTitoloDao.controlloTitoloInListeUtente(
                 SessioneCorrente.getUtenteCorrente().getIdUtente(),
@@ -298,7 +337,11 @@ public class WatchlistService {
                 );
     }
 
-    private void rendiSerieVisionata(SerieTV serie) throws Exception {
+    /**
+     * Rende l'intera serieTv come visionata.Si calcola il numero degli episodi totali e il numero di minuti totali
+     * necessari per visualizzare l'intera serie,sposta la serie nella lista "Visionati" ed elimina il record nella tabella progresso serie.
+     */
+    private void rendiSerieVisionata(SerieTV serie) {
 
         titoloService.setDati(serie);
 

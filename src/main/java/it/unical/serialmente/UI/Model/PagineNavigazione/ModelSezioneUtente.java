@@ -3,7 +3,6 @@ package it.unical.serialmente.UI.Model.PagineNavigazione;
 import it.unical.serialmente.Application.Service.SezioneUtenteService;
 import it.unical.serialmente.Application.Service.UtenteService;
 import it.unical.serialmente.Domain.model.Titolo;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class ModelSezioneUtente {
     public String getNomeUtente(){
         return utenteService.getNomeUtente();
     }
-    public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo) throws SQLException {
+    public List<Titolo> getTitoliInLista(String tipoLista,String tipoTitolo){
         return sezioneUtenteService.getTitoliInLista(tipoLista,tipoTitolo);
     }
     public Integer getNmeroFilmVisionati(){
@@ -27,7 +26,7 @@ public class ModelSezioneUtente {
         return sezioneUtenteService.getOreGiorniMesiVisionatiFilm();
     }
 
-    public StatisticheSerieTv getStatisticheSerieTv() throws Exception {
+    public StatisticheSerieTv getStatisticheSerieTv(){
         return sezioneUtenteService.getStatisticheSerieTv();
     }
 

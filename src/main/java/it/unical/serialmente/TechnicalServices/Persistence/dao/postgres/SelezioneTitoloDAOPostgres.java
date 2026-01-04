@@ -3,16 +3,13 @@ package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 import it.unical.serialmente.TechnicalServices.Persistence.DBManager;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.SelezioneTitoloDAO;
 import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
-import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Titolo;
 import javafx.util.Pair;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
@@ -21,14 +18,14 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
     public SelezioneTitoloDAOPostgres(Connection connection) {
         this.connection = connection;
     }
+
     @Override
     public List<Titolo> restituisciTitoliInLista(Integer idUtente,String nomeLista,String tipoTitolo) {
         List<Titolo> lista = new ArrayList<>();
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
-            System.out.println("Nome lista non valido");
             return lista;
         }
-        TitoloDAO titoloDao= DBManager.getInstance().getTitoloDAO();
+        TitoloDAO titoloDao= new TitoloDAOPostgres(DBManager.getInstance().getConnection());
         String query;
         if(nomeLista.equals("Preferiti")){
             query="SELECT * FROM selezionetitolo s JOIN titolo t ON " +
@@ -54,17 +51,15 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
     }
 
     /**
-     * Permette di aggiungere un titolo presente nel Db interno in una delle tre liste dell'utente.
+     * Permette di aggiungere un titolo presente nel Db interno di una delle tre liste dell'utente.
      * Nel caso sia Watchlist crea l'istanza, se Visionati aggiorna il valore di tipo_lista,
      * se preferiti aggiorna il valore di e_preferito.
-     * @param idTitolo
      * @param nomeLista parametri accettati: Watchlist,Visionati,Preferiti.
      * @return valore booleano per confermare l'eventuale successo del metodo.
      */
     @Override
     public boolean aggiungiTitoloInLista(Integer idUtente,Integer idTitolo, String nomeLista, Integer minuti_visti, Integer numero_episodi_visti) {
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
-            System.out.println("Nome lista non valido");
             return false;
         }
         String query;
@@ -95,14 +90,12 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
            }
             int riga= st.executeUpdate();
             if(riga>0){
-                System.out.println("Titolo aggiunto nella lista "+nomeLista);
                 return true;
             }
 
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("Titolo non aggiunto "+nomeLista);
         return false;
     }
 
@@ -118,7 +111,6 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
     @Override
     public boolean eliminaTitoloInLista(Integer idUtente,Integer idTitolo, String nomeLista) {
         if(!nomeLista.equals("Watchlist") && !nomeLista.equals("Visionati") && !nomeLista.equals("Preferiti")){
-            System.out.println("Nome lista non valido");
             return false;
         }
         if(nomeLista.equals("Preferiti")){
@@ -128,7 +120,6 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
                 st.setInt(2,idUtente);
                 int riga= st.executeUpdate();
                 if(riga>0){
-                    System.out.println("Titolo" +idTitolo+" tolto da "+nomeLista);
                     return true;
                 }
             }catch (Exception e){
@@ -141,7 +132,6 @@ public class SelezioneTitoloDAOPostgres implements SelezioneTitoloDAO {
                 st.setInt(2,idUtente);
                 int riga= st.executeUpdate();
                 if(riga>0){
-                    System.out.println("Titolo" +idTitolo+" tolto "+nomeLista);
                     return true;
                 }
             }catch (Exception e){

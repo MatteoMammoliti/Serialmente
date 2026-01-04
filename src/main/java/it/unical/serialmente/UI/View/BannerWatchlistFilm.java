@@ -73,7 +73,7 @@ public class BannerWatchlistFilm extends HBox {
     }
     public void update(String nomeTitolo, Integer durata, String immaginePath) {
         labelNome.setText(nomeTitolo);
-        labelDurata.setText("Durata: " + (durata != null ? durata.toString() + " min" : "N/D"));
+        labelDurata.setText("Durata: " + (durata != null ? durata + " min" : "N/D"));
 
 
         if (immaginePath != null && !immaginePath.isEmpty()) {

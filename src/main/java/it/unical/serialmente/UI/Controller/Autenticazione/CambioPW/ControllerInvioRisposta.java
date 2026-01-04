@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,15 +37,26 @@ public class ControllerInvioRisposta implements Initializable {
     }
 
 
+    /**
+     * Email passata dal controller precedente.
+     */
     public void setEmail(String email){
         this.email=email;
         this.labelVisioneDomanda.setText(modelCambioPassword.getDomandaSicurezzaUtente(this.email));
     }
+
+    /**
+     * chiudo lo stage e vado nel login.
+     */
     private void clickAnnulla(){
         ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnAnnulla.getScene().getWindow());
         ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();
     }
 
+    /**
+     * viene verificato che la risposta alla domanda di sicurezza sia quella corretta.Dopodichè viene caricata la pagina fxml
+     * seleziona nuova password e passato al controller della prossima pagina l'email a cui facciamo riferimento.
+     */
     private void clickInviaRisposta() throws IOException {
         if(!modelCambioPassword.controlloDomandaSicurezza(email,textRisposta.getText())){
             this.labelErroreRisposta.setVisible(true);

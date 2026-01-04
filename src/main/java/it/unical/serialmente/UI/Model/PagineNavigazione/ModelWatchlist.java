@@ -15,7 +15,7 @@ public class ModelWatchlist {
         return watchlistService.getNumeroEpisodio(idSerie);
     }
 
-    public List<Titolo> getTitoliInWatchlist() throws Exception {
+    public List<Titolo> getTitoliInWatchlist(){
         return watchlistService.restituisciTitoliInWatchlist();
     }
     public void rendiFilmVisionato(Titolo titolo) throws Exception {

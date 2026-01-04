@@ -8,9 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class ControllerContainerView implements Initializable {

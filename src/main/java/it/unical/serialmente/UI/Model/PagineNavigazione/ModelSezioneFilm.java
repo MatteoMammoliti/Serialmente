@@ -5,7 +5,6 @@ import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.Titolo;
-
 import java.util.*;
 
 public class ModelSezioneFilm {

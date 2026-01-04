@@ -10,9 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -55,7 +53,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         });
     }
 
-    public void init(Titolo titolo) throws Exception {
+    public void init(Titolo titolo){
         this.serie= (SerieTV) titolo;
         this.labelTitoloSerie.setText(this.serie.getNomeTitolo());
         this.labelVoto.setText("Voto medio: "+this.serie.getVotoMedio());

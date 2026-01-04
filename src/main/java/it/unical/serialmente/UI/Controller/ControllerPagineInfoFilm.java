@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -26,7 +25,6 @@ public class ControllerPagineInfoFilm implements Initializable {
     public Label labelGeneriFilm;
     public Label labelTramaFilm;
     public Button btnAggiungi;
-    public HBox contenitorePiattafome;
     public Button btnIndietro;
     public HBox contenitoreInfoFilm;
     public Label labelPiattaforme;
@@ -58,7 +56,6 @@ public class ControllerPagineInfoFilm implements Initializable {
         String dimensionePoster = "https://image.tmdb.org/t/p/original";
         Image img = new Image(dimensionePoster +this.titolo.getImmagine());
         this.imageViewPoster.setImage(img);
-        caricaGeneri();
         presenteInListe = modelPagineInfoFilm.controlloPresenzaTitoloWatchlist(this.titolo.getIdTitolo());
         aggiornaStatoBottone();
     }

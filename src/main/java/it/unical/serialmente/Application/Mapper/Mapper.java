@@ -9,6 +9,11 @@ import java.util.*;
 
 public class Mapper {
 
+    /**
+     * Data una stringa Json, estrapola tutti gli episodi di una stagione.
+     * @param risposta Stringa risposta Json che arriva dall'API
+     * @return Una lista contentenente tutti gli episodi di una stagione di una Serie Tv.
+     */
     public List<Episodio> parseEpisodiDiUnaStagione(String risposta) {
         JSONObject json = new JSONObject(risposta);
         JSONArray array = json.getJSONArray("episodes");
@@ -17,14 +22,18 @@ public class Mapper {
             JSONObject obj = array.getJSONObject(i);
             Episodio ep = new Episodio(
                     obj.optInt("id"),
-                    obj.optInt("runtime"),
-                    obj.optString("overview")
+                    obj.optInt("runtime")
             );
             episodi.add(ep);
         }
         return episodi;
     }
 
+    /**
+     * Dato un JSOnObject che racchiude il film, estrae l'oggetto Film.
+     * @param object Oggetto Json proveniente dall'API che racchiude il Film.
+     * @return Oggetto Film estratto dall'oggetto Json
+     */
     public Film parseFilmDaJSON(JSONObject object) {
 
         int annoPubblicazioneFilm = 0;
@@ -44,6 +53,11 @@ public class Mapper {
         );
     }
 
+    /**
+     * Dato un JSOnObject che racchiude la SerieTv, estrae l'oggetto SerieTv.
+     * @param object Oggetto Json proveniente dall'API che racchiude la SerieTv.
+     * @return Oggetto SerieTv estratto dall'oggetto Json
+     */
     public SerieTV parseSerieTVDaJSON(JSONObject object) {
 
         int annoPubblicazioneSerieTV = 0;
@@ -61,7 +75,12 @@ public class Mapper {
         );
     }
 
-    public Stagione parseStagioneDaJSON(JSONObject obj) throws Exception {
+    /**
+     * Dato un JSOnObject che racchiude la stagione di una SerieTv, estrae l'oggetto Stagione.
+     * @param obj Oggetto Json proveniente dall'API che racchiude la stagione di una SerieTv.
+     * @return Oggetto Stagione estratto dall'oggetto Json
+     */
+    public Stagione parseStagioneDaJSON(JSONObject obj){
         Stagione s =  new Stagione(
                 obj.optString("name"),
                 obj.optInt("id"),
@@ -71,24 +90,45 @@ public class Mapper {
         return s;
     }
 
+    /**
+     * Data una risposta Json di un Film, estraggo la durata del film.
+     * @param risposta risposta Json data dall'API
+     * @return Intero che rappresenta la durata del film in minuti
+     */
     public Integer parseDurataFilm(String risposta) {
         JSONObject json = new JSONObject(risposta);
         return json.optInt("runtime");
     }
 
+    /**
+     * Data una risposta Json di un'intera Serie Tv, calcola e restituisce l'id del prossimo episodio
+     * @param risposta Risposta Json contentente l'intera serie Tv data dall'APi.
+     * @param idEpisodioAttuale id dell'episodio attuale.
+     * @return Id del prossimo episodio, 0 se non ne esiste uno.
+     */
     public Pair<Integer, Integer> parseIdProssimoEpisodio(String risposta, Integer idEpisodioAttuale) {
         JSONObject json = new JSONObject(risposta);
         JSONArray arrayRisposta = json.getJSONArray("episodes");
         return getInteger(idEpisodioAttuale, arrayRisposta, null);
     }
-
+    /**
+     * Data una risposta Json di un'intera Serie Tv, calcola e restituisce l'id della prossima stagione.
+     * @param risposta Risposta Json contentente l'intera serie Tv data dall'APi.
+     * @param idStagioneAttuale id della stagione attuale.
+     * @return Id della prossima stagione, 0 se non ne esiste uno.
+     */
     public Pair<Integer, Integer> parseIdProssimaStagione(String risposta, Integer idStagioneAttuale) {
         JSONObject json = new JSONObject(risposta);
         JSONArray arrayRisposta = json.getJSONArray("seasons");
         return getInteger(idStagioneAttuale, arrayRisposta, "tv");
     }
 
-    public List<Stagione> parseStagioni(String rispostaStagioni) throws Exception {
+    /**
+     * Data una stringa Json, estrapola tutte le stagioni di una SerieTv.
+     * @param rispostaStagioni Stringa risposta Json che arriva dall'API
+     * @return Una lista contentenente tutte le stagioni di una Serie Tv.
+     */
+    public List<Stagione> parseStagioni(String rispostaStagioni) {
         JSONObject obj = new JSONObject(rispostaStagioni);
         JSONArray stagioniArray = obj.getJSONArray("seasons");
         List<Stagione> stagioni = new ArrayList<>();
@@ -99,7 +139,14 @@ public class Mapper {
         return stagioni;
     }
 
-    public List<Titolo> parseTitoli(String risposta, String tipologia) throws Exception {
+    /**
+     * In base alla tipologia passata, la risposta contiene titoli di quella tipologia.Se la tipologia è null
+     * allora i titoli sono "mischiati".
+     * @param risposta Json contenente i titoli.
+     * @param tipologia "SerieTv","Film", o null.
+     * @return Lista con tutti i titoli ricercati.
+     */
+    public List<Titolo> parseTitoli(String risposta, String tipologia) {
         JSONObject obj = new JSONObject(risposta);
         JSONArray array = obj.getJSONArray("results");
         List<Titolo> titoli = new ArrayList<>();
@@ -123,6 +170,12 @@ public class Mapper {
         return titoli;
     }
 
+    /**
+     * Dato un titolo, restituisce tutti i generi appartenenti a quel titolo.
+     * @param risposta json che contiene il titolo.
+     * @return Lista di generi di quel titolo
+     */
+
     public List<Genere> parseGeneri(String risposta) {
         JSONObject obj = new JSONObject(risposta);
 
@@ -141,6 +194,12 @@ public class Mapper {
         return generi;
     }
 
+    /**
+     * Data un Json contenente un Titolo, restituisce le piattaforme su cui è distribuito.
+     * @param risposta Json contenente il titolo
+     * @param includeNonFlatrate True se voglio includere le piattaforme che mettono il film come noleggiabile o acquistabile.
+     * @return lista di piattaforme su cui il titolo è distribuito.
+     */
     public List<Piattaforma> parsePiattaforme(String risposta, boolean includeNonFlatrate) {
         JSONObject root = new JSONObject(risposta);
         JSONObject results = root.optJSONObject("results");
@@ -168,6 +227,11 @@ public class Mapper {
         return new ArrayList<>(piattaformeUniche.values());
     }
 
+    /**
+     * Aggiunge nella mappa le piattaforme dell'array Json che viene passato come parametro.
+     * @param arr Json che contiene le pittaforme dello specifico paese.
+     * @param out Mappa che contiene come chiave l'id della piattaforma e come valore la piattaforma di riferimento.
+     */
     private void aggiungiPiattaformeDaArray(JSONArray arr, Map<Integer, Piattaforma> out) {
         if (arr == null) return;
 
@@ -181,11 +245,25 @@ public class Mapper {
         }
     }
 
+    /**
+     * Data una stringa rappresentante una data, la converte in un LocalDate e restituisce l'anno.
+     * @param dataStr Data in formato stringa da convertire.
+     * @return Intero che rappresenta l'anno della data.
+     */
     private int estraiAnnoDaData(String dataStr) {
         LocalDate data = LocalDate.parse(dataStr);
         return data.getYear();
     }
 
+    /**
+     * Dato l'id dell'episodio o della stagione attuale, il Json contenente l'array di episodi o di stagioni
+     * estrae l'id del prossimo episodio o della prossima stagione.
+     * @param id Id dell'episodio/stagione attuale
+     * @param arrayRisposta json contenente l'array di episodi/stagioni
+     * @param tipologia "SerieTv" o null.
+     * @return Un pair con chiave l'id della prossima stagione o episodio e come valore la durata solamente se sto estraendo
+     * l'id del prossimo episodio.
+     */
     private Pair<Integer, Integer> getInteger(Integer id, JSONArray arrayRisposta, String tipologia) {
 
         if (arrayRisposta == null || arrayRisposta.isEmpty()) {

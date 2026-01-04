@@ -6,6 +6,7 @@ import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
 import it.unical.serialmente.Domain.model.Utente;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class ModelPaginaPreferenze {
@@ -24,15 +25,15 @@ public class ModelPaginaPreferenze {
         return this.preferenzeService.getPiattaformeDisponibili();
     }
 
-    public void aggiornaPreferenzeGeneri(List<Genere> g) {
-        preferenzeService.aggiornaPreferenzeGenere(
+    public void aggiornaPreferenzeGeneri(HashSet<Integer> g) {
+        preferenzeService.aggiornaPreferenzeGenereId(
                 g,
                 "AGGIUNTA"
         );
     }
 
-    public void aggiornaPreferenzePiattaforme(List<Piattaforma> p) throws Exception {
-        preferenzeService.aggiornaPreferenzePiattaforme(
+    public void aggiornaPreferenzePiattaforme(HashSet<Integer> p) throws Exception {
+        preferenzeService.aggiornaPreferenzePiattaformeId(
                 p,
                 "AGGIUNTA"
         );

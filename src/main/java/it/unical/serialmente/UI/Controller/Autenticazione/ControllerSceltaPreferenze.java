@@ -13,10 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ControllerSceltaPreferenze implements Initializable {
     @FXML private Button procediButton;
@@ -27,8 +24,8 @@ public class ControllerSceltaPreferenze implements Initializable {
     private final ModelPaginaPreferenze modelPaginaPreferenze = new ModelPaginaPreferenze();
     private ViewFactory viewFactory;
 
-    private final List<Genere> listaGeneriSelezionati =  new ArrayList<>();
-    private final List<Piattaforma> listaPiattaformeSelezionate = new ArrayList<>();
+    private final HashSet<Integer> listaGeneriSelezionati =  new HashSet<>();
+    private final HashSet<Integer> listaPiattaformeSelezionate = new HashSet<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -68,10 +65,9 @@ public class ControllerSceltaPreferenze implements Initializable {
 
             checkBox.selectedProperty().addListener((obs, oldVal, isSelected) -> {
                 if (isSelected) {
-                    if (!listaGeneriSelezionati.contains(g))
-                        listaGeneriSelezionati.add(g);
+                    listaGeneriSelezionati.add(g.getIdGenere());
                 } else {
-                    listaGeneriSelezionati.remove(g);
+                    listaGeneriSelezionati.remove(g.getIdGenere());
                 }
             });
 
@@ -104,10 +100,9 @@ public class ControllerSceltaPreferenze implements Initializable {
 
             checkBox.selectedProperty().addListener((obs, oldVal, isSelected) -> {
                 if (isSelected) {
-                    if (!listaPiattaformeSelezionate.contains(p))
-                        listaPiattaformeSelezionate.add(p);
+                    listaPiattaformeSelezionate.add(p.getIdPiattaforma());
                 } else {
-                    listaPiattaformeSelezionate.remove(p);
+                    listaPiattaformeSelezionate.remove(p.getIdPiattaforma());
                 }
             });
 

@@ -1,7 +1,6 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.UtenteDAO;
-
 import java.sql.*;
 
 public class UtenteDAOPostgres implements UtenteDAO {

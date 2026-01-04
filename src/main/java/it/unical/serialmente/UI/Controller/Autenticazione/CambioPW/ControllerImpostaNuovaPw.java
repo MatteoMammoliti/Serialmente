@@ -25,6 +25,7 @@ public class ControllerImpostaNuovaPw implements Initializable {
     private String email;
     private final BooleanProperty mostraPassword = new SimpleBooleanProperty(false);
     private final ModelCambioPassword modelCambioPassword = new ModelCambioPassword();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sincronizzaPassword();
@@ -34,9 +35,17 @@ public class ControllerImpostaNuovaPw implements Initializable {
 
     }
 
+    /**
+     * Email passata dal controller precedente.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
+
+    /**
+     * Sincronizza il testo nei Fild password visibili e non visibili attravarso BindBidirectional e imposta quele coppia
+     * deve essere visibile confrontanto il valore booleano di mostraPassword, essendo essa un booleano osservabile.
+     */
     public void sincronizzaPassword(){
         passwordVisibile.textProperty().bindBidirectional(passwordField.textProperty());
         passwordVisibileRipeti.textProperty().bindBidirectional(passwordFieldRipeti.textProperty());
@@ -55,6 +64,10 @@ public class ControllerImpostaNuovaPw implements Initializable {
         mostraPassword.set(!mostraPassword.get());
         eyeButton.setText(mostraPassword.get() ? "🔍" : "🔒");
     }
+
+    /**
+     * Chiude questo stage e apro il login.
+     */
     private void clickAnnulla(){
         ModelContainerView.getInstance().getViewFactory().closeStage((Stage)this.btnAnnulla.getScene().getWindow());
         ModelContainerView.getInstance().getViewFactory().mostraFinestraLogin();
@@ -62,6 +75,7 @@ public class ControllerImpostaNuovaPw implements Initializable {
     private boolean confrontoPassword(){
         return this.passwordField.getText().equals(passwordFieldRipeti.getText());
     }
+
     private void clickInvia(){
         this.labelPasswordNonUguali.setVisible(false);
         this.labelPasswordNonConforme.setVisible(false);

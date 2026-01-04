@@ -3,12 +3,9 @@ package it.unical.serialmente.UI.Model.ModelAutenticazione;
 import it.unical.serialmente.Application.Service.PreferenzeService;
 import it.unical.serialmente.Domain.model.Genere;
 import it.unical.serialmente.Domain.model.Piattaforma;
-
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 public class ModelCambioPreferenze {
 

@@ -1,9 +1,6 @@
 package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.CredenzialiUtenteDAO;
-import it.unical.serialmente.Domain.model.CredenzialiUtente;
-import it.unical.serialmente.Domain.model.Utente;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,7 +88,6 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
 
     /**
      * Permette di risalire all'id dell'utente a partire dalla propria Email.
-     * @param email
      * @return L'id dell'utente con l'email data in input.
      */
     @Override
@@ -146,10 +142,9 @@ public class CredenzialiUtenteDAOPostgres implements CredenzialiUtenteDAO {
     @Override
     public boolean cambiaPassword(String email, String password) {
         String query= "UPDATE credenzialiutente SET password=? WHERE email=?";
-        String pwcript=BCrypt.hashpw(password,BCrypt.gensalt(12));
 
         try(PreparedStatement st = connection.prepareStatement(query)){
-            st.setString(1,pwcript);
+            st.setString(1,password);
             st.setString(2,email);
             return st.executeUpdate() > 0;
         }catch (Exception e){

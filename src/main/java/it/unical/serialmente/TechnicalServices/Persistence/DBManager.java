@@ -90,8 +90,4 @@ public class DBManager {
             }
         }
     }
-
-    public UtenteDAO getUtenteDAO() { return new UtenteDAOPostgres(getConnection()); }
-    public CredenzialiUtenteDAO getCredenzialiUtenteDAO() { return new CredenzialiUtenteDAOPostgres(getConnection()); }
-    public TitoloDAO getTitoloDAO() { return new TitoloDAOPostgres(getConnection()); }
 }

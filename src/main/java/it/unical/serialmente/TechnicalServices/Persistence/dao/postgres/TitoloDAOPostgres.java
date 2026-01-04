@@ -2,15 +2,12 @@ package it.unical.serialmente.TechnicalServices.Persistence.dao.postgres;
 
 import it.unical.serialmente.TechnicalServices.Persistence.dao.TitoloDAO;
 import it.unical.serialmente.Domain.model.*;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TitoloDAOPostgres implements TitoloDAO {
 
@@ -140,22 +137,4 @@ public class TitoloDAOPostgres implements TitoloDAO {
         return false;
     }
 
-    @Override
-    public List<Genere> restituisciGeneriTitolo(Integer idTitolo) {
-        List<Genere> generi = new ArrayList<>();
-        String query="SELECT * FROM appartiene a JOIN genere g on a.id_genere=g.id_genere WHERE id_titolo=?";
-        try(PreparedStatement st = con.prepareStatement(query)){
-            st.setInt(1,idTitolo);
-            ResultSet rs = st.executeQuery();
-            while(rs.next()){
-                Genere genere=new Genere(rs.getString("nome_genere"),rs.getInt("id_genere"));
-                generi.add(genere);
-
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return generi;
-    }
 }

@@ -1,7 +1,6 @@
 package it.unical.serialmente.UI.View;
 
 import javafx.scene.image.Image;
-
 import java.util.HashMap;
 
 public class CacheImmagini {

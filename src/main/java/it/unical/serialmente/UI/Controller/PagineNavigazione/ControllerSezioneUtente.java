@@ -1,7 +1,6 @@
 package it.unical.serialmente.UI.Controller.PagineNavigazione;
 
 import it.unical.serialmente.Domain.model.Titolo;
-import it.unical.serialmente.UI.Controller.Autenticazione.CambioPW.ControllerInvioRisposta;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.PagineNavigazione.ModelSezioneUtente;
 import it.unical.serialmente.UI.View.PosterSezioneUtente;
@@ -11,12 +10,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;

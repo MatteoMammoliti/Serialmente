@@ -6,7 +6,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerSezioneRicerca"
-            stylesheets="@../../CSS/ricerca.css">
+            stylesheets="@../../Css/ricerca.css">
 
     <top>
         <VBox spacing="15" styleClass="ricerca-header">

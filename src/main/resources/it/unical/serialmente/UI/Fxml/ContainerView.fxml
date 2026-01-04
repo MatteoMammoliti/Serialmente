@@ -3,7 +3,7 @@
 
 <BorderPane fx:id="contenitoreView" xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="it.unical.serialmente.UI.Controller.ControllerContainerView" stylesheets="@../CSS/menu.css">
+            fx:controller="it.unical.serialmente.UI.Controller.ControllerContainerView" stylesheets="@../Css/menu.css">
 
     <top>
         <fx:include source="menu.fxml"/>

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@../../CSS/profiloUtente.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerSezioneUtente">
+<BorderPane stylesheets="@../../Css/profiloUtente.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unical.serialmente.UI.Controller.PagineNavigazione.ControllerSezioneUtente">
 
     <center>
         <ScrollPane id="scrollPaneStatistiche" fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">

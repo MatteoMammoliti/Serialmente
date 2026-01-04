@@ -8,7 +8,6 @@ import it.unical.serialmente.UI.Model.ModelContainerView;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,6 +22,7 @@ public class ControllerCambioPreferenze implements Initializable {
     boolean cambiamenti= false;
     List<Genere> generiUtente= modelCambioPreferenze.getGeneriPreferiti();
     List<Piattaforma> piattaformeUtente;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -42,6 +42,11 @@ public class ControllerCambioPreferenze implements Initializable {
         btnProcedi.setOnAction(e -> {
             try {
                 clickSalva();
+                AlertHelper.nuovoAlert(
+                        "Successo",
+                        Alert.AlertType.INFORMATION,
+                        "Modifiche completate con successo!",
+                        "Le tue preferenze sono state modificate!");
             } catch (Exception ex) {
                 AlertHelper.nuovoAlert(
                         "Errore",
@@ -53,6 +58,7 @@ public class ControllerCambioPreferenze implements Initializable {
         });
         btnTornaIndietro.setOnAction(e -> {clickIndietro();});
     }
+
 
     private void caricaGeneri(){
         List<Genere> tuttiGeneri = modelCambioPreferenze.getTuttiGeneri();
@@ -67,6 +73,8 @@ public class ControllerCambioPreferenze implements Initializable {
             CheckBox cb = new CheckBox(g.getNomeGenere());
             cb.setSelected(generiUtente.contains(g));
 
+            //Il tasto diventa ascoltabile, se il genere viene cliccato viene aggiunto ai generi preferiti dall'utente
+            //Se viene deselezionato viene tolto.
             cb.selectedProperty().addListener((obs, old, sel) -> {
                 if (sel) modelCambioPreferenze.addGenere(g.getIdGenere());
                 else     modelCambioPreferenze.rimuoviGenere(g.getIdGenere());
@@ -101,8 +109,6 @@ public class ControllerCambioPreferenze implements Initializable {
         for (Piattaforma p : tuttePiattaforme) {
             CheckBox cb = new CheckBox(p.getNomePiattaforma());
             cb.setSelected(piattaformeUtente.contains(p));
-            //cb.setStyle("-fx-text-fill: white;");
-
             cb.selectedProperty().addListener((obs, old, sel) -> {
                 if (sel) modelCambioPreferenze.addPiattaforma(p.getIdPiattaforma());
                 else     modelCambioPreferenze.rimuoviPiattaforma(p.getIdPiattaforma());
@@ -135,6 +141,7 @@ public class ControllerCambioPreferenze implements Initializable {
         modelCambioPreferenze.applicaModifiche(generiUtente,piattaformeUtente);
         generiUtente=modelCambioPreferenze.getGeneriPreferiti();
         piattaformeUtente=modelCambioPreferenze.getPiattaformePreferite();
+
     }
     private void clickIndietro(){
         ModelContainerView.getInstance().getViewFactory().tornaAllaPaginaPrecedente();

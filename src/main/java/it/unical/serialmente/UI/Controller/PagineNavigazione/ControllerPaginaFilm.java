@@ -16,7 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class ControllerPaginaFilm implements Initializable {
         }
     }
 
-    public void caricaSezione(ListView<TitoloData> lista,String tipologia) throws Exception {
+    public void caricaSezione(ListView<TitoloData> lista,String tipologia){
 
         Task<ObservableList<TitoloData>> task = getObservableListTaskTitoli(lista,tipologia);
 
