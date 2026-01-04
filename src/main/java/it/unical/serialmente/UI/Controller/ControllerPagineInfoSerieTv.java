@@ -1,9 +1,11 @@
 package it.unical.serialmente.UI.Controller;
 
+import it.unical.serialmente.Application.Service.TitoloService;
 import it.unical.serialmente.Domain.model.*;
 import it.unical.serialmente.TechnicalServices.Utility.AlertHelper;
 import it.unical.serialmente.UI.Model.ModelContainerView;
 import it.unical.serialmente.UI.Model.ModelPagineInfoSerieTv;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -13,6 +15,7 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
 
 public class ControllerPagineInfoSerieTv implements Initializable {
     public Button btnIndietro;
@@ -29,6 +32,7 @@ public class ControllerPagineInfoSerieTv implements Initializable {
 
     private SerieTV serie;
     private final ModelPagineInfoSerieTv modelPagineInfoSerieTv = new ModelPagineInfoSerieTv();
+    private final TitoloService titoloService = new TitoloService();
     private boolean presenteInLista;
 
     @Override
@@ -61,8 +65,8 @@ public class ControllerPagineInfoSerieTv implements Initializable {
         String dimensionePoster = "https://image.tmdb.org/t/p/original";
         this.imageViewPoster.setImage(new Image(dimensionePoster +this.serie.getImmagine()));
         presenteInLista = modelPagineInfoSerieTv.controlloSeSerieInListe(this.serie.getIdTitolo());
+        this.avviaCaricamentoDatiAsync();
     }
-
 
     public void initDatiCompleti(Titolo t) {
         this.serie = (SerieTV) t;
@@ -148,5 +152,19 @@ public class ControllerPagineInfoSerieTv implements Initializable {
             sb.append(p.getNomePiattaforma()).append(" ");
         }
         this.labelPiattaforme.setText(sb.toString());
+    }
+
+    private void avviaCaricamentoDatiAsync() {
+        CompletableFuture.runAsync(() -> {
+            try {
+                Titolo titoloCompleto = titoloService.setDati(this.serie);
+
+                Platform.runLater(() -> {
+                    initDatiCompleti(titoloCompleto);
+                });
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

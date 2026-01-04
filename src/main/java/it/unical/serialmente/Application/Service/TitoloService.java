@@ -299,10 +299,23 @@ public class TitoloService {
     private void popolaListaSerieTV(SerieTV s) throws Exception {
         List<Stagione> stagioni = getStagioni(s.getIdTitolo());
 
+        List<CompletableFuture<Void>> tasks = new ArrayList<>();
+
         for (Stagione stagione : stagioni) {
-            List<Episodio> episodi = getEpisodi(s.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
-            stagione.setEpisodi(episodi);
+
+            CompletableFuture<Void> task = CompletableFuture.runAsync(() -> {
+                try {
+                    List<Episodio> episodi = getEpisodi(s.getIdTitolo(), stagione.getNumeroStagioneProgressivo());
+                    stagione.setEpisodi(episodi);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }, executor);
+            tasks.add(task);
         }
+
+        CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
+
         s.setStagioni(stagioni);
     }
 }

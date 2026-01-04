@@ -100,7 +100,7 @@ public class ControllerPaginaSerieTV implements Initializable {
         return task;
     }
 
-    public void caricaSezioneGeneri(ListView<String> lista) throws Exception {
+    public void caricaSezioneGeneri(ListView<String> lista) {
 
         Task<ObservableList<String>> task = getObservableListTaskGeneri(lista);
 

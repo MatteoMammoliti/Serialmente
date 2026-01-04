@@ -96,17 +96,6 @@ public class BannerTitolo extends VBox {
             ControllerPagineInfoSerieTv controller = loader.getController();
             controller.init(this.titolo);
 
-            CompletableFuture.supplyAsync(() -> {
-                        try {
-                            return titoloService.setDati(this.titolo);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }})
-                    .thenAcceptAsync(titoloCompleto -> {
-                                Platform.runLater(() -> controller.initDatiCompleti(titoloCompleto));
-                            }
-                    );
-
             Stage stageLocale = (Stage) this.getScene().getWindow();
             stageLocale.getScene().setRoot(root);
         }
