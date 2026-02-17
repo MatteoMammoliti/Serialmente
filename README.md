@@ -1,7 +1,7 @@
 Serialmente is a desktop application that allows UserS to keep track of the TV Series and Films they've watched on the main online streaming platforms.  
 The entire application was developed using **JavaFX** and relies on the **The Movie Database (TMDb)** API to retrieve titles and their information.
 
-Project documentation is available by clicking below (only italian):
+### Project documentation is available by clicking below (only italian):
 [![Documentazione-Progetto](./anteprima_documentazione.png)](./Serialmente___Progetto_Ingegneria_del_Software.pdf)
 
 Serialmente lets you:
